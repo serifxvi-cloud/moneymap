@@ -347,7 +347,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <div class="field"><label for="txType">Transaction</label><select id="txType"><option value="expense">Expense</option><option value="income">Income</option></select></div>
       <div class="field"><label for="txCategory">Category</label><input id="txCategory" list="txCategoryChoices" placeholder="Food, salary, transport…" required /><datalist id="txCategoryChoices"><option value="Salary"><option value="Freelance"><option value="Business"><option value="Food & groceries"><option value="Dining & cafes"><option value="Housing / rent"><option value="Transport"><option value="Utilities & phone"><option value="Shopping"><option value="Subscriptions"><option value="Healthcare"><option value="Education"><option value="Family"><option value="Debt payment"><option value="Other"></datalist></div>
       <div class="field"><label for="txAmount">Amount (<span id="txCurrencyLabel">currency</span>)</label><input id="txAmount" type="number" min="0.01" step="any" placeholder="e.g. 45000" required /></div>
-      <div class="field"><label for="txNote">Note (optional)</label><input id="txNote" type="text" placeholder="e.g. lunch near office" maxlength="140" /></div>
+      <div class="field"><label for="txNote">Expense note <span class="hint">Required for expenses · optional for income</span></label><input id="txNote" type="text" placeholder="What did you spend on? e.g. lunch, bus fare…" maxlength="140" autocomplete="off" /></div>
       <button class="btn btn-primary" type="submit">＋ Add entry</button>
     </form>
     <div class="mm-quick-expense"><strong>⚡ Quick add</strong><p>Tap a category, then enter the amount.</p><div class="mm-chip-row" id="mmExpenseChips"><button type="button" data-category="Food & groceries">🍜 Food</button><button type="button" data-category="Transport">🚌 Transport</button><button type="button" data-category="Shopping">🛍️ Shopping</button><button type="button" data-category="Games & apps">🎮 Games & apps</button><button type="button" data-category="Snacks & drinks">🧋 Snacks</button><button type="button" data-category="School">📚 School</button><button type="button" data-category="Other">✨ Other</button></div><div class="mm-chip-row mm-amount-row"><span>Amount:</span><button type="button" data-amount="10000">10k</button><button type="button" data-amount="25000">25k</button><button type="button" data-amount="50000">50k</button><button type="button" data-amount="100000">100k</button></div></div>
@@ -878,9 +878,12 @@ function renderWeekly(){
   $('txCurrencyLabel').textContent=selectedCurrency||'currency';
 }
 function addTransaction(e){
-  e.preventDefault();const amount=Number($('txAmount').value);const date=$('txDate').value;const category=$('txCategory').value.trim();
+  e.preventDefault();
+  const amount=Number($('txAmount').value),date=$('txDate').value,type=$('txType').value;
+  const category=$('txCategory').value.trim(),note=$('txNote').value.trim();
   if(!date||!category||!Number.isFinite(amount)||amount<=0){alert('Enter a date, category and amount greater than zero.');return;}
-  weeklyTransactions.push({id:`tx-${Date.now()}-${Math.random().toString(16).slice(2,7)}`,date,type:$('txType').value,category:category.slice(0,60),amount,note:$('txNote').value.trim().slice(0,140),createdAt:Date.now()});
+  if(type==='expense'&&!note){alert('Add a short note describing this expense before saving it.');$('txNote').focus();return;}
+  weeklyTransactions.push({id:`tx-${Date.now()}-${Math.random().toString(16).slice(2,7)}`,date,type,category:category.slice(0,60),amount,note:note.slice(0,140),createdAt:Date.now()});
   saveWeeklyTransactions();$('txAmount').value='';$('txNote').value='';$('txCategory').value='';renderWeekly();
 }
 function applyBudgetPreset(name){
