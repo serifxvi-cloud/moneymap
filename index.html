@@ -518,6 +518,26 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
     </div>
   </section>
 
+
+  <section class="panel mm-smart-insights" id="smart-insights">
+    <div class="section-head"><div><div class="section-kicker">07 / Spending intelligence</div><h2 class="section-title">Smart Spending Insights</h2><p>Patterns from your actual transactions, refreshed as your ledger changes.</p></div><span class="tag blue" id="mmInsightPeriod">This month</span></div>
+    <div class="mm-smart-summary" id="mmSmartSummary"><div class="mm-smart-empty">Add transactions to unlock your spending insights.</div></div>
+    <div class="mm-smart-columns"><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Where your money goes</strong><span>Current month</span></div><div id="mmSmartCategories" class="mm-smart-categories"><div class="mm-smart-empty">Your category breakdown will appear here.</div></div></div><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Personal recommendations</strong><span>Based on your activity</span></div><div id="mmSmartTips" class="mm-smart-tips"><div class="mm-smart-empty">Your suggestions will appear here.</div></div></div></div>
+    <p class="mm-smart-footnote">Insights use transactions recorded in MoneyMap. Comparisons are descriptive, not financial guarantees; incomplete records can change the picture.</p>
+  </section>
+  <section class="panel mm-calendar-panel" id="money-calendar">
+    <div class="section-head"><div><div class="section-kicker">08 / Your money timeline</div><h2 class="section-title">Money Calendar</h2><p>See exactly when money came in and went out. Select a day for its entries.</p></div><span class="tag blue">Monthly view</span></div>
+    <div class="mm-calendar-toolbar"><button type="button" class="btn btn-quiet" id="mmCalPrev" aria-label="Previous month">‹</button><strong id="mmCalMonth">Month year</strong><button type="button" class="btn btn-quiet" id="mmCalNext" aria-label="Next month">›</button><button type="button" class="btn btn-soft" id="mmCalToday">Today</button></div>
+    <div class="mm-calendar-legend"><span><i class="mm-cal-income-dot"></i>Income</span><span><i class="mm-cal-expense-dot"></i>Expense</span></div>
+    <div class="mm-calendar-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+    <div class="mm-calendar-grid" id="mmCalendarGrid"></div>
+    <div class="mm-calendar-detail"><div class="mm-calendar-detail-head"><strong id="mmCalSelectedDate">Select a date</strong><span id="mmCalDayTotals"></span></div><div id="mmCalDayEntries" class="mm-calendar-entries"><div class="mm-smart-empty">Choose a day to see its transactions.</div></div></div>
+  </section>
+  <section class="panel mm-achievements-panel" id="achievements">
+    <div class="section-head"><div><div class="section-kicker">09 / Your progress</div><h2 class="section-title">MoneyMap Achievements</h2><p>Real milestones from your MoneyMap activity. Keep building healthy money habits.</p></div><span class="tag blue" id="mmAchievementCount">0 unlocked</span></div>
+    <div class="mm-achievement-progress"><span id="mmAchievementProgress"></span></div>
+    <div class="mm-achievement-grid" id="mmAchievementGrid"><div class="mm-smart-empty">Your achievements will appear as you use MoneyMap.</div></div>
+  </section>
   <section class="panel" id="profile">
     <div class="section-head"><div><div class="section-kicker">06 / Your situation</div><h2 class="section-title">Build your money profile</h2><p>More context helps the coach identify patterns that a calculator would miss.</p></div><span class="tag">Saved on this device</span></div>
     <div class="field-grid">
@@ -1646,5 +1666,95 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 .mm-credit-line:last-child{background:linear-gradient(90deg,#7ca8e8,transparent)}
 @media(prefers-reduced-motion:no-preference){.mm-creator-credit{animation:mmCreditFade .9s .25s both}@keyframes mmCreditFade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}}
 </style>
+
+<style id="mm-smart-calendar-achievements-style">
+.mm-smart-insights,.mm-calendar-panel,.mm-achievements-panel{scroll-margin-top:90px}
+.mm-smart-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:13px}
+.mm-smart-stat{padding:15px;border:1px solid #e8edf6;border-radius:14px;background:linear-gradient(145deg,#fff,#f7faff)}
+.mm-smart-stat span{display:block;color:#7e8ba0;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.mm-smart-stat strong{display:block;margin-top:7px;color:#233d66;font-size:clamp(16px,2vw,22px);letter-spacing:-.6px;overflow-wrap:anywhere}.mm-smart-stat small{display:block;margin-top:4px;color:#8995a7;font-size:9px;line-height:1.45}
+.mm-smart-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mm-smart-card{padding:16px;border:1px solid #e9edf4;border-radius:15px;background:rgba(255,255,255,.72);min-width:0}
+.mm-smart-card-head,.mm-calendar-detail-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.mm-smart-card-head strong,.mm-calendar-detail-head strong{font-size:12px;color:#344866}.mm-smart-card-head span,.mm-calendar-detail-head span{font-size:9px;color:#8995a7}
+.mm-smart-category{display:grid;grid-template-columns:minmax(80px,1fr) minmax(70px,1.3fr) auto;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid #eff2f6;font-size:10px}.mm-smart-category:last-child{border-bottom:0}.mm-smart-category-name{font-weight:750;color:#52627a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mm-smart-track{height:7px;border-radius:99px;background:#edf1f7;overflow:hidden}.mm-smart-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#5d82ee,#69c6bd)}.mm-smart-category b{font-size:10px;color:#344866;white-space:nowrap}
+.mm-smart-tip{display:flex;gap:9px;padding:10px 0;border-bottom:1px solid #eff2f6}.mm-smart-tip:last-child{border-bottom:0}.mm-smart-tip i{font-style:normal;width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#eef3ff;flex:none}.mm-smart-tip strong{display:block;font-size:10px;color:#425673;margin-bottom:3px}.mm-smart-tip p{margin:0;color:#7d899b;font-size:9px;line-height:1.5}
+.mm-smart-empty{padding:14px;border:1px dashed #dfe6f1;border-radius:12px;color:#8995a7;font-size:10px;line-height:1.5}.mm-smart-footnote{font-size:9px;color:#9aa4b2;line-height:1.5;margin:12px 2px 0}
+.mm-calendar-toolbar{display:flex;justify-content:center;align-items:center;gap:12px;margin:5px 0 12px}.mm-calendar-toolbar strong{min-width:145px;text-align:center;color:#344866;font-size:13px}.mm-calendar-toolbar .btn{padding:8px 12px}.mm-calendar-legend{display:flex;justify-content:flex-end;gap:14px;margin:0 2px 9px;color:#7d899a;font-size:9px}.mm-calendar-legend span{display:flex;align-items:center;gap:5px}.mm-calendar-legend i{width:7px;height:7px;border-radius:50%}.mm-cal-income-dot{background:#35a879}.mm-cal-expense-dot{background:#e39b48}
+.mm-calendar-weekdays,.mm-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.mm-calendar-weekdays{margin-bottom:6px;text-align:center;color:#929daf;font-size:9px;font-weight:800}
+.mm-calendar-day{min-height:74px;padding:8px 7px;border:1px solid #edf0f5;border-radius:11px;background:rgba(255,255,255,.8);text-align:left;display:flex;flex-direction:column;gap:5px;min-width:0;color:#50617a;transition:border-color .16s,background .16s,transform .16s}.mm-calendar-day:hover{border-color:#9eb5ef;transform:translateY(-1px)}.mm-calendar-day.outside{opacity:.42;background:#f8f9fb}.mm-calendar-day.selected{border-color:#6689e9;background:#eef4ff;box-shadow:0 0 0 2px #6689e91a}.mm-calendar-day.today .mm-cal-day-number{background:#244f9b;color:#fff}.mm-cal-day-number{width:22px;height:22px;display:grid;place-items:center;border-radius:7px;font-size:10px;font-weight:800}.mm-cal-day-total{font-size:8px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mm-cal-day-total.income{color:#23845b}.mm-cal-day-total.expense{color:#b77932}
+.mm-calendar-detail{margin-top:14px;padding:14px;border:1px solid #e9edf4;border-radius:14px;background:#fbfcff}.mm-calendar-entries{display:grid;gap:7px}.mm-cal-entry{display:grid;grid-template-columns:75px minmax(0,1fr) auto;gap:9px;align-items:center;padding:8px 10px;border-radius:10px;background:white;border:1px solid #eef1f5;font-size:10px}.mm-cal-entry span{color:#8995a7}.mm-cal-entry strong{color:#52627a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mm-cal-entry b{white-space:nowrap}.mm-cal-entry b.income{color:#23845b}.mm-cal-entry b.expense{color:#b77932}
+.mm-achievement-progress{height:8px;border-radius:99px;background:#edf1f7;overflow:hidden;margin:-3px 0 15px}.mm-achievement-progress span{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#5378f4,#42c6ad);transition:width .4s ease}.mm-achievement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mm-achievement{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid #e8edf4;border-radius:13px;background:#fff;min-width:0}.mm-achievement.locked{background:#f8f9fb;filter:saturate(.45)}.mm-achievement-icon{width:37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#edf3ff;font-size:19px;flex:none}.mm-achievement.unlocked{border-color:#cbe9d9;background:linear-gradient(135deg,#fff,#f3fcf7)}.mm-achievement.unlocked .mm-achievement-icon{background:#e2f7eb}.mm-achievement strong{display:block;font-size:10px;color:#425673}.mm-achievement small{display:block;margin-top:3px;font-size:8px;color:#8995a7;line-height:1.4}
+@media(max-width:760px){.mm-smart-summary{grid-template-columns:1fr 1fr}.mm-smart-columns{grid-template-columns:1fr}.mm-achievement-grid{grid-template-columns:1fr 1fr}.mm-calendar-day{min-height:60px;padding:5px 4px}.mm-cal-day-total{font-size:7px}.mm-calendar-weekdays,.mm-calendar-grid{gap:3px}}
+@media(max-width:430px){.mm-achievement-grid{grid-template-columns:1fr}.mm-calendar-toolbar{gap:6px}.mm-calendar-toolbar strong{min-width:110px;font-size:11px}.mm-calendar-toolbar .btn{padding:7px 9px}.mm-cal-entry{grid-template-columns:55px minmax(0,1fr) auto;gap:6px;padding:7px}}
+@media(prefers-reduced-motion:reduce){.mm-calendar-day,.mm-achievement-progress span{transition:none}}
+</style>
+
+<script id="mm-smart-calendar-achievements-engine">
+(()=>{
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const money=n=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency:document.getElementById('currencySelect')?.value||'USD',maximumFractionDigits:0}).format(Number(n)||0)}catch{return (Number(n)||0).toLocaleString()}};
+ const iso=(y,m,d)=>{const x=new Date(y,m,d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+ const today=()=>{const d=new Date();return iso(d.getFullYear(),d.getMonth(),d.getDate())};
+ const ledger=()=>Array.isArray(window.moneyMapTransactions)?window.moneyMapTransactions:[];
+ const byMonth=key=>ledger().filter(t=>(t.date||'').slice(0,7)===key);
+ const node=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=txt;return e};
+ function renderSmart(){
+  const now=new Date(),key=iso(now.getFullYear(),now.getMonth(),1).slice(0,7),prev=iso(now.getFullYear(),now.getMonth()-1,1).slice(0,7),cur=byMonth(key),old=byMonth(prev),expenses=cur.filter(t=>t.type==='expense'),income=cur.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0),spent=expenses.reduce((a,t)=>a+Number(t.amount||0),0),oldSpent=old.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0),map={};
+  expenses.forEach(t=>map[t.category||'Other']=(map[t.category||'Other']||0)+Number(t.amount||0));
+  const cats=Object.entries(map).sort((a,b)=>b[1]-a[1]),elapsed=now.getDate(),days=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),avg=spent/Math.max(1,elapsed);
+  const summary=$('mmSmartSummary'),categoryRoot=$('mmSmartCategories'),tips=$('mmSmartTips');if(!summary||!categoryRoot||!tips)return;
+  $('mmInsightPeriod').textContent=now.toLocaleDateString(undefined,{month:'long',year:'numeric'});summary.replaceChildren();
+  const change=oldSpent>0?(spent-oldSpent)/oldSpent*100:null;
+  [['Spent this month',money(spent),expenses.length+' expense entries'],['Daily average',money(avg),'Based on '+elapsed+' of '+days+' days'],['vs. last month',change===null?'No baseline':(change>0?'+':'')+change.toFixed(1)+'%',change===null?'Add history to compare':change>0?'Spending is higher':change<0?'Spending is lower':'Same spending']].forEach(a=>{const c=node('div','mm-smart-stat','');c.append(node('span','',a[0]),node('strong','',a[1]),node('small','',a[2]));summary.append(c)});
+  categoryRoot.replaceChildren();if(!cats.length)categoryRoot.append(node('div','mm-smart-empty','No expense entries recorded this month yet. Add transactions to see your spending mix.'));
+  else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/cats[0][1]*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
+  tips.replaceChildren();const tip=(icon,title,body)=>{const row=node('div','mm-smart-tip',''),copy=document.createElement('div');row.append(node('i','',icon));copy.append(node('strong','',title),node('p','',body));row.append(copy);tips.append(row)};
+  if(!cur.length)tip('🧾','Start with a few entries','Record income and everyday expenses. Insights improve as your ledger fills in.');
+  else{
+   if(cats[0])tip('🔎','Your biggest spending category',cats[0][0]+' is '+(spent?cats[0][1]/spent*100:0).toFixed(1)+'% of recorded expenses ('+money(cats[0][1])+'). Check whether any part can be planned or reduced.');
+   if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' recorded spending than last month. Check whether this is a one-off or recurring pattern.');
+   if(income>0){const rate=spent/income*100;tip(rate>80?'⚠️':'💡','Spending vs. recorded income',rate.toFixed(1)+'% of recorded income has gone to expenses. '+(rate>80?'Review flexible costs and upcoming bills.':'Keep a buffer for bills and unexpected costs.'))}
+   else tip('💰','Record your income too','Add income entries so MoneyMap can compare spending with money received this month.');
+  }
+ }
+ let year=new Date().getFullYear(),month=new Date().getMonth(),selected=today();
+ function renderCalendar(){
+  const grid=$('mmCalendarGrid');if(!grid)return;$('mmCalMonth').textContent=new Date(year,month,1).toLocaleDateString(undefined,{month:'long',year:'numeric'});grid.replaceChildren();
+  const first=new Date(year,month,1),offset=(first.getDay()+6)%7,start=new Date(year,month,1-offset),todayKey=today();
+  for(let i=0;i<42;i++){
+   const d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i),date=iso(d.getFullYear(),d.getMonth(),d.getDate()),items=ledger().filter(t=>t.date===date),inc=items.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0),out=items.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0);
+   const b=document.createElement('button');b.type='button';b.className='mm-calendar-day'+(d.getMonth()!==month?' outside':'')+(date===selected?' selected':'')+(date===todayKey?' today':'');b.setAttribute('aria-label',date+', income '+money(inc)+', expenses '+money(out));b.append(node('span','mm-cal-day-number',String(d.getDate())));
+   if(inc)b.append(node('span','mm-cal-day-total income','+'+money(inc)));if(out)b.append(node('span','mm-cal-day-total expense','−'+money(out)));
+   b.addEventListener('click',()=>{selected=date;year=d.getFullYear();month=d.getMonth();renderCalendar()});grid.append(b);
+  }
+  const chosen=ledger().filter(t=>t.date===selected).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));$('mmCalSelectedDate').textContent=new Date(selected+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const inc=chosen.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0),out=chosen.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0);$('mmCalDayTotals').textContent='In '+money(inc)+' · Out '+money(out);
+  const root=$('mmCalDayEntries');root.replaceChildren();if(!chosen.length)root.append(node('div','mm-smart-empty','No transactions recorded for this day.'));
+  else chosen.forEach(t=>{const row=node('div','mm-cal-entry','');row.append(node('span','',t.type==='income'?'Income':'Expense'),node('strong','',(t.category||'Other')+(t.note?' · '+t.note:'')),node('b',t.type,t.type==='income'?'+ '+money(t.amount):'− '+money(t.amount)));root.append(row)});
+ }
+ const monday=()=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(d.getDay()+6)%7);return iso(d.getFullYear(),d.getMonth(),d.getDate())};
+ const sunday=()=>{const d=new Date(monday()+'T12:00:00');d.setDate(d.getDate()+6);return iso(d.getFullYear(),d.getMonth(),d.getDate())};
+ const defs=[
+  ['🌱','First Step','Record your first transaction.',tx=>tx.length>=1],
+  ['🧾','Consistent Tracker','Record 10 transactions.',tx=>tx.length>=10],
+  ['🧭','Category Explorer','Track expenses in 3 different categories.',tx=>new Set(tx.filter(t=>t.type==='expense').map(t=>t.category)).size>=3],
+  ['💵','Income Logged','Record your first income entry.',tx=>tx.some(t=>t.type==='income')],
+  ['🌤️','Positive Week','Record a week with more income than expenses.',tx=>{const w=tx.filter(t=>t.date>=monday()&&t.date<=sunday()),a=w.filter(t=>t.type==='income').reduce((n,t)=>n+Number(t.amount||0),0),b=w.filter(t=>t.type==='expense').reduce((n,t)=>n+Number(t.amount||0),0);return a>0&&a>b}],
+  ['🏆','Money Explorer','Earn 100 XP in Money Quest.',()=>{try{return Number(JSON.parse(localStorage.getItem('moneymap_money_quest_v1')||'{}').xp||0)>=100}catch{return false}}]
+ ];
+ function renderAchievements(){
+  const root=$('mmAchievementGrid');if(!root)return;const tx=ledger(),unlocked=defs.filter(a=>a[3](tx)).length;$('mmAchievementCount').textContent=unlocked+' / '+defs.length+' unlocked';$('mmAchievementProgress').style.width=(unlocked/defs.length*100)+'%';root.replaceChildren();
+  defs.forEach(a=>{const yes=a[3](tx),card=node('div','mm-achievement '+(yes?'unlocked':'locked'),'');card.append(node('span','mm-achievement-icon',a[0]));const copy=document.createElement('div');copy.append(node('strong','',a[1]),node('small','',yes?'Unlocked · '+a[2]:a[2]));card.append(copy);root.append(card)});
+ }
+ function renderAll(){renderSmart();renderCalendar();renderAchievements()}
+ document.addEventListener('DOMContentLoaded',()=>{
+  $('mmCalPrev')?.addEventListener('click',()=>{month--;if(month<0){month=11;year--}renderCalendar()});
+  $('mmCalNext')?.addEventListener('click',()=>{month++;if(month>11){month=0;year++}renderCalendar()});
+  $('mmCalToday')?.addEventListener('click',()=>{const d=new Date();year=d.getFullYear();month=d.getMonth();selected=today();renderCalendar()});
+  window.addEventListener('moneymap:transactions-updated',renderAll);window.addEventListener('moneymap:quest-updated',renderAchievements);$('currencySelect')?.addEventListener('change',renderAll);renderAll();
+ });
+ if(document.readyState!=='loading')renderAll();
+ window.MoneyMapInsights={refresh:renderAll,renderCalendar,renderAchievements};
+})();
+</script>
 </body>
 </html>
