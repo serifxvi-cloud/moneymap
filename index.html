@@ -315,31 +315,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 <div class="mm-orbit-nav" id="mmOrbitNav"><button class="mm-orbit-toggle" id="mmOrbitToggle" type="button" aria-expanded="false" aria-label="Open section navigation"><span class="mm-orbit-toggle-icon">⌃</span><span class="mm-orbit-toggle-label">NAVIGATE</span></button><div class="mm-orbit-menu" id="mmOrbitMenu" aria-label="Dashboard sections"></div></div>
 
 <main class="shell" id="top">
-<section class="panel mm-account-panel" id="cloud-account">
-  <div class="section-head"><div><div class="section-kicker">ACCOUNT · CLOUD BACKUP</div><h2 class="section-title">Your MoneyMap account</h2><p>Sign in to keep your profile, weekly spending, notes and AI chat history synced across devices.</p></div><span class="tag" id="mmCloudBadge">Not connected</span></div>
-  <div class="mm-account-grid">
-    <div class="mm-account-main">
-      <div class="mm-account-status" id="mmCloudStatus" role="status">Create an account with your email and password to sync your MoneyMap data.</div>
-      <div class="field-grid">
-        <div class="field"><label for="mmAccountEmail">Email</label><input id="mmAccountEmail" type="email" autocomplete="username" placeholder="you@example.com" /></div>
-        <div class="field"><label for="mmAccountPassword">Password</label><input id="mmAccountPassword" type="password" autocomplete="current-password" placeholder="At least 8 characters" /></div>
-      </div>
-      <div class="mm-account-actions">
-        <button class="btn btn-primary" id="mmSignIn" type="button">Sign in</button>
-        <button class="btn mm-google-btn" id="mmGoogleSignIn" type="button"><span class="mm-google-g">G</span> Continue with Google</button>
-        <button class="btn btn-soft" id="mmSignUp" type="button">Create account</button>
-        <button class="btn btn-quiet" id="mmResetPassword" type="button">Reset password</button>
-        <button class="btn btn-quiet" id="mmSignOut" type="button" disabled>Sign out</button>
-        <button class="btn btn-quiet" id="mmSyncNow" type="button" disabled>Sync now</button>
-      </div>
-      <div class="field" style="margin-top:14px"><label for="mmPersonalNotes">My notes & reminders</label><textarea id="mmPersonalNotes" rows="3" placeholder="Write reminders, upcoming bills, savings ideas, or anything you want to remember…"></textarea><div class="hint">Notes are saved on this device and synced to your account when signed in.</div></div>
-    </div>
-    <div class="mm-account-setup mm-account-info">
-      <div class="mm-setup-copy"><strong>Your account is ready to use.</strong><p>Create an account with your email and password. We handle the cloud connection automatically—there is no setup key or Supabase dashboard step to enter here.</p><p>For security, your finance data is stored in your own private account. Verify your email if requested.</p></div>
-    </div>
-  </div>
-  <div class="mm-account-footer" id="mmCloudUser">Not signed in. Your data stays on this device until you create an account or sign in.</div>
-</section>
+<section class="panel mm-account-launcher" id="account-access"><div class="section-head"><div><div class="section-kicker">YOUR MONEYMAP ACCOUNT</div><h2 class="section-title">Your money, wherever you go.</h2><p>Sign in or create your free account in the secure MoneyMap account portal.</p></div><span class="tag">Cloud account</span></div><div class="mm-account-launcher-actions"><a class="btn btn-primary" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a><p class="hint">Your account opens in a separate tab, so your dashboard stays right here.</p></div></section>
   <section class="hero" id="overview">
     <div>
       <div id="mmHeroUsername" class="mm-hero-user" aria-live="polite"><strong>Your MoneyMap</strong></div>
@@ -1789,7 +1765,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
- const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['cloud-account','☁','Account']];
+ const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['account-access','☁','Account']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
   const index=items.findIndex(x=>x[0]===id);if(index<0)return;
@@ -1820,9 +1796,19 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
  positionMenu();window.addEventListener('resize',positionMenu);
  toggle.addEventListener('click',()=>{const open=!nav.classList.contains('is-open');nav.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.mm-orbit-toggle-label').textContent=open?'CLOSE':(items.find(x=>x[0]===document.querySelector('.shell>section.mm-page-current')?.id)?.[2]||'NAVIGATE');});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');toggle.querySelector('.mm-orbit-toggle-label').textContent='NAVIGATE';}});
- const initial=location.hash.slice(1);activate(items.some(x=>x[0]===initial)?initial:'overview',false);
- window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(items.some(x=>x[0]===id))activate(id,false);});
+ const accountMode=new URLSearchParams(location.search).get('account')==='1';\n if(accountMode){document.body.classList.add('mm-account-mode');activate('cloud-account',false);}\n const initial=location.hash.slice(1);if(!accountMode)activate(items.some(x=>x[0]===initial)?initial:'overview',false);
+ window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(accountMode&&id==='cloud-account')activate(id,false);else if(items.some(x=>x[0]===id))activate(id,false);});
 })();
 </script>
-</body>
+<style id="mm-account-portal-mode">
+body.mm-account-mode{overflow:auto!important}
+body.mm-account-mode header.topbar,body.mm-account-mode .mm-orbit-nav{display:none!important}
+body.mm-account-mode main.shell{max-width:980px!important;width:min(94%,980px)!important;margin:42px auto!important;padding:0 0 40px!important}
+body.mm-account-mode main.shell>section{display:none!important}
+body.mm-account-mode main.shell>#cloud-account{display:block!important;animation:mmPageIn .35s ease both}
+body.mm-account-mode .mm-account-panel{margin:0!important}
+.mm-account-launcher-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px}
+.mm-account-launcher-actions .hint{margin:0}
+@media(max-width:600px){body.mm-account-mode main.shell{width:calc(100% - 24px)!important;margin:18px auto!important}.mm-account-launcher-actions{align-items:flex-start;flex-direction:column;gap:10px}}
+</style>\n</body>
 </html>
