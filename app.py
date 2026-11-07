@@ -1,17 +1,50 @@
 import os, time
+from collections import defaultdict, deque
+from threading import Lock
 from flask import Flask, request, jsonify, send_from_directory
 import requests
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, static_folder=None)
+app.config['MAX_CONTENT_LENGTH'] = 64 * 1024
+_RATE_LOCK = Lock()
+_RATE_EVENTS = defaultdict(deque)
 OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4.1-mini')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+
+@app.before_request
+def apply_api_rate_limits():
+    if not request.path.startswith('/api/'):
+        return None
+    now = time.monotonic()
+    peer = request.remote_addr or 'unknown'
+    limits = [(60, 60)]
+    if request.path == '/api/chat':
+        limits = [(60, 8), (3600, 60)]
+    with _RATE_LOCK:
+        for window, maximum in limits:
+            key = (peer, request.path if request.path == '/api/chat' else '/api/*', window)
+            events = _RATE_EVENTS[key]
+            while events and now - events[0] >= window:
+                events.popleft()
+            if len(events) >= maximum:
+                return jsonify(error='Too many requests. Please wait and try again.'), 429
+        for window, _maximum in limits:
+            key = (peer, request.path if request.path == '/api/chat' else '/api/*', window)
+            _RATE_EVENTS[key].append(now)
+        if len(_RATE_EVENTS) > 5000:
+            for key in list(_RATE_EVENTS)[:1000]:
+                if not _RATE_EVENTS[key]:
+                    _RATE_EVENTS.pop(key, None)
+    return None
 
 @app.after_request
 def security_headers(resp):
     resp.headers.setdefault('X-Content-Type-Options', 'nosniff')
     resp.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
     resp.headers.setdefault('X-Frame-Options', 'DENY')
+    resp.headers.setdefault('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+    resp.headers.setdefault('Cross-Origin-Resource-Policy', 'same-origin')
     if request.path.startswith('/api/'):
         resp.headers['Cache-Control'] = 'no-store'
     return resp
@@ -42,8 +75,9 @@ def market_search(term):
             if q.get('symbol') and q.get('quoteType') in ('EQUITY','ETF','INDEX','CRYPTOCURRENCY'):
                 hits.append({'symbol':q['symbol'],'name':q.get('longname') or q.get('shortname') or q['symbol'],'exchange':q.get('exchDisp',''),'type':q.get('quoteType','')})
         return jsonify(results=hits)
-    except Exception as e:
-        return jsonify(error='Market search unavailable: '+str(e)), 502
+    except Exception:
+        app.logger.exception('Market search provider failed')
+        return jsonify(error='Market search is temporarily unavailable. Please try again later.'), 502
 
 @app.get('/api/market/<path:symbol>')
 def market_quote(symbol):
@@ -64,8 +98,9 @@ def market_quote(symbol):
         change=((price-prev)/prev*100) if prev>0 else 0
         stamp=time.strftime('%Y-%m-%d %H:%M UTC',time.gmtime(meta['regularMarketTime'])) if meta.get('regularMarketTime') else 'Timestamp unavailable'
         return jsonify(symbol=symbol,price=price,currency=meta.get('currency',''),exchange=meta.get('fullExchangeName',''),marketState=meta.get('marketState',''),asOf=stamp,changePct=change,previousClose=prev)
-    except Exception as e:
-        return jsonify(error='Quote unavailable: '+str(e)), 502
+    except Exception:
+        app.logger.exception('Market quote provider failed')
+        return jsonify(error='The quote provider is temporarily unavailable. Please try again later.'), 502
 
 @app.post('/api/translate')
 def translate():
@@ -77,8 +112,9 @@ def translate():
         r.raise_for_status(); data=r.json(); translated=''.join(str(part[0]) for part in (data[0] or []) if part and part[0])
         if not translated: raise ValueError('Translation provider returned an empty result.')
         return jsonify(translated=translated)
-    except Exception as e:
-        return jsonify(error='Translation unavailable: '+str(e)),502
+    except Exception:
+        app.logger.exception('Translation provider failed')
+        return jsonify(error='Translation is temporarily unavailable. Please try again later.'),502
 
 @app.post('/api/chat')
 def chat():
@@ -99,9 +135,8 @@ def chat():
     try:
         r=requests.post('https://api.openai.com/v1/responses',headers={'Authorization':'Bearer '+OPENAI_API_KEY,'Content-Type':'application/json'},json=payload,timeout=90)
         if not r.ok:
-            try: detail=r.json().get('error',{}).get('message') or r.text[:500]
-            except Exception: detail=r.text[:500]
-            return jsonify(error='AI request failed: '+str(detail)),502
+            app.logger.warning('AI provider returned HTTP %s', r.status_code)
+            return jsonify(error='The AI service could not complete that request. Please try again later.'),502
         data=r.json(); reply=data.get('output_text','')
         if not reply:
             parts=[]
@@ -111,8 +146,13 @@ def chat():
             reply='\n'.join(parts)
         if not reply: return jsonify(error='The AI service returned an empty answer. Please try again.'),502
         return jsonify(reply=reply,model=OPENAI_MODEL)
-    except Exception as e:
-        return jsonify(error='AI connection failed: '+str(e)),502
+    except Exception:
+        app.logger.exception('AI provider connection failed')
+        return jsonify(error='The AI service is temporarily unavailable. Please try again later.'),502
+
+@app.errorhandler(413)
+def payload_too_large(_error):
+    return jsonify(error='Request is too large. Please shorten the submitted data.'), 413
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=int(os.getenv('PORT','10000')))
