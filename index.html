@@ -1750,45 +1750,75 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 })();
 </script>
 <style id="mm-feature-navigation-fix">#smart-insights,#money-calendar,#achievements{scroll-margin-top:100px}</style>
-<style id="mm-orbit-navigation-v1">
-.topbar .nav,.mm-quick-rail{display:none!important}.shell>section{display:none!important}.shell>section.mm-page-active{display:block!important;animation:mmPageIn .32s cubic-bezier(.2,.75,.25,1) both}.shell>section#budget.mm-page-active,.shell>section#wage.mm-page-active,.shell>section#overview.mm-page-active{display:grid!important}.shell>section#moneyQuest.mm-page-active{display:block!important}.shell>.footer{display:flex}
+<style id="mm-orbit-navigation-v2">
+.topbar .nav,.mm-quick-rail{display:none!important}
+.shell>section{display:none!important}
+.shell>section.mm-page-visible{display:block!important}
+.shell>section.hero.mm-page-visible,.shell>section.content-grid.mm-page-visible,.shell>section.two-col.mm-page-visible{display:grid!important}
+.shell>section.mm-page-current{animation:mmPageIn .3s cubic-bezier(.2,.75,.25,1) both}
+.shell>.footer{display:flex}
 @keyframes mmPageIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-.mm-orbit-nav{position:fixed;z-index:1000;left:50%;bottom:18px;transform:translateX(-50%);width:min(420px,96vw);height:218px;pointer-events:none}
-.mm-orbit-toggle{pointer-events:auto;position:absolute;z-index:3;bottom:0;left:50%;transform:translateX(-50%);width:132px;height:43px;border:1px solid rgba(255,255,255,.78);border-radius:999px;background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(226,238,255,.94));color:#244a91;box-shadow:0 9px 30px rgba(37,82,160,.2),inset 0 1px 0 #fff;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;gap:8px;font-size:10px;font-weight:900;letter-spacing:1.5px;transition:box-shadow .25s,transform .25s}
-.mm-orbit-toggle:hover{box-shadow:0 0 0 5px rgba(73,132,255,.12),0 0 28px rgba(57,126,255,.4),inset 0 1px 0 #fff}
-.mm-orbit-toggle-icon{font-size:17px;line-height:1;transition:transform .3s}.mm-orbit-nav.is-open .mm-orbit-toggle-icon{transform:rotate(180deg)}
+.mm-orbit-nav{position:fixed;z-index:1000;left:50%;bottom:18px;transform:translateX(-50%);width:min(620px,98vw);height:330px;pointer-events:none}
+.mm-orbit-toggle{pointer-events:auto;position:absolute;z-index:3;bottom:0;left:50%;transform:translateX(-50%);width:164px;height:54px;border:1px solid rgba(255,255,255,.86);border-radius:999px;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(220,235,255,.96));color:#244a91;box-shadow:0 10px 32px rgba(37,82,160,.24),inset 0 1px 0 #fff;backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:900;letter-spacing:1.7px;transition:box-shadow .25s,transform .25s}
+.mm-orbit-toggle:hover{box-shadow:0 0 0 6px rgba(73,132,255,.13),0 0 34px rgba(57,126,255,.48),inset 0 1px 0 #fff}
+.mm-orbit-toggle-icon{font-size:21px;line-height:1;transition:transform .3s}.mm-orbit-nav.is-open .mm-orbit-toggle-icon{transform:rotate(180deg)}
 .mm-orbit-menu{position:absolute;inset:0;pointer-events:none;opacity:0;transform:translateY(18px) scale(.88);transform-origin:50% 100%;transition:opacity .25s,transform .32s cubic-bezier(.2,.8,.2,1)}
 .mm-orbit-nav.is-open .mm-orbit-menu{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
 .mm-orbit-slice{position:absolute;left:50%;top:100%;width:0;height:0;overflow:visible}
-.mm-orbit-slice button{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;border:1px solid rgba(255,255,255,.86);background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(224,236,255,.95));color:#284a7e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 7px 18px rgba(25,55,100,.13),inset 0 1px 0 white;cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .22s,border-color .22s}
-.mm-orbit-slice button:hover,.mm-orbit-slice button:focus-visible{transform:translate(-50%,-50%) scale(1.23);z-index:5;background:linear-gradient(145deg,#fff,#e2edff);border-color:#8bb8ff;box-shadow:0 0 0 4px rgba(77,142,255,.15),0 0 26px rgba(48,126,255,.58),0 10px 24px rgba(24,67,140,.2);outline:none}
-.mm-orbit-slice button[aria-current="page"]{background:linear-gradient(145deg,#397df0,#1d53bb);color:white;border-color:#d8e7ff;box-shadow:0 0 0 3px rgba(66,126,245,.16),0 0 22px rgba(43,111,245,.4)}
-.mm-orbit-icon{font-size:18px;line-height:1.1}.mm-orbit-name{font-size:8px;font-weight:850;max-width:62px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:600px){.mm-orbit-nav{bottom:10px;height:205px;width:100vw}.mm-orbit-slice button{width:58px;height:58px}.mm-orbit-icon{font-size:16px}.mm-orbit-name{font-size:7px}.mm-orbit-toggle{height:40px}}
-@media(prefers-reduced-motion:reduce){.shell>section.mm-page-active{animation:none!important}.mm-orbit-menu,.mm-orbit-slice button,.mm-orbit-toggle{transition:none!important}}
-</style><script id="mm-orbit-navigation-engine">
+.mm-orbit-slice button{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:78px;height:78px;border-radius:50%;border:1px solid rgba(255,255,255,.9);background:linear-gradient(145deg,rgba(255,255,255,.99),rgba(220,234,255,.97));color:#284a7e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;box-shadow:0 8px 22px rgba(25,55,100,.16),inset 0 1px 0 white;cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .22s,border-color .22s}
+.mm-orbit-slice button:hover,.mm-orbit-slice button:focus-visible{transform:translate(-50%,-50%) scale(1.22);z-index:5;background:linear-gradient(145deg,#fff,#e2edff);border-color:#8bb8ff;box-shadow:0 0 0 5px rgba(77,142,255,.17),0 0 32px rgba(48,126,255,.62),0 12px 28px rgba(24,67,140,.24);outline:none}
+.mm-orbit-slice button[aria-current="page"]{background:linear-gradient(145deg,#397df0,#1d53bb);color:white;border-color:#d8e7ff;box-shadow:0 0 0 4px rgba(66,126,245,.18),0 0 26px rgba(43,111,245,.46)}
+.mm-orbit-icon{font-size:22px;line-height:1.1}.mm-orbit-name{font-size:9px;font-weight:850;max-width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:701px){
+ .mm-orbit-nav{left:0;top:50%;bottom:auto;transform:translateY(-50%);width:340px;height:min(760px,96vh)}
+ .mm-orbit-toggle{left:0;top:50%;bottom:auto;transform:translate(-1px,-50%) rotate(-90deg);transform-origin:left center;width:172px;height:58px;border-radius:0 0 22px 22px}
+ .mm-orbit-menu{transform:translateX(-18px) scale(.88);transform-origin:0 50%}
+ .mm-orbit-nav.is-open .mm-orbit-menu{transform:translateX(0) scale(1)}
+ .mm-orbit-slice{left:0;top:50%}
+ .mm-orbit-slice button{width:84px;height:84px}
+}
+@media(max-width:700px){
+ .mm-orbit-nav{bottom:10px;height:310px;width:100vw}
+ .mm-orbit-slice button{width:64px;height:64px}
+ .mm-orbit-icon{font-size:18px}.mm-orbit-name{font-size:8px}
+ .mm-orbit-toggle{width:150px;height:50px}
+}
+@media(prefers-reduced-motion:reduce){.shell>section.mm-page-current{animation:none!important}.mm-orbit-menu,.mm-orbit-slice button,.mm-orbit-toggle{transition:none!important}}
+</style>
+<script id="mm-orbit-navigation-engine">
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
  const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['cloud-account','☁','Account']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
-  const target=document.getElementById(id);if(!target||!main.contains(target))return;
-  pages.forEach(p=>p.classList.toggle('mm-page-active',p===target));
+  const index=items.findIndex(x=>x[0]===id);if(index<0)return;
+  const visible=new Set(items.slice(index,index+3).map(x=>x[0]));
+  pages.forEach(p=>{const shown=visible.has(p.id);p.classList.toggle('mm-page-visible',shown);p.classList.toggle('mm-page-current',p.id===id);});
   menu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.target===id?'page':'false'));
   if(updateHash)history.replaceState(null,'','#'+id);
   window.scrollTo({top:0,behavior:'smooth'});nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');
-  toggle.querySelector('.mm-orbit-toggle-label').textContent=items.find(x=>x[0]===id)?.[2]||'NAVIGATE';
+  toggle.querySelector('.mm-orbit-toggle-label').textContent=items[index][2];
  }
- const radius=142,centerX=210,centerY=218,step=180/(items.length-1);
- items.forEach((item,i)=>{
-  const angle=Math.PI+(step*i)*Math.PI/180,x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
-  const wrap=document.createElement('div');wrap.className='mm-orbit-slice';wrap.style.left=(centerX+x)+'px';wrap.style.top=(centerY+y)+'px';
+ function positionMenu(){
+  const desktop=window.matchMedia('(min-width:701px)').matches;
+  const radius=desktop?Math.min(290,window.innerHeight*.39):Math.min(278,window.innerWidth*.72);
+  const centerX=desktop?0:window.innerWidth/2,centerY=desktop?0:310;
+  const step=180/(items.length-1);
+  items.forEach((item,i)=>{
+   const angle=desktop?(-90+step*i)*Math.PI/180:(180+step*i)*Math.PI/180;
+   const x=Math.cos(angle)*radius,y=Math.sin(angle)*radius;
+   const wrap=menu.children[i];wrap.style.left=(desktop?x:centerX+x)+'px';wrap.style.top=(desktop?centerY+y:centerY+y)+'px';
+  });
+ }
+ items.forEach(item=>{
+  const wrap=document.createElement('div');wrap.className='mm-orbit-slice';
   const button=document.createElement('button');button.type='button';button.dataset.target=item[0];button.setAttribute('aria-label',item[2]);
   const ico=document.createElement('span');ico.className='mm-orbit-icon';ico.textContent=item[1];const label=document.createElement('span');label.className='mm-orbit-name';label.textContent=item[2];
   button.append(ico,label);button.addEventListener('click',()=>activate(item[0]));wrap.appendChild(button);menu.appendChild(wrap);
  });
- toggle.addEventListener('click',()=>{const open=!nav.classList.contains('is-open');nav.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.mm-orbit-toggle-label').textContent=open?'CLOSE':'NAVIGATE';});
+ positionMenu();window.addEventListener('resize',positionMenu);
+ toggle.addEventListener('click',()=>{const open=!nav.classList.contains('is-open');nav.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.mm-orbit-toggle-label').textContent=open?'CLOSE':(items.find(x=>x[0]===document.querySelector('.shell>section.mm-page-current')?.id)?.[2]||'NAVIGATE');});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');toggle.querySelector('.mm-orbit-toggle-label').textContent='NAVIGATE';}});
  const initial=location.hash.slice(1);activate(items.some(x=>x[0]===initial)?initial:'overview',false);
  window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(items.some(x=>x[0]===id))activate(id,false);});
