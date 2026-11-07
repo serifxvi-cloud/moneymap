@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Browser-enforced protections. GitHub Pages cannot set arbitrary HTTP response headers. -->
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co https://*.supabase.co https://api.frankfurter.dev https://open.er-api.com https://api.worldbank.org https://translate.googleapis.com; worker-src 'self' blob:; upgrade-insecure-requests" />
   <meta name="theme-color" content="#f5f8ff" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
