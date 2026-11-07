@@ -57,7 +57,12 @@ function Read-HttpRequest($Stream) {
         if ($colon -gt 0) { $headers[$line.Substring(0, $colon).Trim()] = $line.Substring($colon + 1).Trim() }
     }
     if ($headers.ContainsKey('Transfer-Encoding')) { throw 'Chunked request bodies are not supported.' }
-    if ($headers.ContainsKey('Host') -and $headers['Host'] -notmatch '^(127\.0\.0\.1|localhost):\d{1,5}
+    if ($headers.ContainsKey('Host') -and $headers['Host'] -notmatch '^(127[.]0[.]0[.]1|localhost):[0-9]{1,5}$') {
+        throw 'Requests must use the local MoneyMap address.'
+    }
+    if ($headers.ContainsKey('Origin') -and $headers['Origin'] -notmatch '^http://(127[.]0[.]0[.]1|localhost):[0-9]{1,5}$') {
+        throw 'Cross-origin requests are not allowed.'
+    }
     $contentLength = 0
     if ($headers.ContainsKey('Content-Length')) {
         if (-not [int]::TryParse([string]$headers['Content-Length'], [ref]$contentLength) -or $contentLength -lt 0) { throw 'Invalid Content-Length header.' }
