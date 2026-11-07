@@ -1803,7 +1803,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
  function positionMenu(){
   const desktop=window.matchMedia('(min-width:701px)').matches;
   const radius=desktop?Math.min(290,window.innerHeight*.39):Math.min(278,window.innerWidth*.72);
-  const centerX=desktop?0:window.innerWidth/2,centerY=desktop?0:310;
+  const centerX=desktop?0:window.innerWidth/2,centerY=desktop?nav.clientHeight/2:310;
   const step=180/(items.length-1);
   items.forEach((item,i)=>{
    const angle=desktop?(-90+step*i)*Math.PI/180:(180+step*i)*Math.PI/180;
