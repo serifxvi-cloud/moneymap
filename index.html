@@ -1553,84 +1553,71 @@ mmCloudInit();
  const languages={en:'English',id:'Bahasa Indonesia','zh-CN':'简体中文',de:'Deutsch',es:'Español',pt:'Português'};
  const select=document.getElementById('mmLanguage'); if(!select)return;
  let lang=localStorage.getItem(KEY)||localStorage.getItem('moneymap_language_v1')||'en';
- let cache={}; try{cache=JSON.parse(localStorage.getItem(CACHE)||'{}')}catch{}
- const originals=new WeakMap(), attrOriginals=new WeakMap();
+ let cache={};try{cache=JSON.parse(localStorage.getItem(CACHE)||'{}')}catch{}
+ const originals=new WeakMap(),attrOriginals=new WeakMap();
  const ignored=new Set(['SCRIPT','STYLE','NOSCRIPT','TEXTAREA','CODE','PRE','SVG','PATH']);
  const clean=s=>(s||'').replace(/\s+/g,' ').trim();
  function eligible(n){
-   if(!n||!n.parentElement||ignored.has(n.parentElement.tagName))return false;
-   if(n.parentElement.closest('[data-no-translate],script,style,textarea,code,pre,svg'))return false;
-   const value=clean(n.nodeValue);
-   return !!value && !/^https?:\/\//i.test(value);
+  if(!n||!n.parentElement||ignored.has(n.parentElement.tagName))return false;
+  if(n.parentElement.closest('[data-no-translate],script,style,textarea,code,pre,svg'))return false;
+  const v=clean(n.nodeValue);return !!v&&!/^https?:\/\//i.test(v)&&/[A-Za-z]/.test(v);
  }
  function collect(){
-   const nodes=[],attrs=[];
-   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n;
-   while((n=walker.nextNode())){if(!eligible(n))continue;if(!originals.has(n))originals.set(n,n.nodeValue);nodes.push({node:n,source:originals.get(n)})}
-   document.body.querySelectorAll('input[placeholder],input[aria-label],button[aria-label],[title],[aria-label],option').forEach(el=>{
-     if(el.closest('[data-no-translate]'))return;
-     for(const a of ['placeholder','aria-label','title'])if(el.hasAttribute(a)){
-       let m=attrOriginals.get(el);if(!m){m={};attrOriginals.set(el,m)}
-       if(!(a in m))m[a]=el.getAttribute(a);attrs.push({el,a,source:m[a]});
-     }
-   });
-   return {nodes,attrs};
+  const nodes=[],attrs=[],walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+  while((n=walker.nextNode()))if(eligible(n)){if(!originals.has(n))originals.set(n,n.nodeValue);nodes.push({node:n,source:originals.get(n)})}
+  document.body.querySelectorAll('input[placeholder],input[aria-label],button[aria-label],[title],[aria-label],option').forEach(el=>{
+   if(el.closest('[data-no-translate]'))return;
+   for(const a of ['placeholder','aria-label','title'])if(el.hasAttribute(a)){
+    let m=attrOriginals.get(el);if(!m){m={};attrOriginals.set(el,m)}
+    if(!(a in m))m[a]=el.getAttribute(a);attrs.push({el,a,source:m[a]});
+   }
+  });
+  return {nodes,attrs};
  }
  async function translateOne(source,target){
-   const key=target+'|'+source;if(cache[key])return cache[key];
-   let translated='';
-   // Prefer the local MoneyMap server: it avoids browser CORS restrictions on translation providers.
-   try{
-     const local=await fetch('/api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source,target}),signal:AbortSignal.timeout(22000)});
-     if(local.ok){const result=await local.json();translated=result.translated||'';}
-   }catch(e){/* Try the public endpoint as a fallback when opened on a compatible host. */}
-   if(!translated){
-     const url=new URL('https://translate.googleapis.com/translate_a/single');
-     url.searchParams.set('client','gtx');url.searchParams.set('sl','en');url.searchParams.set('tl',target);url.searchParams.set('dt','t');url.searchParams.set('q',source);
-     const response=await fetch(url.toString(),{signal:AbortSignal.timeout(18000),mode:'cors'});
-     if(!response.ok)throw Error('Translation service returned '+response.status);
-     const data=await response.json();
-     translated=Array.isArray(data?.[0])?data[0].map(part=>part?.[0]||'').join(''):'';
-   }
-   if(!translated)throw Error('Empty translation');
-   cache[key]=translated;return translated;
+  const key=target+'|'+source;if(cache[key])return cache[key];
+  const url=new URL('https://translate.googleapis.com/translate_a/single');
+  url.searchParams.set('client','gtx');url.searchParams.set('sl','en');url.searchParams.set('tl',target);url.searchParams.set('dt','t');url.searchParams.set('q',source);
+  const response=await fetch(url.toString(),{signal:AbortSignal.timeout(9000),mode:'cors'});
+  if(!response.ok)throw Error('Translation service returned '+response.status);
+  const data=await response.json(),translated=Array.isArray(data?.[0])?data[0].map(part=>part?.[0]||'').join(''):'';
+  if(!translated)throw Error('Empty translation');cache[key]=translated;return translated;
  }
  async function translateAll(items,target,job){
-   const output=new Array(items.length);let cursor=0,failed=0;
-   async function worker(){while(cursor<items.length){const i=cursor++;if(job!==run)return;const source=items[i].source;try{output[i]=await translateOne(source,target)}catch(e){output[i]=source;failed++}}}
-   await Promise.all(Array.from({length:5},()=>worker()));
-   return {output,failed};
+  const output=new Array(items.length),unique=new Map();let failed=0;
+  items.forEach((item,i)=>{const k=target+'|'+item.source;if(cache[k])output[i]=cache[k];else{if(!unique.has(item.source))unique.set(item.source,[]);unique.get(item.source).push(i)}});
+  const queue=[...unique.entries()];let cursor=0;
+  async function worker(){while(cursor<queue.length){const [source,indices]=queue[cursor++];if(job!==run)return;try{const value=await translateOne(source,target);indices.forEach(i=>output[i]=value)}catch(e){indices.forEach(i=>output[i]=items[i].source);failed+=indices.length}}}
+  await Promise.all(Array.from({length:12},()=>worker()));
+  return {output,failed};
  }
  let run=0,observer,timer;
  function status(message){select.title=message;select.setAttribute('aria-label','Language — '+message)}
  async function applyLanguage(target){
-   if(!languages[target])target='en';lang=target;
-   try{localStorage.setItem(KEY,target);localStorage.setItem('moneymap_language_v1',target)}catch{}
-   document.documentElement.lang=target;
-   const job=++run; const {nodes,attrs}=collect();
-   if(target==='en'){
-     observer?.disconnect();nodes.forEach(x=>x.node.nodeValue=x.source);attrs.forEach(x=>x.el.setAttribute(x.a,x.source));
-     status('English');if(observer)observer.observe(document.body,{subtree:true,childList:true,characterData:true});return;
-   }
-   status('Translating to '+languages[target]+'…');select.disabled=true;
-   const all=[...nodes,...attrs];
-   let result;
-   try{result=await translateAll(all,target,job)}catch(error){select.disabled=false;status('Translation failed. Check your internet connection and restart the language switch.');console.error('MoneyMap language switch failed:',error);return;}
-   const {output,failed}=result;
-   if(job!==run)return;
-   observer?.disconnect();
+  if(!languages[target])target='en';lang=target;
+  try{localStorage.setItem(KEY,target);localStorage.setItem('moneymap_language_v1',target)}catch{}
+  document.documentElement.lang=target;
+  const job=++run,{nodes,attrs}=collect(),all=[...nodes,...attrs];
+  observer?.disconnect();
+  if(target==='en'){
+   nodes.forEach(x=>x.node.nodeValue=x.source);attrs.forEach(x=>x.el.setAttribute(x.a,x.source));
+   select.disabled=false;status('English');observer?.observe(document.body,{subtree:true,childList:true,characterData:true});return;
+  }
+  select.disabled=false;
+  const cached=all.reduce((n,x)=>n+(cache[target+'|'+x.source]?1:0),0);
+  status(cached===all.length?languages[target]:`Translating · ${cached.toLocaleString()}/${all.length.toLocaleString()} cached`);
+  try{
+   const {output,failed}=await translateAll(all,target,job);if(job!==run)return;
    nodes.forEach((x,i)=>{x.node.nodeValue=output[i]??x.source});
    attrs.forEach((x,i)=>x.el.setAttribute(x.a,output[nodes.length+i]??x.source));
    try{localStorage.setItem(CACHE,JSON.stringify(cache))}catch{}
-   select.disabled=false;
-   status(failed?`Some phrases could not be translated (${failed}); check your internet connection.`:languages[target]);
-   if(observer)observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+   status(failed?`${languages[target]} · ${failed} phrases unavailable`:languages[target]);
+  }catch(error){if(job===run){status('Translation unavailable · check connection');console.error('MoneyMap language switch:',error)}}
+  finally{if(job===run)observer?.observe(document.body,{subtree:true,childList:true,characterData:true})}
  }
  select.value=languages[lang]?lang:'en';
  select.addEventListener('change',()=>applyLanguage(select.value));
- observer=new MutationObserver(()=>{
-   clearTimeout(timer);timer=setTimeout(()=>{if(lang!=='en'&&!select.disabled)applyLanguage(lang)},350);
- });
+ observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(()=>{if(lang!=='en')applyLanguage(lang)},650)});
  observer.observe(document.body,{subtree:true,childList:true,characterData:true});
  if(lang!=='en')applyLanguage(lang);else status('English');
  window.MoneyMapLanguage={set:applyLanguage,get:()=>lang,languages};
