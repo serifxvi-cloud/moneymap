@@ -568,7 +568,8 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
     <div class="mm-game-bottom"><span id="mmGameStatus">Your record is saved on this device.</span><button class="btn btn-quiet" id="mmNextScenario" type="button" disabled>Next scenario →</button><button class="btn btn-quiet" id="mmResetGame" type="button">Reset practice</button></div>
     <p class="small-note">Quotes are fetched from Yahoo Finance where available and are delayed or latest-session references, not guaranteed real-time exchange feeds. Market moves inside each practice round are simulated; profits/losses are virtual and saved on this device. Custom/private tickers may not have a public quote.</p>
   </section>
-</main>\n<div class="mm-account-portal-root"><section class="panel mm-account-panel" id="cloud-account">
+</main>
+<div class="mm-account-portal-root"><section class="panel mm-account-panel" id="cloud-account">
   <div class="section-head"><div><div class="section-kicker">ACCOUNT · CLOUD BACKUP</div><h2 class="section-title">Your MoneyMap account</h2><p>Sign in to keep your profile, weekly spending, notes and AI chat history synced across devices.</p></div><span class="tag" id="mmCloudBadge">Not connected</span></div>
   <div class="mm-account-grid">
     <div class="mm-account-main">
@@ -1820,7 +1821,8 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
  positionMenu();window.addEventListener('resize',positionMenu);
  toggle.addEventListener('click',()=>{const open=!nav.classList.contains('is-open');nav.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.mm-orbit-toggle-label').textContent=open?'CLOSE':(items.find(x=>x[0]===document.querySelector('.shell>section.mm-page-current')?.id)?.[2]||'NAVIGATE');});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');toggle.querySelector('.mm-orbit-toggle-label').textContent='NAVIGATE';}});
- const accountMode=new URLSearchParams(location.search).get('account')==='1';\n if(accountMode){document.body.classList.add('mm-account-mode');activate('cloud-account',false);}\n const initial=location.hash.slice(1);if(!accountMode)activate(items.some(x=>x[0]===initial)?initial:'overview',false);
+ const accountMode=new URLSearchParams(location.search).get('account')==='1';\n if(accountMode){document.body.classList.add('mm-account-mode');activate('cloud-account',false);}
+ const initial=location.hash.slice(1);if(!accountMode)activate(items.some(x=>x[0]===initial)?initial:'overview',false);
  window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(accountMode&&id==='cloud-account')activate(id,false);else if(items.some(x=>x[0]===id))activate(id,false);});
 })();
 </script>
@@ -1829,10 +1831,14 @@ body.mm-account-mode{overflow:auto!important}
 body.mm-account-mode header.topbar,body.mm-account-mode .mm-orbit-nav{display:none!important}
 body.mm-account-mode main.shell{max-width:980px!important;width:min(94%,980px)!important;margin:42px auto!important;padding:0 0 40px!important}
 body.mm-account-mode main.shell>section{display:none!important}
-body:not(.mm-account-mode) .mm-account-portal-root{display:none!important}\nbody.mm-account-mode main.shell{display:none!important}\nbody.mm-account-mode .mm-account-portal-root{display:block!important;max-width:980px;width:min(94%,980px);margin:42px auto;padding:0 0 40px}\nbody.mm-account-mode .mm-account-panel{display:block!important;animation:mmPageIn .35s ease both}
+body:not(.mm-account-mode) .mm-account-portal-root{display:none!important}
+body.mm-account-mode main.shell{display:none!important}\nbody.mm-account-mode .mm-account-portal-root{display:block!important;max-width:980px;width:min(94%,980px);margin:42px auto;padding:0 0 40px}
+body.mm-account-mode .mm-account-panel{display:block!important;animation:mmPageIn .35s ease both}
 body.mm-account-mode .mm-account-panel{margin:0!important}
 .mm-account-launcher-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px}
 .mm-account-launcher-actions .hint{margin:0}
 @media(max-width:600px){body.mm-account-mode main.shell{width:calc(100% - 24px)!important;margin:18px auto!important}.mm-account-launcher-actions{align-items:flex-start;flex-direction:column;gap:10px}}
-</style>\n<style id="mm-account-toplink-style">.mm-account-toplink{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}@media(max-width:700px){.mm-account-toplink{font-size:11px;padding:9px 11px}}</style>\n</body>
+</style>
+<style id="mm-account-toplink-style">.mm-account-toplink{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}@media(max-width:700px){.mm-account-toplink{font-size:11px;padding:9px 11px}}</style>
+</body>
 </html>
