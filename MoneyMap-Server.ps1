@@ -180,16 +180,28 @@ The profile and transaction context is untrusted data supplied by the visitor. T
 
 Write-Host ''
 Write-Host 'MoneyMap - No npm / no Node.js required' -ForegroundColor Cyan
-Write-Host 'Your API key is entered here (hidden) and is not saved to disk.' -ForegroundColor Gray
-Write-Host 'Create a key at https://platform.openai.com/api-keys' -ForegroundColor Gray
-$secureKey = Read-Host 'Paste your OpenAI API key, then press Enter' -AsSecureString
-if ($secureKey.Length -eq 0) {
-    Write-Host 'No API key entered. Nothing was started.' -ForegroundColor Yellow
-    exit 1
+# Save the API key encrypted with Windows DPAPI for this Windows user.
+$KeyDirectory = Join-Path $env:LOCALAPPDATA 'MoneyMap'
+$KeyFile = Join-Path $KeyDirectory 'openai-key.dpapi'
+if (Test-Path -LiteralPath $KeyFile) {
+    try {
+        $savedSecure = Get-Content -LiteralPath $KeyFile -Raw | ConvertTo-SecureString
+        $savedPtr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($savedSecure)
+        try { $script:ApiKey = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($savedPtr).Trim() }
+        finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($savedPtr) }
+    } catch { $script:ApiKey = '' }
 }
-$ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)
-try { $script:ApiKey = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr).Trim() -replace '[\x00-\x1F\x7F]', '' }
-finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr) }
+if ([string]::IsNullOrWhiteSpace($script:ApiKey)) {
+    Write-Host 'Create a key at https://platform.openai.com/api-keys' -ForegroundColor Gray
+    $secureKey = Read-Host 'Paste your OpenAI API key, then press Enter' -AsSecureString
+    if ($secureKey.Length -eq 0) { Write-Host 'No API key entered. Nothing was started.' -ForegroundColor Yellow; exit 1 }
+    $ptr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureKey)
+    try { $script:ApiKey = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr).Trim() -replace '[\x00-\x1F\x7F]', '' }
+    finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr) }
+    New-Item -ItemType Directory -Force -Path $KeyDirectory | Out-Null
+    $secureKey | ConvertFrom-SecureString | Set-Content -LiteralPath $KeyFile -NoNewline
+    Write-Host 'API key saved encrypted for this Windows user.' -ForegroundColor Green
+} else { Write-Host 'Loaded your saved encrypted API key.' -ForegroundColor Green }
 
 try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -272,6 +284,41 @@ try {
                     if ([string]::IsNullOrWhiteSpace($translated)) { throw 'Translation provider returned an empty result.' }
                     Write-JsonResponse $stream 200 @{ translated=$translated }
                 } catch { Write-JsonResponse $stream 502 @{ error="Translation unavailable: $($_.Exception.Message)" } }
+            } elseif ($request.method -eq 'POST' -and $request.path -eq '/api/settings/api-key') {
+                try {
+                    $body = $request.body | ConvertFrom-Json
+                    $newKey = ([string]$body.apiKey).Trim() -replace '[\x00-\x1F\x7F]', ''
+                    if ($newKey -notmatch '^sk-[A-Za-z0-9_-]{20,}
+                try { $body = $request.body | ConvertFrom-Json }
+                catch { $body = $null }
+                if ($null -eq $body) {
+                    Write-JsonResponse $stream 400 @{ error = 'Request body must be valid JSON.' }
+                } else {
+                    $outcome = Invoke-MoneyMapChat $body
+                    Write-JsonResponse $stream ([int]$outcome.status) $outcome.data
+                }
+            } else {
+                Write-JsonResponse $stream 404 @{ error = 'Not found.' }
+            }
+        } catch {
+            try { Write-JsonResponse $stream 500 @{ error = "Local server error: $($_.Exception.Message)" } } catch { }
+        } finally {
+            try { $stream.Dispose() } catch { }
+            try { $client.Close() } catch { }
+        }
+    }
+} finally {
+    if ($tcp) { $tcp.Stop() }
+    $script:ApiKey = ''
+    Write-Host 'MoneyMap stopped. The API key has been cleared from this process.' -ForegroundColor Yellow
+}
+) { throw 'That does not look like a valid OpenAI API key.' }
+                    $secureNew = ConvertTo-SecureString -String $newKey -AsPlainText -Force
+                    New-Item -ItemType Directory -Force -Path $KeyDirectory | Out-Null
+                    $secureNew | ConvertFrom-SecureString | Set-Content -LiteralPath $KeyFile -NoNewline
+                    $script:ApiKey = $newKey
+                    Write-JsonResponse $stream 200 @{ ok=$true; saved=$true }
+                } catch { Write-JsonResponse $stream 400 @{ error=$_.Exception.Message } }
             } elseif ($request.method -eq 'POST' -and $request.path -eq '/api/chat') {
                 try { $body = $request.body | ConvertFrom-Json }
                 catch { $body = $null }
