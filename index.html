@@ -357,7 +357,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
   </section>
 
 
-  <section class="mm-quest panel" id="moneyQuest" aria-label="Money Quest">
+  <section class="mm-combined-page" id="games" aria-label="Games"><div class="mm-game-hub panel"><div class="section-head"><div><div class="section-kicker">PLAY & PRACTISE</div><h2 class="section-title">MoneyMap Games</h2><p>Choose a game. Your progress and practice tools stay together here.</p></div><span class="tag blue">Game hub</span></div><div class="mm-game-choice" role="group" aria-label="Choose a game"><button type="button" class="btn btn-primary" data-mm-game="moneyQuest" aria-pressed="true">🎮 Money Quest</button><button type="button" class="btn btn-soft" data-mm-game="trading-game" aria-pressed="false">📈 Market Moves</button></div></div><div class="mm-game-stage"><section class="mm-quest panel" id="moneyQuest" aria-label="Money Quest">
     <div class="mm-quest-top">
       <div><div class="mm-quest-kicker">🎮 YOUR MINI MONEY ADVENTURE</div><h2>Money Quest</h2><p>Small missions. Smarter money moves. Earn XP as you build good habits.</p></div>
       <div class="mm-xp-card"><span>YOUR XP</span><strong id="mmQuestXP">0 XP</strong><small id="mmQuestLevel">Level 1 · Money Rookie</small></div>
@@ -370,7 +370,24 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <article class="mm-mission"><div class="mm-mission-emoji">🐷</div><div><strong>Think future-you</strong><p>Choose a small savings goal you can realistically reach.</p><a href="#profile">Set up your profile ↗</a></div><button type="button" data-quest="save">Claim +20 XP</button></article>
     </div>
     <div class="mm-quest-bottom"><span id="mmQuestBadge">🏅 First mission badge waiting</span><button type="button" class="mm-quest-reset" id="mmQuestReset">New day? Reset missions</button></div>
-  </section>
+  </section><section class="panel mm-trading-game" id="trading-game">
+    <div class="section-head"><div><div class="section-kicker">PRACTICE LAB · NO REAL MONEY</div><h2 class="section-title">Market Moves — Trading Simulator</h2><p>Use current market reference quotes to practise position sizing. Trade outcomes and rewards are virtual only; no live orders or real money.</p></div><span class="tag blue" id="mmGameRound">ROUND 1</span></div>
+    <div class="mm-market-picker">
+      <div class="mm-picker-field"><label for="mmExchange">Market / exchange</label><select id="mmExchange"><option value="US">US markets · NYSE / NASDAQ</option><option value="IDX">Indonesia · IDX / IHSG</option><option value="CN">China · SSE / SSEC</option><option value="CRYPTO">Crypto markets</option><option value="CUSTOM">Custom issuer / market</option></select></div>
+      <div class="mm-picker-field"><label for="mmTicker">Issuer / ticker</label><input id="mmTicker" list="mmTickerOptions" value="BTC" placeholder="Search ticker or enter one"><datalist id="mmTickerOptions"></datalist></div>
+      <div class="mm-picker-field mm-company-field"><label for="mmCompanyName">Full company / index name</label><input id="mmCompanyName" value="Bitcoin" placeholder="Full legal company name or index name"></div>
+      <button class="btn btn-soft" id="mmSearchMarket" type="button">Find ticker</button><button class="btn btn-soft" id="mmApplyIssuer" type="button">Load market</button>
+    </div>
+    <div class="mm-market-note" id="mmMarketNote">Choose an exchange, then select an issuer. Examples include TSLA, BBCA, BBRI and SSEC. Private companies such as SpaceX are clearly marked as private-market simulations. SpaceX is not publicly listed; SPCX is not treated as a verified SpaceX stock ticker.</div>
+    <div class="mm-game-topline"><div class="mm-game-asset"><div class="mm-asset-icon" id="mmAssetIcon">₿</div><div><strong id="mmAssetName">Bitcoin · BTC</strong><small id="mmAssetMeta">Crypto · High volatility</small></div></div><div class="mm-game-price"><small>LAST MARKET QUOTE</small><strong id="mmGamePrice">Loading…</strong><span id="mmGameChange">Fetching latest available quote</span></div></div>
+    <div class="mm-game-chart"><div class="mm-chart-label"><span id="mmScenarioTitle">Market setup</span><span id="mmScenarioTag">SCENARIO 01</span></div><svg id="mmGameChart" viewBox="0 0 720 170" role="img" aria-label="Simulated market price chart"><defs><linearGradient id="mmGameFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5b83e8" stop-opacity=".23"/><stop offset="1" stop-color="#5b83e8" stop-opacity="0"/></linearGradient></defs><path id="mmGameArea" d="" fill="url(#mmGameFill)"/><path id="mmGameLine" d="" fill="none" stroke="#5b83e8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle id="mmGameDot" cx="0" cy="0" r="5" fill="#fff" stroke="#5b83e8" stroke-width="3"/></svg><div class="mm-game-chart-foot"><span>Earlier</span><span>Now</span></div></div>
+    <div class="mm-scenario-copy" id="mmScenarioCopy">A market scenario will appear here. Study the context, then choose your position.</div>
+    <div class="mm-game-controls"><div class="mm-position-size"><label for="mmSizeMode">Position sizing</label><select id="mmSizeMode"><option value="amount">Fixed amount</option><option value="percent">Percentage of balance</option></select><input id="mmPositionSize" type="number" min="1" step="0.01" value="250" aria-label="Position amount or percentage"><small id="mmPositionHint">Amount in USD equivalent</small></div><div class="mm-trade-actions"><button class="btn mm-long-btn" id="mmGoLong" type="button">↗ Go long</button><button class="btn mm-short-btn" id="mmGoShort" type="button">↘ Go short</button><button class="btn btn-soft" id="mmHold" type="button">Ⅱ Hold / wait</button></div></div>
+    <div class="mm-game-result" id="mmGameResult" aria-live="polite"><strong>Make your first decision</strong><span>Choose long if you expect the price to rise, short if you expect it to fall, or wait for a clearer setup.</span></div>
+    <div class="mm-game-stats"><div><small>Practice balance</small><strong id="mmGameBalance">$10,000.00</strong></div><div><small>Profitable trades</small><strong id="mmGameWins">0</strong></div><div><small>Current win streak</small><strong id="mmGameStreak">0</strong></div><div><small>Best win streak</small><strong id="mmGameBest">0</strong></div><div><small>Net simulated P/L</small><strong id="mmGamePnL">$0.00</strong></div></div>
+    <div class="mm-game-bottom"><span id="mmGameStatus">Your record is saved on this device.</span><button class="btn btn-quiet" id="mmNextScenario" type="button" disabled>Next scenario →</button><button class="btn btn-quiet" id="mmResetGame" type="button">Reset practice</button></div>
+    <p class="small-note">Quotes are fetched from Yahoo Finance where available and are delayed or latest-session references, not guaranteed real-time exchange feeds. Market moves inside each practice round are simulated; profits/losses are virtual and saved on this device. Custom/private tickers may not have a public quote.</p>
+  </section></div></section>
 
   <section class="stats-grid" aria-label="Monthly financial overview">
     <div class="stat-card"><div class="stat-label">Monthly income</div><div class="stat-value" id="statIncome">—</div><div class="stat-note">Converted from your pay schedule</div></div>
@@ -455,7 +472,24 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
     </div>
   </section>
 
-  <section class="panel" id="weekly">
+  
+
+
+  
+  
+  <section class="panel mm-achievements-panel" id="achievements">
+    <div class="section-head"><div><div class="section-kicker">09 / Your progress</div><h2 class="section-title">MoneyMap Achievements</h2><p>Real milestones from your MoneyMap activity. Keep building healthy money habits.</p></div><span class="tag blue" id="mmAchievementCount">0 unlocked</span></div>
+    <div class="mm-achievement-progress"><span id="mmAchievementProgress"></span></div>
+    <div class="mm-achievement-grid" id="mmAchievementGrid"><div class="mm-smart-empty">Your achievements will appear as you use MoneyMap.</div></div>
+  </section>
+  <section class="panel" id="profile">
+    <div class="section-head"><div><div class="section-kicker">06 / Your situation</div><h2 class="section-title">Build your money profile</h2><p>More context helps the coach identify patterns that a calculator would miss.</p></div><span class="tag">Saved on this device</span></div>
+    <div class="field-grid">
+      <div class="field"><label for="countrySelect">Country you live in</label><select id="countrySelect"><option value="">Choose your country…</option></select><div class="hint">All ISO-standard country entries are included, plus Kosovo.</div></div>
+      <div class="field"><label for="currencySelect">Your currency</label><select id="currencySelect"></select><div class="hint">Auto-selected from country data; you can override it.</div></div>
+      <div class="field"><label for="occupation">Work / occupation</label><input id="occupation" type="text" placeholder="e.g. student, nurse, designer, shop owner" /></div>
+      <div class="field"><label for="household">People you financially support (including yourself)</label><input id="household" type="number" min="1" max="30" step="1" value="1" /></div>
+      <div class="f<section class="mm-combined-page" id="expenses" aria-label="Expenses and calendar"><div class="mm-expenses-grid"><section class="panel" id="weekly">
     <div class="section-head"><div><div class="section-kicker">06 / Real weekly activity</div><h2 class="section-title">Weekly income & spending</h2><p>Log the money that actually comes in and goes out. Pick any date to review its Monday–Sunday week.</p></div><span class="tag blue">Live weekly analysis</span></div>
     <div class="week-toolbar">
       <div class="field"><label for="weekAnchor">Choose a date in the week</label><input id="weekAnchor" type="date" /></div>
@@ -483,36 +517,19 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <div><div class="panel-head"><div><h2>Where spending went</h2><p>Expense categories for the selected week.</p></div></div><div class="breakdown-list" id="weeklyBreakdown"><div class="tx-empty">Your category breakdown will appear here.</div></div></div>
       <div><div class="panel-head"><div><h2>Transaction history</h2><p>Remove an entry if you added it by mistake.</p></div><button id="clearWeekBtn" class="btn btn-quiet" type="button">Clear this week</button></div><div class="tx-list" id="transactionList"><div class="tx-empty">No transactions logged for this week yet.</div></div><div class="tx-count" id="transactionCountNote">Entries are stored on this device.</div></div>
     </div>
-  </section>
-
-
-  <section class="panel mm-smart-insights" id="smart-insights">
-    <div class="section-head"><div><div class="section-kicker">07 / Spending intelligence</div><h2 class="section-title">Smart Spending Insights</h2><p>Patterns from your actual transactions, refreshed as your ledger changes.</p></div><span class="tag blue" id="mmInsightPeriod">This month</span></div>
-    <div class="mm-smart-summary" id="mmSmartSummary"><div class="mm-smart-empty">Add transactions to unlock your spending insights.</div></div>
-    <div class="mm-smart-columns"><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Where your money goes</strong><span>Current month</span></div><div id="mmSmartCategories" class="mm-smart-categories"><div class="mm-smart-empty">Your category breakdown will appear here.</div></div></div><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Personal recommendations</strong><span>Based on your activity</span></div><div id="mmSmartTips" class="mm-smart-tips"><div class="mm-smart-empty">Your suggestions will appear here.</div></div></div></div>
-    <p class="mm-smart-footnote">Insights use transactions recorded in MoneyMap. Comparisons are descriptive, not financial guarantees; incomplete records can change the picture.</p>
-  </section>
-  <section class="panel mm-calendar-panel" id="money-calendar">
+  </section><section class="panel mm-calendar-panel" id="money-calendar">
     <div class="section-head"><div><div class="section-kicker">08 / Your money timeline</div><h2 class="section-title">Money Calendar</h2><p>See exactly when money came in and went out. Select a day for its entries.</p></div><span class="tag blue">Monthly view</span></div>
     <div class="mm-calendar-toolbar"><button type="button" class="btn btn-quiet" id="mmCalPrev" aria-label="Previous month">‹</button><strong id="mmCalMonth">Month year</strong><button type="button" class="btn btn-quiet" id="mmCalNext" aria-label="Next month">›</button><button type="button" class="btn btn-soft" id="mmCalToday">Today</button></div>
     <div class="mm-calendar-legend"><span><i class="mm-cal-income-dot"></i>Income</span><span><i class="mm-cal-expense-dot"></i>Expense</span></div>
     <div class="mm-calendar-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
     <div class="mm-calendar-grid" id="mmCalendarGrid"></div>
     <div class="mm-calendar-detail"><div class="mm-calendar-detail-head"><strong id="mmCalSelectedDate">Select a date</strong><span id="mmCalDayTotals"></span></div><div id="mmCalDayEntries" class="mm-calendar-entries"><div class="mm-smart-empty">Choose a day to see its transactions.</div></div></div>
-  </section>
-  <section class="panel mm-achievements-panel" id="achievements">
-    <div class="section-head"><div><div class="section-kicker">09 / Your progress</div><h2 class="section-title">MoneyMap Achievements</h2><p>Real milestones from your MoneyMap activity. Keep building healthy money habits.</p></div><span class="tag blue" id="mmAchievementCount">0 unlocked</span></div>
-    <div class="mm-achievement-progress"><span id="mmAchievementProgress"></span></div>
-    <div class="mm-achievement-grid" id="mmAchievementGrid"><div class="mm-smart-empty">Your achievements will appear as you use MoneyMap.</div></div>
-  </section>
-  <section class="panel" id="profile">
-    <div class="section-head"><div><div class="section-kicker">06 / Your situation</div><h2 class="section-title">Build your money profile</h2><p>More context helps the coach identify patterns that a calculator would miss.</p></div><span class="tag">Saved on this device</span></div>
-    <div class="field-grid">
-      <div class="field"><label for="countrySelect">Country you live in</label><select id="countrySelect"><option value="">Choose your country…</option></select><div class="hint">All ISO-standard country entries are included, plus Kosovo.</div></div>
-      <div class="field"><label for="currencySelect">Your currency</label><select id="currencySelect"></select><div class="hint">Auto-selected from country data; you can override it.</div></div>
-      <div class="field"><label for="occupation">Work / occupation</label><input id="occupation" type="text" placeholder="e.g. student, nurse, designer, shop owner" /></div>
-      <div class="field"><label for="household">People you financially support (including yourself)</label><input id="household" type="number" min="1" max="30" step="1" value="1" /></div>
-      <div class="field"><label for="debtRate">Highest debt interest rate (% per year)</label><input id="debtRate" type="number" min="0" max="300" step="0.1" placeholder="e.g. 18" /></div>
+  </section><section class="panel mm-smart-insights" id="smart-insights">
+    <div class="section-head"><div><div class="section-kicker">07 / Spending intelligence</div><h2 class="section-title">Smart Spending Insights</h2><p>Patterns from your actual transactions, refreshed as your ledger changes.</p></div><span class="tag blue" id="mmInsightPeriod">This month</span></div>
+    <div class="mm-smart-summary" id="mmSmartSummary"><div class="mm-smart-empty">Add transactions to unlock your spending insights.</div></div>
+    <div class="mm-smart-columns"><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Where your money goes</strong><span>Current month</span></div><div id="mmSmartCategories" class="mm-smart-categories"><div class="mm-smart-empty">Your category breakdown will appear here.</div></div></div><div class="mm-smart-card"><div class="mm-smart-card-head"><strong>Personal recommendations</strong><span>Based on your activity</span></div><div id="mmSmartTips" class="mm-smart-tips"><div class="mm-smart-empty">Your suggestions will appear here.</div></div></div></div>
+    <p class="mm-smart-footnote">Insights use transactions recorded in MoneyMap. Comparisons are descriptive, not financial guarantees; incomplete records can change the picture.</p>
+  </section></div></section>ield"><label for="debtRate">Highest debt interest rate (% per year)</label><input id="debtRate" type="number" min="0" max="300" step="0.1" placeholder="e.g. 18" /></div>
       <div class="field"><label for="emergencyFund">Emergency savings you already have</label><input id="emergencyFund" type="number" min="0" step="any" placeholder="Amount in your selected currency" /></div>
       <div class="field"><label for="availableHours">Free hours each week for extra income</label><input id="availableHours" type="number" min="0" max="168" step="0.5" value="5" /></div>
       <div class="field"><label for="riskTolerance">Investment risk comfort</label><select id="riskTolerance"><option value="low">Low — protect my money first</option><option value="medium" selected>Medium — balanced growth</option><option value="high">High — I can accept large ups and downs</option></select></div>
@@ -550,24 +567,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
   <div class="small-note" style="text-align:center;margin-bottom:20px">MoneyMap is an educational budgeting tool, not a bank, tax service, investment adviser, or guarantee of returns. Check local deposit protection, taxes, product fees, and financial regulations before making decisions.</div>
 
 
-  <section class="panel mm-trading-game" id="trading-game">
-    <div class="section-head"><div><div class="section-kicker">PRACTICE LAB · NO REAL MONEY</div><h2 class="section-title">Market Moves — Trading Simulator</h2><p>Use current market reference quotes to practise position sizing. Trade outcomes and rewards are virtual only; no live orders or real money.</p></div><span class="tag blue" id="mmGameRound">ROUND 1</span></div>
-    <div class="mm-market-picker">
-      <div class="mm-picker-field"><label for="mmExchange">Market / exchange</label><select id="mmExchange"><option value="US">US markets · NYSE / NASDAQ</option><option value="IDX">Indonesia · IDX / IHSG</option><option value="CN">China · SSE / SSEC</option><option value="CRYPTO">Crypto markets</option><option value="CUSTOM">Custom issuer / market</option></select></div>
-      <div class="mm-picker-field"><label for="mmTicker">Issuer / ticker</label><input id="mmTicker" list="mmTickerOptions" value="BTC" placeholder="Search ticker or enter one"><datalist id="mmTickerOptions"></datalist></div>
-      <div class="mm-picker-field mm-company-field"><label for="mmCompanyName">Full company / index name</label><input id="mmCompanyName" value="Bitcoin" placeholder="Full legal company name or index name"></div>
-      <button class="btn btn-soft" id="mmSearchMarket" type="button">Find ticker</button><button class="btn btn-soft" id="mmApplyIssuer" type="button">Load market</button>
-    </div>
-    <div class="mm-market-note" id="mmMarketNote">Choose an exchange, then select an issuer. Examples include TSLA, BBCA, BBRI and SSEC. Private companies such as SpaceX are clearly marked as private-market simulations. SpaceX is not publicly listed; SPCX is not treated as a verified SpaceX stock ticker.</div>
-    <div class="mm-game-topline"><div class="mm-game-asset"><div class="mm-asset-icon" id="mmAssetIcon">₿</div><div><strong id="mmAssetName">Bitcoin · BTC</strong><small id="mmAssetMeta">Crypto · High volatility</small></div></div><div class="mm-game-price"><small>LAST MARKET QUOTE</small><strong id="mmGamePrice">Loading…</strong><span id="mmGameChange">Fetching latest available quote</span></div></div>
-    <div class="mm-game-chart"><div class="mm-chart-label"><span id="mmScenarioTitle">Market setup</span><span id="mmScenarioTag">SCENARIO 01</span></div><svg id="mmGameChart" viewBox="0 0 720 170" role="img" aria-label="Simulated market price chart"><defs><linearGradient id="mmGameFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5b83e8" stop-opacity=".23"/><stop offset="1" stop-color="#5b83e8" stop-opacity="0"/></linearGradient></defs><path id="mmGameArea" d="" fill="url(#mmGameFill)"/><path id="mmGameLine" d="" fill="none" stroke="#5b83e8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle id="mmGameDot" cx="0" cy="0" r="5" fill="#fff" stroke="#5b83e8" stroke-width="3"/></svg><div class="mm-game-chart-foot"><span>Earlier</span><span>Now</span></div></div>
-    <div class="mm-scenario-copy" id="mmScenarioCopy">A market scenario will appear here. Study the context, then choose your position.</div>
-    <div class="mm-game-controls"><div class="mm-position-size"><label for="mmSizeMode">Position sizing</label><select id="mmSizeMode"><option value="amount">Fixed amount</option><option value="percent">Percentage of balance</option></select><input id="mmPositionSize" type="number" min="1" step="0.01" value="250" aria-label="Position amount or percentage"><small id="mmPositionHint">Amount in USD equivalent</small></div><div class="mm-trade-actions"><button class="btn mm-long-btn" id="mmGoLong" type="button">↗ Go long</button><button class="btn mm-short-btn" id="mmGoShort" type="button">↘ Go short</button><button class="btn btn-soft" id="mmHold" type="button">Ⅱ Hold / wait</button></div></div>
-    <div class="mm-game-result" id="mmGameResult" aria-live="polite"><strong>Make your first decision</strong><span>Choose long if you expect the price to rise, short if you expect it to fall, or wait for a clearer setup.</span></div>
-    <div class="mm-game-stats"><div><small>Practice balance</small><strong id="mmGameBalance">$10,000.00</strong></div><div><small>Profitable trades</small><strong id="mmGameWins">0</strong></div><div><small>Current win streak</small><strong id="mmGameStreak">0</strong></div><div><small>Best win streak</small><strong id="mmGameBest">0</strong></div><div><small>Net simulated P/L</small><strong id="mmGamePnL">$0.00</strong></div></div>
-    <div class="mm-game-bottom"><span id="mmGameStatus">Your record is saved on this device.</span><button class="btn btn-quiet" id="mmNextScenario" type="button" disabled>Next scenario →</button><button class="btn btn-quiet" id="mmResetGame" type="button">Reset practice</button></div>
-    <p class="small-note">Quotes are fetched from Yahoo Finance where available and are delayed or latest-session references, not guaranteed real-time exchange feeds. Market moves inside each practice round are simulated; profits/losses are virtual and saved on this device. Custom/private tickers may not have a public quote.</p>
-  </section>
+  
 </main>\n<div class="mm-account-portal-root"><section class="panel mm-account-panel" id="cloud-account">
   <div class="section-head"><div><div class="section-kicker">ACCOUNT · CLOUD BACKUP</div><h2 class="section-title">Your MoneyMap account</h2><p>Sign in to keep your profile, weekly spending, notes and AI chat history synced across devices.</p></div><span class="tag" id="mmCloudBadge">Not connected</span></div>
   <div class="mm-account-grid">
@@ -1789,7 +1789,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
- const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['account-access','☁','Account']];
+ const items=[['account-access','☁','Login'],['overview','⌂','Home'],['expenses','▦','Expenses'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['profile','◉','Profile'],['coach','✧','AI Coach'],['achievements','★','Awards'],['games','🎮','Games']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
   const index=items.findIndex(x=>x[0]===id);if(index<0)return;
@@ -1834,5 +1834,5 @@ body.mm-account-mode .mm-account-panel{margin:0!important}
 .mm-account-launcher-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px}
 .mm-account-launcher-actions .hint{margin:0}
 @media(max-width:600px){body.mm-account-mode main.shell{width:calc(100% - 24px)!important;margin:18px auto!important}.mm-account-launcher-actions{align-items:flex-start;flex-direction:column;gap:10px}}
-</style>\n<style id="mm-account-toplink-style">.mm-account-toplink{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}@media(max-width:700px){.mm-account-toplink{font-size:11px;padding:9px 11px}}</style>\n</body>
+</style>\n<style id="mm-account-toplink-style">.mm-account-toplink{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}@media(max-width:700px){.mm-account-toplink{font-size:11px;padding:9px 11px}}</style>\n<style id="mm-expenses-games-layout">.mm-expenses-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}.mm-expenses-grid>#weekly,.mm-expenses-grid>#money-calendar{min-width:0;height:100%;margin:0}.mm-expenses-grid>#smart-insights{grid-column:1/-1;margin:0}.mm-expenses-grid>#weekly .tx-form{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-expenses-grid>#weekly .tx-form button{grid-column:1/-1}.mm-game-choice{display:flex;gap:10px;flex-wrap:wrap}.mm-game-stage>section{display:none!important}.mm-game-stage>section.mm-game-selected{display:block!important}@media(max-width:850px){.mm-expenses-grid{grid-template-columns:1fr}.mm-expenses-grid>#smart-insights{grid-column:auto}}</style><script id="mm-games-switcher">(()=>{document.addEventListener('DOMContentLoaded',()=>{const root=document.getElementById('games');if(!root)return;const panels=[...root.querySelectorAll('.mm-game-stage>section')],buttons=[...root.querySelectorAll('[data-mm-game]')];function choose(id){panels.forEach(p=>p.classList.toggle('mm-game-selected',p.id===id));buttons.forEach(b=>{const yes=b.dataset.mmGame===id;b.classList.toggle('btn-primary',yes);b.classList.toggle('btn-soft',!yes);b.setAttribute('aria-pressed',String(yes))})}buttons.forEach(b=>b.addEventListener('click',()=>choose(b.dataset.mmGame)));choose('moneyQuest')})})();</script></body>
 </html>
