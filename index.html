@@ -926,11 +926,22 @@ function mmCloudConfig(){
 function mmCloudSetStatus(message,kind=''){const el=document.getElementById('mmCloudStatus');if(el){el.textContent=message;el.className='mm-account-status '+kind;}const badge=document.getElementById('mmCloudBadge');if(badge)badge.textContent=kind==='ok'?'Cloud ready':kind==='bad'?'Needs attention': 'Account';}
 function mmCloudBase(){const c=mmCloudConfig();const u=new URL(c.url);if(u.protocol!=='https:')throw new Error('Account service configuration is invalid.');return u.origin;}
 async function mmCloudFetch(path,options={},token=''){
-  const c=mmCloudConfig(),base=mmCloudBase(),headers=new Headers(options.headers||{});headers.set('apikey',c.key);headers.set('Accept','application/json');
+  const c=mmCloudConfig(),base=mmCloudBase(),headers=new Headers(options.headers||{});
+  headers.set('apikey',c.key);headers.set('Accept','application/json');
   if(token)headers.set('Authorization','Bearer '+token);
   if(options.body&&!headers.has('Content-Type'))headers.set('Content-Type','application/json');
-  const response=await fetch(base+path,{...options,headers});const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch{data={message:raw}}
-  if(!response.ok){const msg=data.msg||data.message||data.error_description||data.error||('Supabase returned '+response.status);throw new Error(String(msg));}return data;
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),15000);
+  let response;
+  try{
+    response=await fetch(base+path,{...options,headers,signal:controller.signal,mode:'cors',cache:'no-store'});
+  }catch(err){
+    if(err&&err.name==='AbortError')throw new Error('The account server took too long to respond. Please try again.');
+    throw new Error('MoneyMap cannot reach its email account server. Check your internet connection or ask the site administrator to verify the Supabase project URL and network access.');
+  }finally{clearTimeout(timeout);}
+  const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch{data={message:raw}}
+  if(!response.ok){const msg=data.msg||data.message||data.error_description||data.error||('Account server returned '+response.status);throw new Error(String(msg));}
+  return data;
 }
 function mmCloudSaveConfig(){const url=document.getElementById('mmSupabaseUrl').value.trim().replace(/\/$/,''),key=document.getElementById('mmSupabaseKey').value.trim();if(!url||!key){mmCloudSetStatus('Enter both your Supabase project URL and public publishable/anon key.','bad');return false;}try{const parsed=new URL(url);if(parsed.protocol!=='https:')throw new Error();}catch{mmCloudSetStatus('The project URL must be a valid https:// URL.','bad');return false;}localStorage.setItem(MM_CLOUD_CONFIG_KEY,JSON.stringify({url,key}));mmCloudSetStatus('Cloud settings saved in this browser. You can now create an account or sign in.','ok');return true;}
 function mmCloudLoadConfigUI(){mmCloudConfig();document.getElementById('mmPersonalNotes').value=localStorage.getItem(MM_CLOUD_NOTES_KEY)||'';try{mmCloudSession=JSON.parse(localStorage.getItem(MM_CLOUD_SESSION_KEY)||'null')}catch{mmCloudSession=null;}mmCloudRenderAccount();}
