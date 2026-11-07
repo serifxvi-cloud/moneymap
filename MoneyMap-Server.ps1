@@ -11,7 +11,7 @@ $script:WindowStart = Get-Date
 
 function Write-HttpResponse($Stream, [int]$StatusCode, [string]$Reason, [string]$ContentType, [string]$Text) {
     $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($Text)
-    $head = "HTTP/1.1 $StatusCode $Reason`r`nContent-Type: $ContentType`r`nContent-Length: $($bodyBytes.Length)`r`nConnection: close`r`nCache-Control: no-store`r`nX-Content-Type-Options: nosniff`r`nX-Frame-Options: DENY`r`n`r`n"
+    $head = "HTTP/1.1 $StatusCode $Reason`r`nContent-Type: $ContentType`r`nContent-Length: $($bodyBytes.Length)`r`nConnection: close`r`nCache-Control: no-store`r`nX-Content-Type-Options: nosniff`r`nX-Frame-Options: DENY`r`nReferrer-Policy: strict-origin-when-cross-origin`r`nPermissions-Policy: camera=(), microphone=(), geolocation=()`r`nContent-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co https://*.supabase.co https://api.frankfurter.dev https://open.er-api.com https://api.worldbank.org https://translate.googleapis.com; worker-src 'self' blob:; upgrade-insecure-requests`r`n`r`n"
     $headBytes = [System.Text.Encoding]::ASCII.GetBytes($head)
     $Stream.Write($headBytes, 0, $headBytes.Length)
     if ($bodyBytes.Length -gt 0) { $Stream.Write($bodyBytes, 0, $bodyBytes.Length) }
