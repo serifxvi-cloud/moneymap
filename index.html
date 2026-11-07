@@ -918,7 +918,14 @@ const MM_DEFAULT_CLOUD_CONFIG={url:'https://dmapwfwltcfsmqgrvrxq.supabase.co',ke
 function mmCloudConfig(){
   try{
     const saved=JSON.parse(localStorage.getItem(MM_CLOUD_CONFIG_KEY)||'null');
-    if(saved&&saved.url&&saved.key)return saved;
+    if(saved&&saved.url&&saved.key){
+      // Migrate browsers that cached the previous, misspelled project hostname.
+      if(saved.url.replace(/\/$/,'')==='https://dmapwfwltcfsqmqrvrxq.supabase.co'){
+        localStorage.setItem(MM_CLOUD_CONFIG_KEY,JSON.stringify(MM_DEFAULT_CLOUD_CONFIG));
+        return MM_DEFAULT_CLOUD_CONFIG;
+      }
+      return saved;
+    }
   }catch{}
   localStorage.setItem(MM_CLOUD_CONFIG_KEY,JSON.stringify(MM_DEFAULT_CLOUD_CONFIG));
   return MM_DEFAULT_CLOUD_CONFIG;
