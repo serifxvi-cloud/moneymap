@@ -914,7 +914,7 @@ const MM_CLOUD_NOTES_KEY='moneymap_personal_notes_v1';
 let mmCloudSession=null, mmCloudBusy=false, mmCloudApplying=false, mmCloudSaveTimer=null;
 // App-managed public Supabase configuration. This publishable key is intended for browser use;
 // access to user data is protected by Supabase Auth + Row Level Security policies.
-const MM_DEFAULT_CLOUD_CONFIG={url:'https://dmapwfwltcfsqmqrvrxq.supabase.co',key:'sb_publishable_oTsRscLiwa-XrbQtqIC9EA_q9ruORsZ'};
+const MM_DEFAULT_CLOUD_CONFIG={url:'https://dmapwfwltcfsmqgrvrxq.supabase.co',key:'sb_publishable_oTsRscLiwa-XrbQtqIC9EA_q9ruORsZ'};
 function mmCloudConfig(){
   try{
     const saved=JSON.parse(localStorage.getItem(MM_CLOUD_CONFIG_KEY)||'null');
