@@ -210,11 +210,42 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 @media(prefers-reduced-motion:reduce){.mm-banknote{animation:none}}
 </style>
 
+
+<style id="mm-winged-gold-coin-style">
+/* MoneyMap's flying gold coin mascot */
+.mm-winged-coin-stage{grid-column:1/-1;position:relative;min-height:164px;display:flex;align-items:center;justify-content:center;perspective:1000px;isolation:isolate;overflow:visible}
+.mm-winged-coin-stage:before{content:"";position:absolute;width:210px;height:95px;left:50%;top:52%;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,190,62,.3);filter:blur(32px);z-index:-1}
+.mm-flight-trail{position:absolute;width:190px;height:76px;left:50%;top:52%;border-top:2px solid rgba(255,220,143,.45);border-radius:50%;transform:translate(-50%,-50%) rotate(-24deg);filter:blur(.2px)}
+.mm-winged-coin{position:relative;width:260px;height:142px;display:flex;align-items:center;justify-content:center;transform:rotate(-19deg);animation:mmWingedFlight 4.3s ease-in-out infinite;transform-style:preserve-3d}
+.mm-flight-wings{position:absolute;width:100%;height:100%;inset:0;overflow:visible;filter:drop-shadow(0 5px 5px rgba(76,43,7,.2))}
+.mm-wing{transform-box:fill-box;transform-origin:50% 83%;animation:mmWingFlap 1.15s ease-in-out infinite alternate}
+.mm-wing-right{animation-delay:-.12s}
+.mm-gold-coin{position:relative;z-index:2;width:91px;height:91px;border-radius:50%;padding:6px;background:repeating-conic-gradient(from 0deg,#9d6416 0deg 4deg,#ffe39a 4deg 8deg,#c18425 8deg 12deg);box-shadow:0 12px 20px rgba(42,26,4,.35),0 0 0 2px rgba(255,239,187,.85),0 0 24px rgba(255,196,69,.42);transform:translateZ(15px)}
+.mm-gold-coin-face{position:relative;width:100%;height:100%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid #fff0b4;background:radial-gradient(circle at 30% 20%,#fffbe1 0,#f8dc8b 18%,#e8b84f 48%,#b8781e 78%,#75430d 100%);box-shadow:inset 0 3px 5px rgba(255,255,255,.85),inset 0 -7px 12px rgba(88,48,5,.42)}
+.mm-gold-coin-face:before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,250,215,.8);border-radius:50%;box-shadow:inset 0 0 0 3px rgba(132,78,13,.12)}
+.mm-gold-m{position:relative;color:#75470d;font:800 44px/.95 Georgia,serif;text-shadow:0 1px 0 rgba(255,255,255,.7),0 2px 2px rgba(91,52,7,.28)}
+.mm-gold-stars{position:relative;margin-top:3px;font-size:8px;letter-spacing:3px;color:#fff7d2;text-shadow:0 1px 2px #8a5514}
+.mm-coin-spark{position:absolute;z-index:3;color:#fff1b5;text-shadow:0 0 10px #ffc64d;font-size:17px;animation:mmSparkle 1.8s ease-in-out infinite}
+.mm-spark-one{right:19px;top:18px}.mm-spark-two{left:18px;bottom:21px;font-size:13px;animation-delay:-.8s}
+.mm-winged-caption{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:8px;font-weight:850;letter-spacing:2.2px;color:rgba(255,229,174,.82)}
+@keyframes mmWingedFlight{0%,100%{translate:0 4px;rotate:-2deg}50%{translate:10px -10px;rotate:2deg}}
+@keyframes mmWingFlap{from{scale:1 .84}to{scale:1 1.08}}
+@keyframes mmSparkle{0%,100%{opacity:.45;scale:.7}50%{opacity:1;scale:1.25}}
+.brand-mark{width:42px;height:42px;flex:0 0 42px;border-radius:15px;background:linear-gradient(145deg,#263b60,#111d31);display:grid;place-items:center;box-shadow:0 5px 13px rgba(28,48,79,.22),inset 0 1px 0 rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.28);transform:rotate(-4deg);transition:transform .25s,box-shadow .25s}
+.brand-mark svg{width:37px;height:37px;overflow:visible;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.brand:hover .brand-mark{transform:rotate(4deg) translateY(-2px) scale(1.06);box-shadow:0 8px 17px rgba(28,48,79,.28)}
+.brand-name{background:linear-gradient(90deg,#172b48,#315c9e 55%,#b17a2b);background-clip:text;-webkit-background-clip:text;color:transparent}
+.brand-sub{letter-spacing:1.35px}
+@media(max-width:850px){.mm-winged-coin-stage{min-height:145px}.mm-winged-coin{scale:.9}}
+@media(max-width:620px){.mm-winged-coin-stage{min-height:128px}.mm-winged-coin{scale:.78}.brand-mark{width:38px;height:38px;flex-basis:38px}.brand-mark svg{width:34px;height:34px}}
+@media(prefers-reduced-motion:reduce){.mm-winged-coin,.mm-wing,.mm-coin-spark{animation:none}.brand-mark{transition:none}}
+</style>
+
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top" aria-label="MoneyMap home"><div class="brand-mark">M</div><div><div class="brand-name">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
+    <a class="brand" href="#top" aria-label="MoneyMap home"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><defs><linearGradient id="mmLogoGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4bf"/><stop offset=".52" stop-color="#f3bf50"/><stop offset="1" stop-color="#bd781e"/></linearGradient></defs><path d="M20 23C14 13 8 10 2 12c5 3 7 7 8 11-4-2-7-1-9 1 6 2 10 5 13 9-4 0-6 1-8 3 8 2 15 0 20-5Z" fill="url(#mmLogoGold)"/><path d="M28 23c6-10 12-13 18-11-5 3-7 7-8 11 4-2 7-1 9 1-6 2-10 5-13 9 4 0 6 1 8 3-8 2-15 0-20-5Z" fill="url(#mmLogoGold)"/><circle cx="24" cy="24" r="11.5" fill="url(#mmLogoGold)" stroke="#fff4c9" stroke-width="1.3"/><path d="m17 30 2-13 5 7 5-7 2 13h-3l-1-7-3 4-3-4-1 7Z" fill="#49300e"/><circle cx="24" cy="24" r="15" fill="none" stroke="#fff1bc" stroke-opacity=".55"/></svg></div><div><div class="brand-name">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
     <nav class="nav"><a href="#overview">Overview</a><a href="#budget">Budget</a><a href="#weekly">Weekly log</a><a href="#wage">Wage scale</a><a href="#coach">AI coach</a><a href="#profile">Your profile</a></nav>
     <div class="top-actions"><label class="mm-lang-wrap" title="Change language">🌐 <select id="mmLanguage" aria-label="Language"><option value="en">English</option><option value="id">Bahasa Indonesia</option><option value="zh-CN">中文（简体）</option><option value="de">Deutsch</option><option value="es">Español</option><option value="pt">Português</option></select></label><div class="api-pill"><span class="dot" id="apiDot"></span><span id="apiStatus">Data not checked</span></div><button class="btn mm-customize-btn" id="mmOpenTheme" type="button" aria-label="Customize appearance">✦ Customize</button><button class="btn btn-soft" id="exportBtn">Export data</button></div>
   </div>
@@ -265,23 +296,29 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <div class="hero-actions"><a class="btn btn-primary" href="#profile">Set up my money profile</a><a class="btn btn-quiet" href="#coach">Talk to the money coach ↗</a></div>
     </div>
     <div class="hero-right">
-    <div class="mm-coin-stage" aria-hidden="true">
-        <div class="mm-coin-orbit"></div>
-        <div class="mm-coin">
-          <div class="mm-coin-face"><span class="mm-coin-symbol">M</span></div>
+    <div class="mm-winged-coin-stage" aria-hidden="true">
+      <div class="mm-flight-trail"></div>
+      <div class="mm-winged-coin">
+        <svg class="mm-flight-wings" viewBox="0 0 300 150" role="presentation">
+          <defs>
+            <linearGradient id="mmWingGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8d7"/><stop offset=".48" stop-color="#e9b84f"/><stop offset="1" stop-color="#a96b18"/></linearGradient>
+          </defs>
+          <g class="mm-wing mm-wing-left" fill="url(#mmWingGold)" stroke="#fff0b6" stroke-width="1.4" stroke-linejoin="round">
+            <path d="M142 77C102 32 57 9 10 18c23 13 38 28 48 43C36 49 18 51 3 57c28 7 48 20 63 36-19-2-35 2-48 11 43 9 83 1 124-19Z"/>
+            <path d="M133 82C91 63 59 43 25 27M125 88C89 79 60 68 35 59M132 94C101 94 77 91 53 87" fill="none" stroke="#fff5ce" stroke-width="2" opacity=".75"/>
+          </g>
+          <g class="mm-wing mm-wing-right" fill="url(#mmWingGold)" stroke="#fff0b6" stroke-width="1.4" stroke-linejoin="round">
+            <path d="M158 77c40-45 85-68 132-59-23 13-38 28-48 43 22-12 40-10 55-4-28 7-48 20-63 36 19-2 35 2 48 11-43 9-83 1-124-19Z"/>
+            <path d="M167 82c42-19 74-39 108-55m-100 61c36-9 65-20 90-29m-97 35c31 0 55-3 79-7" fill="none" stroke="#fff5ce" stroke-width="2" opacity=".75"/>
+          </g>
+        </svg>
+        <div class="mm-gold-coin">
+          <div class="mm-gold-coin-face"><span class="mm-gold-m">M</span><span class="mm-gold-stars">✦ · ✦</span></div>
         </div>
-        <span class="mm-coin-caption">MONEYMAP · FINANCIAL WELLNESS</span>
+        <span class="mm-coin-spark mm-spark-one">✦</span><span class="mm-coin-spark mm-spark-two">✧</span>
       </div>
-      <div class="mm-banknote-stage" aria-hidden="true">
-        <div class="mm-banknote">
-          <div class="mm-banknote-face">
-            <span class="mm-note-corner">MONEYMAP · VALUE</span>
-            <span class="mm-note-value">M</span>
-            <span class="mm-note-lines"></span>
-            <span class="mm-note-seal">M</span>
-          </div>
-        </div>
-      </div>
+      <span class="mm-winged-caption">MONEYMAP · MAKE MONEY MOVE</span>
+    </div>
       <div class="hero-mini"><span>MONTHLY TAKE-HOME ESTIMATE</span><strong id="heroIncome">—</strong><small id="heroCountry">Choose your country</small></div>
       <div class="hero-mini"><span>TRACKED THIS MONTH</span><strong id="heroSpent">—</strong><small>Expenses + savings entered</small></div>
       <div class="hero-mini"><span>LEFT AFTER TRACKED ITEMS</span><strong id="heroLeft">—</strong><small>Based on the numbers you enter</small></div>
