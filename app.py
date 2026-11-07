@@ -55,7 +55,9 @@ def index():
 
 @app.get('/<path:path>')
 def static_files(path):
-    if path.startswith('api/') or path.startswith('.'):
+    # Only publish browser assets; never expose source, SQL, or configuration files.
+    allowed_files = {'service-worker.js', 'manifest.json', 'favicon.ico', 'icon-192.png', 'icon-512.png'}
+    if path not in allowed_files:
         return jsonify(error='Not found'), 404
     return send_from_directory(ROOT, path)
 
