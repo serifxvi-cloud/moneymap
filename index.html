@@ -169,6 +169,28 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.mm-notification-enter,.mm-notification-enter.mm-notification-visible{opacity:1;transform:none;filter:none;animation:none;transition:none}.mm-quick-rail a{transition:none}}
 </style>
 
+
+<style id="mm-3d-coin-style">
+/* MoneyMap floating 3D coin — decorative dashboard artwork */
+#overview{position:relative;isolation:isolate}
+#overview .hero-right{position:relative;z-index:1}
+.mm-coin-stage{grid-column:1/-1;position:relative;min-height:142px;display:flex;align-items:center;justify-content:center;overflow:visible;perspective:850px;isolation:isolate}
+.mm-coin-stage:before{content:"";position:absolute;width:190px;height:105px;border-radius:50%;background:rgba(91,151,255,.36);filter:blur(35px);transform:translate(4px,10px);z-index:-1}
+.mm-coin-orbit{position:absolute;width:142px;height:142px;border:1px solid rgba(205,226,255,.2);border-radius:50%;transform:rotateX(68deg) rotateZ(-20deg);box-shadow:0 0 24px rgba(103,163,255,.12),inset 0 0 20px rgba(103,163,255,.08)}
+.mm-coin{position:relative;width:102px;height:102px;border-radius:50%;transform-style:preserve-3d;animation:mmCoinFloat 5.5s ease-in-out infinite,mmCoinTurn 11s linear infinite;filter:drop-shadow(0 17px 17px rgba(0,0,0,.32))}
+.mm-coin:before{content:"";position:absolute;inset:5px -5px 5px 5px;border-radius:50%;background:repeating-linear-gradient(90deg,#6c8dbd 0 2px,#dbeaff 2px 4px,#6687b7 4px 6px);transform:translateZ(-7px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)}
+.mm-coin-face{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;backface-visibility:hidden;border:1px solid rgba(255,255,255,.95);background:radial-gradient(circle at 31% 22%,#fff 0,#dcecff 12%,#8daedc 35%,#315b96 67%,#162d52 100%);box-shadow:inset 0 2px 5px rgba(255,255,255,.95),inset 0 -7px 13px rgba(5,22,51,.58),0 0 0 3px rgba(179,211,255,.35),0 0 0 6px rgba(74,124,196,.38)}
+.mm-coin-face:before{content:"";position:absolute;inset:9px;border-radius:50%;border:1px solid rgba(255,255,255,.68);box-shadow:inset 0 0 0 2px rgba(24,52,91,.2),0 0 0 1px rgba(22,48,83,.3)}
+.mm-coin-face:after{content:"";position:absolute;inset:15px;border-radius:50%;border:1px dashed rgba(255,255,255,.48)}
+.mm-coin-symbol{position:relative;z-index:1;font-family:Georgia,serif;font-size:42px;font-weight:700;line-height:1;color:#f7fbff;text-shadow:0 2px 1px #1a3b69,0 0 12px rgba(255,255,255,.45);transform:translateY(-1px)}
+.mm-coin-caption{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:2.5px;font-weight:800;color:rgba(226,239,255,.65);white-space:nowrap}
+@keyframes mmCoinFloat{0%,100%{translate:0 2px}50%{translate:0 -9px}}
+@keyframes mmCoinTurn{0%{rotateY(-13deg) rotateZ(-7deg)}50%{rotateY(13deg) rotateZ(7deg)}100%{rotateY(-13deg) rotateZ(-7deg)}}
+@media(max-width:850px){.mm-coin-stage{min-height:126px}.mm-coin{width:88px;height:88px}.mm-coin-symbol{font-size:36px}}
+@media(max-width:620px){.mm-coin-stage{min-height:112px}.mm-coin-orbit{width:120px;height:120px}}
+@media(prefers-reduced-motion:reduce){.mm-coin{animation:none;transform:rotateY(-12deg) rotateZ(-7deg)}}
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -224,6 +246,13 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <div class="hero-actions"><a class="btn btn-primary" href="#profile">Set up my money profile</a><a class="btn btn-quiet" href="#coach">Talk to the money coach ↗</a></div>
     </div>
     <div class="hero-right">
+    <div class="mm-coin-stage" aria-hidden="true">
+        <div class="mm-coin-orbit"></div>
+        <div class="mm-coin">
+          <div class="mm-coin-face"><span class="mm-coin-symbol">M</span></div>
+        </div>
+        <span class="mm-coin-caption">MONEYMAP · FINANCIAL WELLNESS</span>
+      </div>
       <div class="hero-mini"><span>MONTHLY TAKE-HOME ESTIMATE</span><strong id="heroIncome">—</strong><small id="heroCountry">Choose your country</small></div>
       <div class="hero-mini"><span>TRACKED THIS MONTH</span><strong id="heroSpent">—</strong><small>Expenses + savings entered</small></div>
       <div class="hero-mini"><span>LEFT AFTER TRACKED ITEMS</span><strong id="heroLeft">—</strong><small>Based on the numbers you enter</small></div>
