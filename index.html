@@ -191,6 +191,25 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 @media(prefers-reduced-motion:reduce){.mm-coin{animation:none;transform:rotateY(-12deg) rotateZ(-7deg)}}
 </style>
 
+
+<style id="mm-3d-banknote-style">
+/* Floating 3D banknote — decorative MoneyMap dashboard artwork */
+.mm-banknote-stage{grid-column:1/-1;position:relative;height:94px;display:flex;align-items:center;justify-content:center;perspective:900px;isolation:isolate;overflow:visible;margin:-3px 0 2px}
+.mm-banknote-stage:before{content:"";position:absolute;width:205px;height:54px;border-radius:50%;background:rgba(63,190,158,.24);filter:blur(25px);transform:translateY(16px);z-index:-1}
+.mm-banknote{position:relative;width:174px;height:78px;border-radius:10px;transform-style:preserve-3d;transform:rotateX(13deg) rotateZ(-8deg);animation:mmBanknoteFloat 4.8s ease-in-out infinite;filter:drop-shadow(0 13px 12px rgba(0,0,0,.26))}
+.mm-banknote:before{content:"";position:absolute;inset:5px -4px -4px 4px;border-radius:10px;background:linear-gradient(135deg,#1d735f,#0c493e 52%,#123c35);transform:translateZ(-5px);box-shadow:0 5px 10px rgba(0,0,0,.18)}
+.mm-banknote-face{position:absolute;inset:0;overflow:hidden;border-radius:9px;border:1px solid rgba(220,255,237,.88);background:linear-gradient(125deg,#c8f3d9 0%,#72c99f 23%,#3a9d79 56%,#17634f 100%);box-shadow:inset 0 2px 5px rgba(255,255,255,.72),inset 0 -5px 12px rgba(0,42,30,.28)}
+.mm-banknote-face:before{content:"";position:absolute;inset:6px;border:1px solid rgba(231,255,239,.62);border-radius:5px;background:repeating-linear-gradient(135deg,transparent 0 7px,rgba(255,255,255,.075) 7px 8px)}
+.mm-banknote-face:after{content:"";position:absolute;left:50%;top:50%;width:55px;height:55px;border:1px solid rgba(232,255,241,.38);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 5px rgba(231,255,241,.08),inset 0 0 0 4px rgba(231,255,241,.08)}
+.mm-note-corner{position:absolute;top:10px;left:12px;font:800 8px/1 Arial,sans-serif;letter-spacing:1.4px;color:rgba(248,255,250,.86)}
+.mm-note-value{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 29px/1 Georgia,serif;color:#f2fff6;text-shadow:0 2px 2px rgba(0,48,32,.35);letter-spacing:-1px}
+.mm-note-seal{position:absolute;right:12px;bottom:9px;width:18px;height:18px;border:1px solid rgba(241,255,246,.8);border-radius:50%;display:grid;place-items:center;color:#f2fff6;font:700 10px Georgia,serif}
+.mm-note-lines{position:absolute;left:13px;bottom:12px;width:29px;height:2px;background:rgba(239,255,244,.65);box-shadow:0 -4px 0 rgba(239,255,244,.35),0 4px 0 rgba(239,255,244,.35)}
+@keyframes mmBanknoteFloat{0%,100%{translate:0 1px;rotate:-1deg}50%{translate:0 -7px;rotate:1deg}}
+@media(max-width:620px){.mm-banknote-stage{height:82px}.mm-banknote{width:156px;height:70px}.mm-note-value{font-size:26px}}
+@media(prefers-reduced-motion:reduce){.mm-banknote{animation:none}}
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -252,6 +271,16 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
           <div class="mm-coin-face"><span class="mm-coin-symbol">M</span></div>
         </div>
         <span class="mm-coin-caption">MONEYMAP · FINANCIAL WELLNESS</span>
+      </div>
+      <div class="mm-banknote-stage" aria-hidden="true">
+        <div class="mm-banknote">
+          <div class="mm-banknote-face">
+            <span class="mm-note-corner">MONEYMAP · VALUE</span>
+            <span class="mm-note-value">M</span>
+            <span class="mm-note-lines"></span>
+            <span class="mm-note-seal">M</span>
+          </div>
+        </div>
       </div>
       <div class="hero-mini"><span>MONTHLY TAKE-HOME ESTIMATE</span><strong id="heroIncome">—</strong><small id="heroCountry">Choose your country</small></div>
       <div class="hero-mini"><span>TRACKED THIS MONTH</span><strong id="heroSpent">—</strong><small>Expenses + savings entered</small></div>
