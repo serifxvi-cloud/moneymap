@@ -355,12 +355,15 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
           <div class="chat-compose"><input class="chat-input" id="chatInput" type="text" placeholder="Ask anything about your money or describe a situation…" aria-label="Message your money coach" /><button class="btn btn-primary" id="sendChatBtn">Send ↗</button></div>
         </div>
         <div class="quick-prompts"><button data-prompt="Analyze my weekly income and spending. What stands out?">Analyze my week</button><button data-prompt="Ask me questions to understand my daily routine and where my money goes.">Interview me about my routine</button><button data-prompt="Suggest a realistic savings amount based on my weekly cash flow.">Set a savings target</button><button data-prompt="Give me several realistic ways to increase my income based on my skills and free time.">Earn more</button><button data-prompt="Help me identify spending I can reduce without hurting my quality of life.">Find spending leaks</button><button data-prompt="Explain investment options suitable for my country, risk level and time horizon. Ask for missing information first.">Investment options</button><button data-prompt="Build me a practical 7-day spending plan using my weekly income.">Plan the next 7 days</button><button data-prompt="Help me compare needs, wants, debt payments and savings.">Needs vs wants</button></div>
-        <div class="privacy-ai">Privacy: the weekly ledger and profile stay in this browser unless you ask the AI to analyze them. When you chat, your message, recent chat history, and current MoneyMap profile/weekly summary are sent to OpenAI to generate a reply. The API key is held by the local PowerShell server in memory only and is not saved. Do not enter passwords, bank login details, card numbers, or account numbers.</div>
+        <div class="privacy-ai">Privacy: the weekly ledger and profile stay in this browser unless you ask the AI to analyze them. When you chat, your message, recent chat history, and current MoneyMap profile/weekly summary are sent to OpenAI to generate a reply. The API key is encrypted for this Windows user and is never stored in browser storage. Do not enter passwords, bank login details, card numbers, or account numbers.</div>
       </div>
       <div class="coach-side">
         <div class="callout"><h3>Investment direction</h3><p id="investmentSummary">Complete your profile and savings details to see a risk-aware starting point. The suggestions below are general education, not a personalized securities recommendation.</p><div class="investment-list" id="investmentList"><div class="investment-option"><strong>First priority — financial foundation</strong><p>Build accessible emergency savings and understand high-interest debt before taking investment risk.</p></div></div></div>
         <div class="callout"><h3>Income growth ideas</h3><p id="incomeIdeas">Add your occupation, skills, and free hours each week. The coach will suggest practical ways to increase income without assuming you can work unlimited hours.</p></div>
-        <div class="callout"><h3>Live AI coach</h3><p id="aiSetupMessage">MoneyMap runs a small local PowerShell server (already included with Windows). Double-click start-moneymap.bat and enter your API key when asked. The key stays in the PowerShell process and is never written into this HTML or saved to a file.</p></div>
+        <div class="callout"><h3>Live AI coach</h3><p id="aiSetupMessage">Your AI key is saved securely on this Windows device. Keep the MoneyMap server window open while using the coach.</p>
+          <div class="field" style="margin-top:12px"><label for="mmOpenAIKey">Change OpenAI API key</label><input id="mmOpenAIKey" type="password" autocomplete="new-password" placeholder="Paste a replacement API key only if needed" /></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="btn btn-soft" type="button" id="mmSaveOpenAIKey">Save API key on this device</button><span class="hint" id="mmOpenAIKeyStatus" aria-live="polite">Your saved key is never displayed.</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -811,6 +814,13 @@ function setAIStatus(ready,message){
   $('aiStatusText').textContent=message;$('aiStatusDot').style.background=ready?'#40a979':'#d5a348';
   $('aiSetupMessage').textContent=ready?`Connected to the live AI service (${window.moneyMapModel||'configured model'}). Replies are generated from each visitor's question and the profile data they choose to share.`:'Live AI is not connected. Double-click start-moneymap.bat, enter your API key in the hidden PowerShell prompt, and keep that window open.';
 }
+async function saveOpenAIKeyFromPage(){
+  const input=$('mmOpenAIKey'),status=$('mmOpenAIKeyStatus'),key=input?.value.trim();
+  if(!key){status.textContent='Paste your replacement API key first.';return;}
+  status.textContent='Saving securely…';
+  try{const r=await fetch('/api/settings/api-key',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({apiKey:key})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Could not save the key.');input.value='';status.textContent='Saved securely on this Windows device.';await checkAIConnection();}
+  catch(e){status.textContent='Could not save: '+e.message;}
+}
 async function checkAIConnection(){
   try{const r=await fetch('/api/health',{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('server not ready');const d=await r.json();window.moneyMapModel=d.model||'';
     if(d.configured)setAIStatus(true,`Live AI connected · ${d.model||'ready'}`);else setAIStatus(false,'Server online · API key missing');
@@ -1000,6 +1010,7 @@ function mmCloudInit(){
   document.getElementById('mmSyncNow').addEventListener('click',mmCloudSaveNow);
   document.getElementById('mmResetPassword').addEventListener('click',mmCloudResetPassword);
   document.getElementById('mmPersonalNotes').addEventListener('input',()=>{localStorage.setItem(MM_CLOUD_NOTES_KEY,document.getElementById('mmPersonalNotes').value);mmCloudScheduleSave();});
+  document.getElementById('mmSaveOpenAIKey')?.addEventListener('click',saveOpenAIKeyFromPage);
   if(window.location.hash.includes('access_token=')){mmCloudHandleOAuthReturn();}
   else if(mmCloudSession?.access_token){mmCloudAfterLogin();}else{mmCloudSetStatus('Create your free MoneyMap account with your email and password, or sign in.','');}
   const originalSaveState=saveState;saveState=function(show=true){originalSaveState(show);mmCloudScheduleSave();};
