@@ -288,31 +288,7 @@ try {
                 try {
                     $body = $request.body | ConvertFrom-Json
                     $newKey = ([string]$body.apiKey).Trim() -replace '[\x00-\x1F\x7F]', ''
-                    if ($newKey -notmatch '^sk-[A-Za-z0-9_-]{20,}
-                try { $body = $request.body | ConvertFrom-Json }
-                catch { $body = $null }
-                if ($null -eq $body) {
-                    Write-JsonResponse $stream 400 @{ error = 'Request body must be valid JSON.' }
-                } else {
-                    $outcome = Invoke-MoneyMapChat $body
-                    Write-JsonResponse $stream ([int]$outcome.status) $outcome.data
-                }
-            } else {
-                Write-JsonResponse $stream 404 @{ error = 'Not found.' }
-            }
-        } catch {
-            try { Write-JsonResponse $stream 500 @{ error = "Local server error: $($_.Exception.Message)" } } catch { }
-        } finally {
-            try { $stream.Dispose() } catch { }
-            try { $client.Close() } catch { }
-        }
-    }
-} finally {
-    if ($tcp) { $tcp.Stop() }
-    $script:ApiKey = ''
-    Write-Host 'MoneyMap stopped. The API key has been cleared from this process.' -ForegroundColor Yellow
-}
-) { throw 'That does not look like a valid OpenAI API key.' }
+                    if ($newKey -notmatch '^sk-[A-Za-z0-9_-]{20,}$') { throw 'That does not look like a valid OpenAI API key.' }
                     $secureNew = ConvertTo-SecureString -String $newKey -AsPlainText -Force
                     New-Item -ItemType Directory -Force -Path $KeyDirectory | Out-Null
                     $secureNew | ConvertFrom-SecureString | Set-Content -LiteralPath $KeyFile -NoNewline
