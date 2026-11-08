@@ -346,8 +346,9 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 
 <main class="shell" id="top">
 <section class="panel mm-account-launcher" id="account-access"><div class="section-head"><div><div class="section-kicker">YOUR MONEYMAP ACCOUNT</div><h2 class="section-title">Your money, wherever you go.</h2><p>Sign in or create your free account in the secure MoneyMap account portal.</p></div><span class="tag">Cloud account</span></div><div class="mm-account-launcher-actions"><a class="btn btn-primary" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a><p class="hint">Your account opens in a separate tab, so your dashboard stays right here.</p></div></section>
-  <section class="hero" id="overview">
-<div class="mm-font-shortcut" id="mmFontShortcut"><div><span>✦ PREMIUM EXCLUSIVE</span><strong>Make MoneyMap yours with custom fonts</strong><small>Apple, Emirates-inspired, Didot, Cinzel and more.</small></div><a href="#membership">Open Typography Studio <span aria-hidden="true">↗</span></a></div>
+  <div class="mm-font-shortcut" id="mmFontShortcut"><div><span>✦ PREMIUM EXCLUSIVE</span><strong>Make MoneyMap yours with custom fonts</strong><small>Apple, Emirates-inspired, Didot, Cinzel and more.</small></div><a href="#membership">Open Typography Studio <span aria-hidden="true">↗</span></a></div>
+<section class="hero" id="overview">
+
     <div>
       <div id="mmHeroUsername" class="mm-hero-user" aria-live="polite"><strong>Your MoneyMap</strong></div>
       <div class="eyebrow">A clearer view of your money</div>
@@ -2091,51 +2092,26 @@ body.mm-tier-basic #mmThemeRows,body.mm-tier-basic #mmGradientA,body.mm-tier-bas
 body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-tier-basic .mm-gradient-controls>.mm-gradient-toggle{display:none!important}
 [hidden]{display:none!important}
 </style>
-<style id="mm-overview-opposite-text-v1">
-/* Keep overview text synchronized with the dark-to-light animated hero surface. */
-#overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){
- animation:mmOverviewOppositeText 12s ease-in-out infinite!important;
- transition:color 1.2s ease,text-shadow 1.2s ease!important;
-}
-@keyframes mmOverviewOppositeText{
- 0%,100%{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 1.3px rgba(255,255,255,.16)!important}
- 50%{color:#10141b!important;-webkit-text-fill-color:#10141b!important;text-shadow:0 0 1.1px rgba(0,0,0,.1)!important}
-}
-#overview .hero-actions a{ text-decoration-color:currentColor!important }
-#overview .mm-typewriter-title .mm-type-caret{border-color:currentColor!important}
-@media(prefers-reduced-motion:reduce){
- #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11141a!important;-webkit-text-fill-color:#11141a!important}
-}
-</style>
-<style id="mm-precise-gradient-text-sync-v2">
-/* Drive the Overview surface and its typography from the exact same timeline. */
+<style id="mm-overview-color-sync-v3">
+/* One restrained gradient timeline; typography stays readable at every point. */
 #overview{
- background-image:linear-gradient(180deg,#10151d 0%,#596574 48%,#f7f8fa 100%)!important;
- background-size:100% 260%!important;
- background-position:50% 0%!important;
- animation:mmOverviewSurfaceSync 14s cubic-bezier(.45,0,.55,1) infinite alternate!important;
+ background:linear-gradient(118deg,#172638 0%,#263c54 48%,#40566d 100%)!important;
+ color:#f8fbff!important;
 }
-@keyframes mmOverviewSurfaceSync{
- from{background-position:50% 0%}
- to{background-position:50% 100%}
+#overview :is(.eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero h1,.hero h1 *, .hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){
+ color:#f8fbff!important;
+ -webkit-text-fill-color:#f8fbff!important;
+ text-shadow:none!important;
+ animation:none!important;
+ transition:color .25s ease,background-color .25s ease!important;
 }
-#overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){
- animation:mmOverviewTextSync 14s cubic-bezier(.45,0,.55,1) infinite alternate!important;
- transition:none!important;
-}
-@keyframes mmOverviewTextSync{
- 0%{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 1px rgba(255,255,255,.12)!important}
- 18%{color:#f4f5f7!important;-webkit-text-fill-color:#f4f5f7!important}
- 42%{color:#aeb5bf!important;-webkit-text-fill-color:#aeb5bf!important}
- 62%{color:#424a56!important;-webkit-text-fill-color:#424a56!important}
- 82%,100%{color:#11151c!important;-webkit-text-fill-color:#11151c!important;text-shadow:0 0 1px rgba(0,0,0,.08)!important}
-}
-#overview .hero-actions a{text-decoration-color:currentColor!important}
-#overview .mm-typewriter-title .mm-type-caret{border-color:currentColor!important}
-@media(prefers-reduced-motion:reduce){
- #overview{animation:none!important;background-position:50% 50%!important}
- #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11151c!important;-webkit-text-fill-color:#11151c!important}
-}
+#overview .eyebrow{color:#b8cdf7!important;-webkit-text-fill-color:#b8cdf7!important}
+#overview .hero-right .hero-mini{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22)}
+#overview .hero-right .hero-mini span,#overview .hero-right .hero-mini small{color:#c4d1e0!important;-webkit-text-fill-color:#c4d1e0!important}
+#overview .hero-actions .btn-primary{background:#f8fbff!important;color:#172638!important;-webkit-text-fill-color:#172638!important}
+#overview .hero-actions .btn-quiet{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.28)!important;color:#f8fbff!important;-webkit-text-fill-color:#f8fbff!important}
+#overview .mm-typewriter-title .mm-type-caret{border-color:#f8fbff!important}
+@media(prefers-reduced-motion:reduce){#overview{animation:none!important}}
 </style>
 <style id="mm-membership-page-style">
 .mm-membership-page{scroll-margin-top:22px}
