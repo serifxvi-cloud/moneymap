@@ -327,6 +327,48 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 .mm-typography-mini-tag{padding:2px 5px;border-radius:999px;background:#e8c875;color:#4b330d;font-size:7px;letter-spacing:.09em}
 @media(prefers-reduced-motion:reduce){.mm-typography-mini{transition:none}}
 </style>
+<style id="mm-overview-reference-layout-v1">
+/* Reference-inspired slate glass hero */
+#overview.hero{
+ position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);
+ gap:28px;align-items:center;min-height:498px;margin:16px 0 28px;padding:42px 40px;
+ border:1px solid rgba(25,38,55,.72);border-radius:27px;overflow:hidden;
+ background:linear-gradient(155deg,#536071 0%,#8994a2 48%,#d0d6dc 100%)!important;
+ color:#142039!important;box-shadow:0 18px 44px rgba(16,28,43,.13)
+}
+#overview.hero>div:first-child{min-width:0;align-self:center}
+#overview .mm-hero-user{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.42);color:#18243a!important;backdrop-filter:blur(14px)}
+#overview .mm-hero-user strong{color:#18243a!important}
+#overview .eyebrow{color:#5279bd!important;-webkit-text-fill-color:#5279bd!important}
+#overview .mm-typewriter-title,#overview .mm-typewriter-title *{
+ color:#111c33!important;-webkit-text-fill-color:#111c33!important;
+ font-family:Georgia,"Times New Roman",serif!important;font-weight:800;
+ letter-spacing:-1.7px;line-height:1.03;text-shadow:none!important
+}
+#overview .mm-typewriter-title{font-size:clamp(34px,4vw,48px);margin:0 0 4px;max-width:650px}
+#overview .mm-typewriter-title .mm-type-caret{border-color:#17243a!important}
+#overview .mm-typography-mini{margin:2px 0 10px;padding:5px 9px;font-size:9px}
+#overview .mm-creator-credit,#overview .mm-creator-credit *{color:#647b9a!important;-webkit-text-fill-color:#647b9a!important}
+#overview .mm-creator-credit strong{color:#18243a!important;-webkit-text-fill-color:#18243a!important}
+#overview>div:first-child>p{max-width:570px;color:#1e2a3d!important;-webkit-text-fill-color:#1e2a3d!important;font-size:13px;line-height:1.7}
+#overview .hero-actions{gap:10px;margin-top:22px}
+#overview .hero-actions .btn{font-size:11px;padding:11px 14px;border-radius:13px}
+#overview .hero-actions .btn-primary{background:#fff!important;color:#17243a!important;-webkit-text-fill-color:#17243a!important;border:1px solid rgba(255,255,255,.8)}
+#overview .hero-actions .btn-quiet{background:rgba(255,255,255,.08)!important;border:1px solid rgba(104,128,158,.5)!important;color:#1d2a3e!important;-webkit-text-fill-color:#1d2a3e!important}
+#overview .hero-actions .btn-soft{background:#f3f6f9!important;color:#18243a!important;-webkit-text-fill-color:#18243a!important}
+#overview .hero-right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:center;min-width:0}
+#overview .mm-premium-stage{grid-column:1/-1;min-height:154px;margin:0 auto 2px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+#overview .mm-premium-crystal{width:118px;height:124px}
+#overview .mm-premium-wordmark{font-family:Georgia,serif;color:#fff8df;text-shadow:0 2px 8px #6f4c17aa}
+#overview .mm-premium-caption{color:#ffe09a!important;-webkit-text-fill-color:#ffe09a!important;font-size:10px;letter-spacing:1.5px;font-weight:900}
+#overview .hero-mini{min-width:0;min-height:112px;padding:17px 16px;border:1.5px solid rgba(255,255,255,.9);border-radius:18px;background:rgba(255,255,255,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 8px 20px rgba(36,50,68,.06);backdrop-filter:blur(12px)}
+#overview .hero-mini span{color:#607b9d!important;-webkit-text-fill-color:#607b9d!important;font-size:9px;font-weight:850}
+#overview .hero-mini strong{color:#152139!important;-webkit-text-fill-color:#152139!important;font-size:21px}
+#overview .hero-mini small{color:#637d9d!important;-webkit-text-fill-color:#637d9d!important;font-size:9px}
+@media(max-width:900px){#overview.hero{grid-template-columns:1fr;min-height:0;padding:30px 26px}#overview .hero-right{max-width:620px;width:100%;margin:0 auto}}
+@media(max-width:560px){#overview.hero{padding:25px 18px;border-radius:20px;gap:22px}#overview .mm-typewriter-title{font-size:clamp(32px,9vw,42px)}#overview .hero-right{gap:8px}#overview .hero-mini{padding:13px 11px;min-height:100px}#overview .hero-mini strong{font-size:18px}#overview .hero-actions .btn{padding:10px 11px}}
+@media(prefers-reduced-motion:reduce){#overview *{scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <header class="topbar">
