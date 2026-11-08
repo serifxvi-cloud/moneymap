@@ -529,9 +529,9 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
  <div class="section-head"><div><div class="section-kicker">MONEYMAP MEMBERSHIP</div><h2 class="section-title">Choose your MoneyMap experience</h2><p>See what your plan includes. Plus and Premium include everything from the plans below them.</p></div><span class="tag blue" id="mmMembershipCurrentPill">Checking plan…</span></div>
  <div class="mm-current-plan" aria-live="polite"><div><span class="mm-plan-eyebrow">YOUR CURRENT PLAN</span><h3 id="mmMembershipCurrentName">MoneyMap Basic</h3><p id="mmMembershipCurrentDesc">Your essential tools to build better money habits.</p></div><span class="mm-current-plan-mark" id="mmMembershipCurrentMark">B</span></div>
  <div class="mm-plan-grid">
-  <article class="mm-plan-card"><div class="mm-plan-top"><span class="mm-plan-eyebrow">START HERE</span><span class="mm-plan-symbol">B</span></div><h3>MoneyMap Basic</h3><p class="mm-plan-summary">The essentials for everyday money management.</p><ul><li>All core budgeting and finance tools</li><li>Money Quest game access</li><li>Five curated appearance presets</li><li>Fun Blue as the default theme</li><li>No custom color editing</li><li class="mm-plan-excluded">Trading Simulator not included</li></ul><span class="mm-plan-included">Included for every account</span></article>
-  <article class="mm-plan-card mm-plan-plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Plus</h3><p class="mm-plan-summary">More ways to personalize and practise.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span></article>
-  <article class="mm-plan-card mm-plan-premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span></article>
+  <article class="mm-plan-card" data-mm-plan-card="basic"><div class="mm-plan-top"><span class="mm-plan-eyebrow">START HERE</span><span class="mm-plan-symbol">B</span></div><h3>MoneyMap Basic</h3><p class="mm-plan-summary">The essentials for everyday money management.</p><ul><li>All core budgeting and finance tools</li><li>Money Quest game access</li><li>Five curated appearance presets</li><li>Fun Blue as the default theme</li><li>No custom color editing</li><li class="mm-plan-excluded">Trading Simulator not included</li></ul><span class="mm-plan-included">Included for every account</span><button class="mm-plan-select" type="button" data-mm-select-tier="basic">Switch to Basic</button></article>
+  <article class="mm-plan-card mm-plan-plus" data-mm-plan-card="plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Plus</h3><p class="mm-plan-summary">More ways to personalize and practise.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="plus">Switch to Plus</button></article>
+  <article class="mm-plan-card mm-plan-premium" data-mm-plan-card="premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="premium">Switch to Premium</button></article>
  </div>
  <p class="mm-membership-note">Plans describe feature access in this version of MoneyMap. Upgrades, payments, and billing are not available yet.</p>
 </section>
@@ -2007,7 +2007,12 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
   if(currentDesc)currentDesc.textContent=tier==='premium'?'You have the complete MoneyMap experience, including Plus and Basic features.':tier==='plus'?'You have full customization and Trading Simulator access, plus every Basic feature.':'Your essential tools, Money Quest, and five curated themes.';
   if(currentPill)currentPill.textContent='Current plan · '+tierNames[tier];
   if(currentMark)currentMark.textContent=tier==='premium'?'✦':tier==='plus'?'+':'B';
-  document.querySelectorAll('.mm-plan-card').forEach((card,i)=>card.classList.toggle('is-current',(tier==='basic'&&i===0)||(tier==='plus'&&i===1)||(tier==='premium'&&i===2)));
+  document.querySelectorAll('.mm-plan-card').forEach(card=>{
+   const selected=card.dataset.mmPlanCard===tier;
+   card.classList.toggle('is-current',selected);
+   const button=card.querySelector('[data-mm-select-tier]');
+   if(button){button.disabled=selected;button.textContent=selected?'Current plan':'Switch to '+(card.dataset.mmPlanCard==='basic'?'Basic':card.dataset.mmPlanCard==='plus'?'Plus':'Premium');button.setAttribute('aria-pressed',String(selected));}
+  });
 
   // Money Quest is the one included game for Basic. Trading is Plus and Premium.
   const trading=document.getElementById('trading-game');
@@ -2033,6 +2038,16 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
  }
  window.mmApplyTier=applyTier;
  window.mmGetMembershipTier=getTier;
+ // Explicit plan selection: persist the choice and immediately refresh every feature gate.
+ document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-mm-select-tier]');
+  if(!button)return;
+  const next=button.getAttribute('data-mm-select-tier');
+  if(!['basic','plus','premium'].includes(next))return;
+  try{localStorage.setItem(TIER_OVERRIDE_KEY,next);}catch(error){console.warn('Could not save MoneyMap plan selection.',error);}
+  applyTier();
+  window.dispatchEvent(new CustomEvent('moneymap:tier-changed',{detail:{tier:next}}));
+ });
  // Reapply on login, account changes, and when opening appearance controls.
  document.getElementById('mmOpenTheme')?.addEventListener('click',()=>setTimeout(applyTier,0));
  applyTier();
@@ -2105,6 +2120,12 @@ body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-
 .mm-plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .mm-plan-card{min-width:0;padding:19px;border:1px solid var(--line);border-radius:20px;background:var(--card);display:flex;flex-direction:column;gap:10px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
 .mm-plan-card.is-current{border:2px solid var(--blue);box-shadow:0 8px 28px rgba(65,112,190,.16);transform:translateY(-3px)}
+.mm-plan-select{width:100%;margin-top:auto;border:1px solid #dce4ef;border-radius:12px;padding:11px 13px;background:#edf3ff;color:#2858b8;font-size:12px;font-weight:850;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+.mm-plan-select:hover:not(:disabled){transform:translateY(-2px);background:#e2ebff;border-color:#a9c0f0}
+.mm-plan-select:focus-visible{outline:3px solid rgba(54,103,232,.25);outline-offset:2px}
+.mm-plan-select:disabled{cursor:default;background:#f1f4f7;border-color:#e2e7ed;color:#788493}
+.mm-plan-premium .mm-plan-select:not(:disabled){background:linear-gradient(120deg,#fff2cc,#e7c36f);border-color:#d7b25e;color:#68470c}
+.mm-plan-premium .mm-plan-select:not(:disabled):hover{background:linear-gradient(120deg,#ffedb6,#ddb454)}
 .mm-plan-top{display:flex;justify-content:space-between;align-items:center}
 .mm-plan-card h3{margin:2px 0 0;font-size:20px;color:var(--ink)}
 .mm-plan-summary{margin:0;min-height:38px;font-size:13px;line-height:1.5;color:var(--muted)}
