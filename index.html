@@ -440,6 +440,7 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
  apply(saved);
 })();
 </script>
+<style id="mm-cloud-live-notice-v1">#mmCloudLiveNotice{position:fixed;z-index:999999;left:50%;bottom:22px;transform:translate(-50%,18px);width:min(560px,calc(100% - 28px));padding:13px 16px;border:1px solid #d9e1eb;border-radius:14px;background:#fff;color:#253247;box-shadow:0 14px 42px #1113;font:600 13px/1.45 system-ui,sans-serif;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}#mmCloudLiveNotice.show{opacity:1;transform:translate(-50%,0)}#mmCloudLiveNotice[data-kind="ok"]{background:#effaf4;border-color:#bde4ce;color:#176344}#mmCloudLiveNotice[data-kind="bad"]{background:#fff4f1;border-color:#efc9bf;color:#923c2d}#mmCloudLiveNotice[data-kind=""]{background:#f4f7fc;border-color:#cbd7e8;color:#263b59}#mmSignIn:disabled{opacity:.65;cursor:wait}</style>
 </head>
 <body>
 <header class="topbar">
@@ -1333,7 +1334,12 @@ function mmCloudConfig(){
   localStorage.setItem(MM_CLOUD_CONFIG_KEY,JSON.stringify(MM_DEFAULT_CLOUD_CONFIG));
   return MM_DEFAULT_CLOUD_CONFIG;
 }
-function mmCloudSetStatus(message,kind=''){const el=document.getElementById('mmCloudStatus');if(el){el.textContent=message;el.className='mm-account-status '+kind;}const badge=document.getElementById('mmCloudBadge');if(badge)badge.textContent=kind==='ok'?'Cloud ready':kind==='bad'?'Needs attention': 'Account';}
+function mmCloudSetStatus(message,kind=''){
+ const el=document.getElementById('mmCloudStatus');if(el){el.textContent=message;el.className='mm-account-status '+kind;el.setAttribute('aria-live','polite');}
+ const badge=document.getElementById('mmCloudBadge');if(badge)badge.textContent=kind==='ok'?'Cloud ready':kind==='bad'?'Needs attention':'Account';
+ let toast=document.getElementById('mmCloudLiveNotice');if(!toast){toast=document.createElement('div');toast.id='mmCloudLiveNotice';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');document.body.appendChild(toast);}
+ toast.textContent=message;toast.dataset.kind=kind;toast.classList.add('show');if(window.mmCloudNoticeTimer)clearTimeout(window.mmCloudNoticeTimer);if(kind==='ok')window.mmCloudNoticeTimer=setTimeout(()=>toast.classList.remove('show'),5200);
+}
 function mmCloudBase(){const c=mmCloudConfig();const u=new URL(c.url);if(u.protocol!=='https:')throw new Error('Account service configuration is invalid.');return u.origin;}
 async function mmCloudFetch(path,options={},token=''){
   const c=mmCloudConfig(),base=mmCloudBase(),headers=new Headers(options.headers||{});
@@ -1361,19 +1367,12 @@ async function mmCloudAccessToken(){if(!mmCloudSession?.access_token)throw new E
 async function mmCloudSignUp(){if(mmCloudBusy)return;const email=document.getElementById('mmAccountEmail').value.trim(),password=document.getElementById('mmAccountPassword').value;if(!email||password.length<8){mmCloudSetStatus('Enter a valid email and a password of at least 8 characters.','bad');return;}mmCloudBusy=true;try{const emailRedirectTo=window.location.origin+window.location.pathname;const data=await mmCloudFetch('/auth/v1/signup',{method:'POST',body:JSON.stringify({email,password,options:{emailRedirectTo}})});if(data.access_token){mmCloudStoreSession(data);await mmCloudAfterLogin();}else{mmCloudSetStatus('Account request sent. Check your email for the confirmation link, then return here and sign in. If email confirmation is disabled in your project, try signing in now.','ok');}}catch(e){mmCloudSetStatus('Could not create account: '+e.message,'bad');}finally{mmCloudBusy=false;}}
 async function mmCloudSignIn(){
  if(mmCloudBusy)return;
- const email=document.getElementById('mmAccountEmail').value.trim().toLowerCase();
- const password=document.getElementById('mmAccountPassword').value;
- if(!email||!/^\S+@\S+\.\S+$/.test(email)||!password){mmCloudSetStatus('Enter a valid email address and your password.','bad');return;}
- mmCloudBusy=true;mmCloudSetStatus('Connecting securely…');
- try{
-  const data=await mmCloudFetch('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
-  if(!data.access_token||!data.user)throw new Error('The account server did not return a valid login session. Please try again.');
-  mmCloudStoreSession(data);await mmCloudAfterLogin();
- }catch(e){
-  const message=String(e.message||'Unknown sign-in error');
-  const friendly=/invalid login credentials|invalid_credentials/i.test(message)?'That email and password do not match. Check both fields or use Reset password.':/email not confirmed/i.test(message)?'Please confirm your email using the link sent to your inbox, then sign in again.':/too many requests/i.test(message)?'Too many attempts. Wait a few minutes before trying again.':message;
-  mmCloudSetStatus('Sign-in failed: '+friendly,'bad');
- }finally{mmCloudBusy=false;}
+ const email=document.getElementById('mmAccountEmail').value.trim().toLowerCase(),password=document.getElementById('mmAccountPassword').value,button=document.getElementById('mmSignIn');
+ if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||!password){mmCloudSetStatus('Enter a valid email address and your password.','bad');return;}
+ mmCloudBusy=true;if(button){button.disabled=true;button.textContent='Signing in…';}mmCloudSetStatus('Connecting to your secure MoneyMap account…','');
+ try{const data=await mmCloudFetch('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});if(!data||!data.access_token||!data.user)throw new Error('The account service did not return a login session.');mmCloudStoreSession(data);mmCloudSetStatus('Login successful. Checking your cloud data…','ok');await mmCloudAfterLogin();}
+ catch(e){const msg=String(e&&e.message||'Unknown sign-in error');const friendly=/invalid login credentials|invalid_credentials/i.test(msg)?'Email or password is incorrect. Check your details or use Reset password.':/email not confirmed/i.test(msg)?'Your email is not confirmed yet. Open the confirmation link sent to your inbox.':/too many requests/i.test(msg)?'Too many attempts. Wait a few minutes and try again.':msg;mmCloudSetStatus('Sign-in failed: '+friendly,'bad');}
+ finally{mmCloudBusy=false;if(button){button.disabled=false;button.textContent='Sign in';}}
 }
 async function mmCloudResetPassword(){const email=document.getElementById('mmAccountEmail').value.trim();if(!email){mmCloudSetStatus('Enter your account email first.','bad');return;}try{await mmCloudFetch('/auth/v1/recover',{method:'POST',body:JSON.stringify({email})});mmCloudSetStatus('If this email is registered, Supabase will send password-reset instructions. Check your inbox.','ok');}catch(e){mmCloudSetStatus('Could not request password reset: '+e.message,'bad');}}
 async function mmCloudSignOut(){try{if(mmCloudSession?.access_token){const token=await mmCloudAccessToken();await mmCloudFetch('/auth/v1/logout',{method:'POST'},token);}}catch(e){console.warn('Cloud sign-out notice:',e.message)}localStorage.removeItem(MM_CLOUD_SESSION_KEY);mmCloudSession=null;mmCloudApplying=true;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(TX_STORAGE_KEY);localStorage.removeItem(CHAT_STORAGE_KEY);localStorage.removeItem(MM_CLOUD_NOTES_KEY);document.getElementById('mmPersonalNotes').value='';restoreState();loadWeeklyTransactions();renderWeekly();const root=document.getElementById('chatMessages');if(root)root.innerHTML='';updateAll();}finally{mmCloudApplying=false;}mmCloudRenderAccount();mmCloudSetStatus('Signed out. This device’s private finance data was cleared; your cloud account remains saved securely.','ok');}
