@@ -1308,9 +1308,10 @@ function init(){
   selectedCurrency=$('currencySelect').value||'USD';if(!CURRENCIES.some(c=>c.code===selectedCurrency))selectedCurrency='USD';$('currencySelect').value=selectedCurrency;
   renderBudget();bindEvents();updateAll();saveState(false);refreshInflation(false);convertFx();showApiStatus('Connecting to public data',false);
 }
-init();
-initWeekly();
-refreshCurrencyCatalog().then(()=>{updateAll();renderWeekly();});
+// Keep a dashboard initialization error from preventing the independent account system from starting.
+try{init();}catch(error){console.error('MoneyMap dashboard initialization failed:',error);window.mmDashboardInitError=String(error&&error.message||error);}
+try{initWeekly();}catch(error){console.error('MoneyMap weekly ledger initialization failed:',error);window.mmWeeklyInitError=String(error&&error.message||error);}
+try{refreshCurrencyCatalog().then(()=>{updateAll();renderWeekly();}).catch(error=>console.warn('MoneyMap currency catalog:',error));}catch(error){console.warn('MoneyMap currency catalog startup:',error);}
 /* MONEYMAP_CLOUD_ACCOUNTS_V1 - direct Supabase Auth + REST; no SDK/npm */
 const MM_CLOUD_CONFIG_KEY='moneymap_supabase_config_v1';
 const MM_CLOUD_SESSION_KEY='moneymap_supabase_session_v1';
@@ -1440,7 +1441,9 @@ async function mmCloudHandleOAuthReturn(){
 }
 function mmCloudInit(){
   mmCloudLoadConfigUI();
-    document.getElementById('mmSignUp').addEventListener('click',mmCloudSignUp);
+  // Expose account actions and bind them directly; dashboard startup must not own account availability.
+  window.mmCloudSignUp=mmCloudSignUp;window.mmCloudSignIn=mmCloudSignIn;window.mmCloudResetPassword=mmCloudResetPassword;window.mmCloudSignInGoogle=mmCloudSignInGoogle;
+  const signUpButton=document.getElementById('mmSignUp');if(signUpButton)signUpButton.onclick=event=>{event.preventDefault();mmCloudSignUp();};
   const signInButton=document.getElementById('mmSignIn');
   // Bind the primary action directly so it still works if another delegated handler is interrupted.
   signInButton.onclick=event=>{event.preventDefault();window.mmCloudSignIn();};
@@ -1448,11 +1451,11 @@ function mmCloudInit(){
   ['mmAccountEmail','mmAccountPassword'].forEach(id=>{
     document.getElementById(id).addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();mmCloudSignIn();}});
   });
-  document.getElementById('mmGoogleSignIn').addEventListener('click',mmCloudSignInGoogle);
-  document.getElementById('mmSignOut').addEventListener('click',mmCloudSignOut);
-  document.getElementById('mmSyncNow').addEventListener('click',mmCloudSaveNow);
-  document.getElementById('mmResetPassword').addEventListener('click',mmCloudResetPassword);
-  document.getElementById('mmPersonalNotes').addEventListener('input',()=>{localStorage.setItem(MM_CLOUD_NOTES_KEY,document.getElementById('mmPersonalNotes').value);mmCloudScheduleSave();});
+  const googleButton=document.getElementById('mmGoogleSignIn');if(googleButton)googleButton.onclick=event=>{event.preventDefault();mmCloudSignInGoogle();};
+  const signOutButton=document.getElementById('mmSignOut');if(signOutButton)signOutButton.onclick=event=>{event.preventDefault();mmCloudSignOut();};
+  const syncButton=document.getElementById('mmSyncNow');if(syncButton)syncButton.onclick=event=>{event.preventDefault();mmCloudSaveNow();};
+  const resetButton=document.getElementById('mmResetPassword');if(resetButton)resetButton.onclick=event=>{event.preventDefault();mmCloudResetPassword();};
+  const notesField=document.getElementById('mmPersonalNotes');if(notesField)notesField.addEventListener('input',()=>{localStorage.setItem(MM_CLOUD_NOTES_KEY,notesField.value);mmCloudScheduleSave();});
   document.getElementById('mmSaveOpenAIKey')?.addEventListener('click',saveOpenAIKeyFromPage);
   if(window.location.hash.includes('access_token=')){mmCloudHandleOAuthReturn();}
   else if(mmCloudSession?.access_token){mmCloudAfterLogin();}else{mmCloudSetStatus('Create your free MoneyMap account with your email and password, or sign in.','');}
