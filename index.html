@@ -194,20 +194,28 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 
 <style id="mm-3d-banknote-style">
 /* Floating 3D banknote — decorative MoneyMap dashboard artwork */
-.mm-banknote-stage{grid-column:1/-1;position:relative;height:94px;display:flex;align-items:center;justify-content:center;perspective:900px;isolation:isolate;overflow:visible;margin:-3px 0 2px}
-.mm-banknote-stage:before{content:"";position:absolute;width:205px;height:54px;border-radius:50%;background:rgba(63,190,158,.24);filter:blur(25px);transform:translateY(16px);z-index:-1}
-.mm-banknote{position:relative;width:174px;height:78px;border-radius:10px;transform-style:preserve-3d;transform:rotateX(13deg) rotateZ(-8deg);animation:mmBanknoteFloat 4.8s ease-in-out infinite;filter:drop-shadow(0 13px 12px rgba(0,0,0,.26))}
-.mm-banknote:before{content:"";position:absolute;inset:5px -4px -4px 4px;border-radius:10px;background:linear-gradient(135deg,#1d735f,#0c493e 52%,#123c35);transform:translateZ(-5px);box-shadow:0 5px 10px rgba(0,0,0,.18)}
-.mm-banknote-face{position:absolute;inset:0;overflow:hidden;border-radius:9px;border:1px solid rgba(220,255,237,.88);background:linear-gradient(125deg,#c8f3d9 0%,#72c99f 23%,#3a9d79 56%,#17634f 100%);box-shadow:inset 0 2px 5px rgba(255,255,255,.72),inset 0 -5px 12px rgba(0,42,30,.28)}
-.mm-banknote-face:before{content:"";position:absolute;inset:6px;border:1px solid rgba(231,255,239,.62);border-radius:5px;background:repeating-linear-gradient(135deg,transparent 0 7px,rgba(255,255,255,.075) 7px 8px)}
-.mm-banknote-face:after{content:"";position:absolute;left:50%;top:50%;width:55px;height:55px;border:1px solid rgba(232,255,241,.38);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 5px rgba(231,255,241,.08),inset 0 0 0 4px rgba(231,255,241,.08)}
-.mm-note-corner{position:absolute;top:10px;left:12px;font:800 8px/1 Arial,sans-serif;letter-spacing:1.4px;color:rgba(248,255,250,.86)}
-.mm-note-value{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 29px/1 Georgia,serif;color:#f2fff6;text-shadow:0 2px 2px rgba(0,48,32,.35);letter-spacing:-1px}
-.mm-note-seal{position:absolute;right:12px;bottom:9px;width:18px;height:18px;border:1px solid rgba(241,255,246,.8);border-radius:50%;display:grid;place-items:center;color:#f2fff6;font:700 10px Georgia,serif}
-.mm-note-lines{position:absolute;left:13px;bottom:12px;width:29px;height:2px;background:rgba(239,255,244,.65);box-shadow:0 -4px 0 rgba(239,255,244,.35),0 4px 0 rgba(239,255,244,.35)}
-@keyframes mmBanknoteFloat{0%,100%{translate:0 1px;rotate:-1deg}50%{translate:0 -7px;rotate:1deg}}
-@media(max-width:620px){.mm-banknote-stage{height:82px}.mm-banknote{width:156px;height:70px}.mm-note-value{font-size:26px}}
-@media(prefers-reduced-motion:reduce){.mm-banknote{animation:none}}
+.mm-banknote-stage{grid-column:1/-1;position:relative;height:170px;display:flex;align-items:center;justify-content:center;perspective:1100px;isolation:isolate;overflow:visible;margin:-8px 0 0;transform-style:preserve-3d}
+.mm-banknote-stage:before{content:"";position:absolute;width:255px;height:78px;border-radius:50%;background:rgba(50,190,153,.28);filter:blur(32px);transform:translateY(28px);z-index:-2}
+.mm-banknote-shadow{position:absolute;width:190px;height:28px;bottom:20px;border-radius:50%;background:rgba(9,49,39,.25);filter:blur(15px);animation:mmNoteShadow 5.2s ease-in-out infinite}
+.mm-banknote{position:relative;width:258px;height:122px;border-radius:12px;transform-style:preserve-3d;transform:rotateX(19deg) rotateY(-17deg) rotateZ(-8deg);animation:mmBanknoteFloat 5.2s ease-in-out infinite;filter:drop-shadow(0 17px 14px rgba(0,0,0,.25));will-change:transform}
+.mm-banknote:before{content:"";position:absolute;inset:7px -7px -7px 7px;border-radius:12px;background:linear-gradient(135deg,#1d735f,#0c493e 52%,#123c35);transform:translateZ(-8px);box-shadow:0 7px 13px rgba(0,0,0,.2)}
+.mm-banknote:after{content:"";position:absolute;inset:0;border-radius:12px;transform:translateZ(-2px);background:linear-gradient(90deg,#145443,#75c5a0 12%,#145443 16%,#145443 84%,#8bd4b2 88%,#145443)}
+.mm-banknote-face{position:absolute;inset:0;overflow:hidden;border-radius:11px;border:1px solid rgba(220,255,237,.92);background:radial-gradient(ellipse at 48% 46%,#83d5ae 0%,#58b88c 43%,#267c60 100%);box-shadow:inset 0 3px 8px rgba(255,255,255,.72),inset 0 -8px 16px rgba(0,42,30,.32);transform:translateZ(2px)}
+.mm-banknote-face:before{content:"";position:absolute;inset:7px;border:1px solid rgba(231,255,239,.65);border-radius:6px;background:repeating-linear-gradient(135deg,transparent 0 8px,rgba(255,255,255,.08) 8px 9px),linear-gradient(90deg,rgba(255,255,255,.12),transparent 24% 76%,rgba(0,50,35,.12))}
+.mm-banknote-face:after{content:"";position:absolute;left:50%;top:50%;width:78px;height:78px;border:1px solid rgba(232,255,241,.43);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 6px rgba(231,255,241,.08),inset 0 0 0 5px rgba(231,255,241,.08),0 0 20px rgba(231,255,241,.12)}
+.mm-note-corner{position:absolute;z-index:2;top:15px;left:17px;font:800 9px/1 Arial,sans-serif;letter-spacing:1.6px;color:rgba(248,255,250,.92)}
+.mm-note-value{position:absolute;z-index:2;left:50%;top:48%;transform:translate(-50%,-50%);font:800 48px/1 Georgia,serif;color:#f2fff6;text-shadow:0 2px 2px rgba(0,48,32,.4),0 0 16px rgba(255,255,255,.25);letter-spacing:-2px}
+.mm-note-amount{position:absolute;z-index:2;left:50%;top:77%;transform:translate(-50%,-50%);font:800 7px/1 Arial,sans-serif;letter-spacing:2px;color:rgba(243,255,247,.82);white-space:nowrap}
+.mm-note-seal{position:absolute;z-index:2;right:17px;bottom:14px;width:25px;height:25px;border:1px solid rgba(241,255,246,.9);border-radius:50%;display:grid;place-items:center;color:#f2fff6;font:700 13px Georgia,serif;box-shadow:inset 0 0 0 3px rgba(241,255,246,.13)}
+.mm-note-lines{position:absolute;z-index:2;left:17px;bottom:20px;width:34px;height:2px;background:rgba(239,255,244,.72);box-shadow:0 -5px 0 rgba(239,255,244,.4),0 5px 0 rgba(239,255,244,.4)}
+.mm-note-serial{position:absolute;z-index:2;right:52px;bottom:19px;font:700 6px/1 monospace;letter-spacing:1px;color:rgba(241,255,246,.7)}
+.mm-note-watermark{position:absolute;z-index:1;right:34px;top:11px;font:700 30px Georgia,serif;color:rgba(255,255,255,.1);transform:rotate(12deg)}
+.mm-banknote-caption{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:8px;font-weight:850;letter-spacing:2px;color:#8da99b}
+@keyframes mmBanknoteFloat{0%,100%{translate:0 3px;rotate:-1deg}50%{translate:0 -11px;rotate:1.5deg}}
+@keyframes mmNoteShadow{0%,100%{transform:scale(.94);opacity:.55}50%{transform:scale(1.08);opacity:.3}}
+@media(max-width:850px){.mm-banknote-stage{height:158px}.mm-banknote{width:230px;height:108px}}
+@media(max-width:620px){.mm-banknote-stage{height:145px}.mm-banknote{width:208px;height:98px}.mm-note-value{font-size:42px}.mm-note-corner{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.mm-banknote,.mm-banknote-shadow{animation:none}}
 </style>
 
 
@@ -337,28 +345,20 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
       <div class="hero-actions"><a class="btn btn-primary" href="#profile">Set up my money profile</a><a class="btn btn-quiet" href="#coach">Talk to the money coach ↗</a><a class="btn btn-quiet mm-trading-shortcut" href="#trading-game">Open Trading Simulator ↗</a><a class="btn btn-soft" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a></div>
     </div>
     <div class="hero-right">
-    <div class="mm-winged-coin-stage" aria-hidden="true">
-      <div class="mm-flight-trail"></div>
-      <div class="mm-winged-coin">
-        <svg class="mm-flight-wings" viewBox="0 0 300 150" role="presentation">
-          <defs>
-            <linearGradient id="mmWingGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8d7"/><stop offset=".48" stop-color="#e9b84f"/><stop offset="1" stop-color="#a96b18"/></linearGradient>
-          </defs>
-          <g class="mm-wing mm-wing-left" fill="url(#mmWingGold)" stroke="#fff0b6" stroke-width="1.4" stroke-linejoin="round">
-            <path d="M142 77C102 32 57 9 10 18c23 13 38 28 48 43C36 49 18 51 3 57c28 7 48 20 63 36-19-2-35 2-48 11 43 9 83 1 124-19Z"/>
-            <path d="M133 82C91 63 59 43 25 27M125 88C89 79 60 68 35 59M132 94C101 94 77 91 53 87" fill="none" stroke="#fff5ce" stroke-width="2" opacity=".75"/>
-          </g>
-          <g class="mm-wing mm-wing-right" fill="url(#mmWingGold)" stroke="#fff0b6" stroke-width="1.4" stroke-linejoin="round">
-            <path d="M158 77c40-45 85-68 132-59-23 13-38 28-48 43 22-12 40-10 55-4-28 7-48 20-63 36 19-2 35 2 48 11-43 9-83 1-124-19Z"/>
-            <path d="M167 82c42-19 74-39 108-55m-100 61c36-9 65-20 90-29m-97 35c31 0 55-3 79-7" fill="none" stroke="#fff5ce" stroke-width="2" opacity=".75"/>
-          </g>
-        </svg>
-        <div class="mm-gold-coin">
-          <div class="mm-gold-coin-face"><span class="mm-gold-m">M</span><span class="mm-gold-stars">✦ · ✦</span></div>
+    <div class="mm-banknote-stage" aria-label="Floating three-dimensional MoneyMap banknote">
+      <div class="mm-banknote-shadow"></div>
+      <div class="mm-banknote" role="img" aria-label="Stylized green MoneyMap banknote">
+        <div class="mm-banknote-face">
+          <span class="mm-note-corner">MONEYMAP · RESERVE</span>
+          <span class="mm-note-value">M</span>
+          <span class="mm-note-amount">ONE SMART MOVE</span>
+          <span class="mm-note-seal">✦</span>
+          <span class="mm-note-lines"></span>
+          <span class="mm-note-serial">MM 0826 2048</span>
+          <span class="mm-note-watermark">M</span>
         </div>
-        <span class="mm-coin-spark mm-spark-one">✦</span><span class="mm-coin-spark mm-spark-two">✧</span>
       </div>
-      <span class="mm-winged-caption">MONEYMAP · MAKE MONEY MOVE</span>
+      <span class="mm-banknote-caption">YOUR MONEY · YOUR MOMENTUM</span>
     </div>
       <div class="hero-mini"><span>MONTHLY TAKE-HOME ESTIMATE</span><strong id="heroIncome">—</strong><small id="heroCountry">Choose your country</small></div>
       <div class="hero-mini"><span>TRACKED THIS MONTH</span><strong id="heroSpent">—</strong><small>Expenses + savings entered</small></div>
