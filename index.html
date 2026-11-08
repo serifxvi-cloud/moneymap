@@ -438,6 +438,7 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
  hero.addEventListener('pointermove',move,{passive:true});
  hero.addEventListener('pointerdown',move,{passive:true});
  apply(saved);
+ window.addEventListener('storage',e=>{if(e.key===KEY||!e.key){try{saved=localStorage.getItem(KEY)||'monochrome'}catch{saved='monochrome'}apply(saved)}});
 })();
 </script>
 <style id="mm-cloud-live-notice-v1">#mmCloudLiveNotice{position:fixed;z-index:999999;left:50%;bottom:22px;transform:translate(-50%,18px);width:min(560px,calc(100% - 28px));padding:13px 16px;border:1px solid #d9e1eb;border-radius:14px;background:#fff;color:#253247;box-shadow:0 14px 42px #1113;font:600 13px/1.45 system-ui,sans-serif;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}#mmCloudLiveNotice.show{opacity:1;transform:translate(-50%,0)}#mmCloudLiveNotice[data-kind="ok"]{background:#effaf4;border-color:#bde4ce;color:#176344}#mmCloudLiveNotice[data-kind="bad"]{background:#fff4f1;border-color:#efc9bf;color:#923c2d}#mmCloudLiveNotice[data-kind=""]{background:#f4f7fc;border-color:#cbd7e8;color:#263b59}#mmSignIn:disabled{opacity:.65;cursor:wait}</style>
@@ -1782,6 +1783,7 @@ mmCloudInit();
   document.addEventListener('click',e=>{const b=e.target.closest('button,.btn');if(!b||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*1.5,w=document.createElement('span');w.className='mm-ripple-wave';w.style.width=w.style.height=d+'px';w.style.left=(e.clientX-r.left-d/2)+'px';w.style.top=(e.clientY-r.top-d/2)+'px';b.classList.add('mm-ripple');b.append(w);setTimeout(()=>w.remove(),700)},true);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ window.addEventListener('storage',e=>{if(e.key==='moneymap_apple_light_custom_v1'||!e.key){read();apply();renderRows();const glass=document.getElementById('mmGlassToggle'),gradient=document.getElementById('mmGradientToggle');if(glass)glass.checked=state.glass;if(gradient)gradient.checked=state.gradient;['mmGradientA','mmGradientB','mmGradientC','mmGradientD','mmGradientMotion'].forEach((id,i)=>{const el=document.getElementById(id),key=['gradientA','gradientB','gradientC','gradientD','gradientMotion'][i];if(el)el.value=state[key]})}});
 })();
 </script>
 
@@ -1865,6 +1867,7 @@ mmCloudInit();
  observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(()=>{if(lang!=='en')applyLanguage(lang)},650)});
  observer.observe(document.body,{subtree:true,childList:true,characterData:true});
  if(lang!=='en')applyLanguage(lang);else status('English');
+ window.addEventListener('storage',e=>{if(e.key===KEY||e.key==='moneymap_language_v1'||!e.key){const next=localStorage.getItem(KEY)||localStorage.getItem('moneymap_language_v1')||'en';if(languages[next]&&next!==lang){select.value=next;applyLanguage(next)}}});
  window.MoneyMapLanguage={set:applyLanguage,get:()=>lang,languages};
 })();
 </script>
@@ -2248,6 +2251,7 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
  applyTier();
  window.addEventListener('storage',e=>{if(!e.key||e.key===TIER_OVERRIDE_KEY)applyTier()});
  window.addEventListener('moneymap:tier-changed',applyTier);
+ window.addEventListener('moneymap:preferences-restored',applyTier);
 })();
 </script>
 <style id="mm-membership-tiers-style">
@@ -2435,6 +2439,7 @@ body.mm-tier-basic #financial-analysis{display:none!important}
  select.addEventListener('change',()=>{if(!premium()){select.value=read();render();return;}try{localStorage.setItem(KEY,select.value)}catch(e){}render()});
  reset.addEventListener('click',()=>{if(!premium())return;select.value='apple';try{localStorage.setItem(KEY,'apple')}catch(e){}render()});
  window.addEventListener('moneymap:tier-changed',render);
+ window.addEventListener('moneymap:preferences-restored',()=>{select.value=read();render()});
  window.addEventListener('storage',e=>{if(!e.key||e.key===KEY||e.key==='moneymap_selected_tier_v1'){select.value=read();render()}});
  render();
 })();
