@@ -450,6 +450,29 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 .mm-budget-simple-row .variance{font-size:10px;white-space:normal;line-height:1.35}.mm-budget-simple-row .delete-cell{display:flex;justify-content:center}
 @media(max-width:760px){.mm-budget-simple-head{display:none}.mm-budget-simple-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:11px}.mm-budget-simple-row .cat-name{grid-column:1/-1}.mm-budget-simple-row .kind-cell,.mm-budget-simple-row .target-pct-cell,.mm-budget-simple-row .actual-cell{min-width:0}.mm-budget-simple-row .variance-cell{align-self:center}.mm-budget-simple-row .delete-cell{grid-column:2;justify-self:end}}
 </style>
+<style id="mm-professional-hero-title">
+/* Keep the headline wording unchanged; give it a restrained, professional finance-brand typeface. */
+#overview .mm-typewriter-title,
+#overview .mm-typewriter-title .mm-type-line{
+  font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;
+  font-size:clamp(32px,3.65vw,45px)!important;
+  font-weight:750!important;
+  letter-spacing:-1.65px!important;
+  line-height:1.12!important;
+  text-shadow:none!important;
+  font-optical-sizing:auto;
+  font-kerning:normal;
+}
+#overview .mm-typewriter-title{max-width:680px;margin-bottom:8px}
+@media(max-width:620px){
+  #overview .mm-typewriter-title,
+  #overview .mm-typewriter-title .mm-type-line{
+    font-size:clamp(29px,8vw,37px)!important;
+    letter-spacing:-1.2px!important;
+    line-height:1.14!important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="topbar">
