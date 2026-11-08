@@ -31,7 +31,7 @@ async function load(){
   $('email').textContent=profile.email||'Email not available';
   $('about').textContent=profile.about||'This member hasn’t written an introduction yet.';
   avatar(profile.avatar_url,profile.email);showGame(profile.game_stats);
-  paintBadge(profile.plan_tier||'basic',String(profile.email||'').toLowerCase()==='serifxvi@gmail.com');
+  paintBadge(profile.plan_tier||'basic',false);
   (Array.isArray(profile.badges)?profile.badges:[]).forEach(b=>{const el=document.createElement('span');el.className='badge basic';el.textContent=b; $('badges').append(el)});
   if(own){const g=localGame();showGame(g);$('aboutInput').value=profile.about||'';await syncStats(g);}
  }catch(e){$('status').textContent=e.message;$('email').textContent=own?(session?.user?.email||'Your account'):'MoneyMap member'}
