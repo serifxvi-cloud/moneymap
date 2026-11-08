@@ -1441,7 +1441,10 @@ async function mmCloudHandleOAuthReturn(){
 function mmCloudInit(){
   mmCloudLoadConfigUI();
     document.getElementById('mmSignUp').addEventListener('click',mmCloudSignUp);
-  document.getElementById('mmSignIn').addEventListener('click',mmCloudSignIn);
+  const signInButton=document.getElementById('mmSignIn');
+  // Bind the primary action directly so it still works if another delegated handler is interrupted.
+  signInButton.onclick=event=>{event.preventDefault();window.mmCloudSignIn();};
+  window.mmCloudSignIn=mmCloudSignIn;
   ['mmAccountEmail','mmAccountPassword'].forEach(id=>{
     document.getElementById(id).addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();mmCloudSignIn();}});
   });
