@@ -2051,5 +2051,35 @@ body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-
  #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11141a!important;-webkit-text-fill-color:#11141a!important}
 }
 </style>
+<style id="mm-precise-gradient-text-sync-v2">
+/* Drive the Overview surface and its typography from the exact same timeline. */
+#overview{
+ background-image:linear-gradient(180deg,#10151d 0%,#596574 48%,#f7f8fa 100%)!important;
+ background-size:100% 260%!important;
+ background-position:50% 0%!important;
+ animation:mmOverviewSurfaceSync 14s cubic-bezier(.45,0,.55,1) infinite alternate!important;
+}
+@keyframes mmOverviewSurfaceSync{
+ from{background-position:50% 0%}
+ to{background-position:50% 100%}
+}
+#overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){
+ animation:mmOverviewTextSync 14s cubic-bezier(.45,0,.55,1) infinite alternate!important;
+ transition:none!important;
+}
+@keyframes mmOverviewTextSync{
+ 0%{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 1px rgba(255,255,255,.12)!important}
+ 18%{color:#f4f5f7!important;-webkit-text-fill-color:#f4f5f7!important}
+ 42%{color:#aeb5bf!important;-webkit-text-fill-color:#aeb5bf!important}
+ 62%{color:#424a56!important;-webkit-text-fill-color:#424a56!important}
+ 82%,100%{color:#11151c!important;-webkit-text-fill-color:#11151c!important;text-shadow:0 0 1px rgba(0,0,0,.08)!important}
+}
+#overview .hero-actions a{text-decoration-color:currentColor!important}
+#overview .mm-typewriter-title .mm-type-caret{border-color:currentColor!important}
+@media(prefers-reduced-motion:reduce){
+ #overview{animation:none!important;background-position:50% 50%!important}
+ #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11151c!important;-webkit-text-fill-color:#11151c!important}
+}
+</style>
 </body>
 </html>
