@@ -1984,7 +1984,8 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
  const KEY='moneymap_apple_light_custom_v1';
  const BASIC_PRESETS=['funblue','ocean','aurora','lavender','sunset'];
  const getEmail=()=>String(mmCloudSession?.user?.email||'').trim().toLowerCase();
- const getTier=()=>{const email=getEmail();return PREMIUM_EMAILS.has(email)?'premium':PLUS_EMAILS.has(email)?'plus':'basic'};
+ const TIER_OVERRIDE_KEY='moneymap_selected_tier_v1';
+ const getTier=()=>{let chosen='';try{chosen=localStorage.getItem(TIER_OVERRIDE_KEY)||''}catch(e){}if(['basic','plus','premium'].includes(chosen))return chosen;const email=getEmail();return PREMIUM_EMAILS.has(email)?'premium':PLUS_EMAILS.has(email)?'plus':'basic'};
  const tierNames={basic:'MoneyMap Basic',plus:'MoneyMap Plus',premium:'MoneyMap Premium'};
  function setTierBadge(tier){
   const chip=document.getElementById('mmHeroUsername');if(!chip)return;
@@ -2035,7 +2036,8 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
  // Reapply on login, account changes, and when opening appearance controls.
  document.getElementById('mmOpenTheme')?.addEventListener('click',()=>setTimeout(applyTier,0));
  applyTier();
- window.addEventListener('storage',applyTier);
+ window.addEventListener('storage',e=>{if(!e.key||e.key===TIER_OVERRIDE_KEY)applyTier()});
+ window.addEventListener('moneymap:tier-changed',applyTier);
 })();
 </script>
 <style id="mm-membership-tiers-style">
