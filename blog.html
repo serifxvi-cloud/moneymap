@@ -112,7 +112,35 @@ function setupUser(){
  $('postText').disabled=!signed;$('sendPost').disabled=!signed;
  $('postText').placeholder=signed?'Share a money tip, ask a question, or start a thoughtful conversation…':'Sign in to your MoneyMap account to publish a post.';
  if(signed)$('signInLinks').style.display='none';
+ $('customEmojiBtn').disabled=!signed||tier!=='premium'||!isPhone();
+ renderEmojiTray();
 }
+function isPhone(){return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent)||matchMedia('(max-width: 600px) and (pointer:coarse)').matches;}
+function renderEmojiTray(){
+ const tray=$('customEmojiTray');tray.replaceChildren();
+ if(tier!=='premium'||!isPhone())return;
+ customEmojis.forEach((item,i)=>{const im=document.createElement('img');im.src=item.url;im.alt='Custom emoji';im.title='Insert custom emoji';im.addEventListener('click',()=>{$('postText').value+=' :custom'+i+':';$('postText').dispatchEvent(new Event('input'));});tray.append(im);});
+}
+async function uploadFile(file,kind){
+ const jwt=await token(),uid=session.user.id,ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+ const path=uid+'/'+(kind==='emoji'?'custom-emojis/':'')+crypto.randomUUID()+'.'+ext;
+ const res=await fetch(SUPABASE.url+'/storage/v1/object/community-media/'+path,{method:'POST',headers:{apikey:SUPABASE.key,Authorization:'Bearer '+jwt,'Content-Type':file.type,'x-upsert':'false'},body:file});
+ if(!res.ok)throw new Error(await res.text()||'Upload failed');
+ return {type:kind==='emoji'?'emoji':file.type.startsWith('video/')?'video':'image',url:SUPABASE.url+'/storage/v1/object/public/community-media/'+path,name:file.name};
+}
+$('mediaFiles').addEventListener('change',()=>{
+ pendingFiles=[...$('mediaFiles').files].slice(0,6);const box=$('mediaPreview');box.replaceChildren();
+ pendingFiles.forEach(file=>{const chip=document.createElement('span');chip.className='media-chip';chip.textContent=(file.type.startsWith('video/')?'▶ ':'▧ ')+file.name+' · '+(file.size/1048576).toFixed(1)+' MB';box.append(chip);});
+});
+$('customEmojiBtn').addEventListener('click',()=>{if(tier==='premium'&&isPhone())$('customEmojiFile').click();});
+$('customEmojiFile').addEventListener('change',async()=>{
+ const file=$('customEmojiFile').files[0];if(!file)return;
+ if(!signed||tier!=='premium'||!isPhone()){setStatus('Custom emoji uploads require Premium on a phone.','bad');return;}
+ if(file.size>2*1048576){setStatus('Custom emoji image must be 2 MB or smaller.','bad');return;}
+ try{setStatus('Uploading custom emoji…');const item=await uploadFile(file,'emoji');customEmojis.push(item);localStorage.setItem('mm_blog_custom_emojis_v1',JSON.stringify(customEmojis));renderEmojiTray();setStatus('Custom emoji saved on this phone. Insert it from the emoji tray.','ok');}
+ catch(e){setStatus('Emoji upload failed: '+e.message,'bad');}
+ finally{$('customEmojiFile').value='';}
+});
 $('postText').addEventListener('input',()=>{$('charCount').textContent=$('postText').value.length;});
 $('sendPost').addEventListener('click',async()=>{
  const body=$('postText').value.trim();if(!body||busy)return;if(!signed){setStatus('Sign in before publishing.','bad');return;}
