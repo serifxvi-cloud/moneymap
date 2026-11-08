@@ -78,7 +78,7 @@ async function token(){
 }
 function timeLabel(v){const d=new Date(v);return Number.isNaN(d.getTime())?'Just now':d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
 function linkifyText(value){
- const frag=document.createDocumentFragment(),re=/https?:\\/\\/[^\\s<]+/g;let last=0,m;
+ const frag=document.createDocumentFragment(),re=/https?:\/\/[^\s<]+/g;let last=0,m;
  while((m=re.exec(value))){frag.append(document.createTextNode(value.slice(last,m.index)));const a=document.createElement('a');a.href=m[0];a.target='_blank';a.rel='noopener noreferrer';a.textContent=m[0];frag.append(a);last=re.lastIndex;}
  frag.append(document.createTextNode(value.slice(last)));return frag;
 }
