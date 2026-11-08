@@ -1880,36 +1880,41 @@ body.mm-account-mode .mm-account-panel{margin:0!important}
 <style id="mm-account-toplink-style">.mm-account-toplink{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}@media(max-width:700px){.mm-account-toplink{font-size:11px;padding:9px 11px}}</style>
 
 <style id="mm-charcoal-normal-and-simple-marks">
-/* Normal appearance: charcoal surfaces with clear white typography. */
-:root{--ink:#f4f5f7;--muted:#c0c5cd;--line:#41464f;--paper:#17191d;--card:#252a31;--navy:#20242a;--navy2:#303640;--blue:#8daeff;--blue-soft:#343b47;--shadow:0 12px 34px rgba(0,0,0,.22)}
-body{background:#17191d!important;color:#f4f5f7!important}
-.topbar{background:rgba(28,31,36,.94)!important;border-color:#3b4048!important}
-.brand-mark{background:#343941!important;color:#fff!important;border:1px solid #555c66!important;border-radius:10px!important;box-shadow:none!important}
-.brand-name,.section-title,.panel-head h2,.stat-value,.metric-big,.budget-total strong,.data-line strong,.field label,.profile-topline strong{color:#f4f5f7!important}
-.brand-sub,.nav a,.api-pill,.section-head p,.panel-head p,.stat-label,.stat-note,.metric-sub,.status-text,.footer,.footer strong,.small-note,.field .hint,.budget-total,.data-line span,.profile-topline span{color:#c0c5cd!important}
-.stat-card,.panel,.callout,.chat-shell,.chat-top,.chat-compose,.investment-option,.week-stat,.tx-row,.budget-row,.insight,.note-box,.privacy-ai,.wage-cell,.mm-achievement,.mm-smart-empty{background:#252a31!important;color:#f4f5f7!important;border-color:#41464f!important}
-.field input,.field select,.field textarea,.chat-input,.budget-row input,.budget-row select{background:#1b1e23!important;color:#fff!important;border-color:#505762!important}
-.field input::placeholder,.field textarea::placeholder,.chat-input::placeholder{color:#aab1bb!important}
-.tag,.preset-row button,.routine-prompts button,.chat-suggestions button,.quick-prompts button,.ai-status{background:#343941!important;color:#f1f3f6!important;border-color:#505762!important}
-.btn-soft,.btn-quiet{background:#343941!important;color:#f4f5f7!important;border-color:#505762!important}
-.btn-dark,.coach-avatar{background:#111317!important;color:#fff!important}
-.insight-icon,.mm-achievement-icon,.country-flag{background:#3a4049!important;color:#fff!important}
-.chat-top{border-color:#41464f!important}.bubble.coach{background:#343941!important;color:#fff!important;border-color:#505762!important}.bubble.user{background:#465d88!important;color:#fff!important}
-.mm-orbit-toggle,.mm-orbit-slice button{background:#292e35!important;color:#f4f5f7!important;border:1px solid #555c66!important;box-shadow:0 8px 22px rgba(0,0,0,.35)!important}
-.mm-orbit-slice button[aria-current="page"]{background:#f0f2f5!important;color:#17191d!important;border-color:#fff!important}
-.mm-orbit-slice button:hover,.mm-orbit-slice button:focus-visible{background:#454b54!important;color:#fff!important;border-color:#b8c0ca!important;box-shadow:0 0 0 3px rgba(255,255,255,.12),0 10px 25px rgba(0,0,0,.4)!important}
-.mm-hero-user,.mm-hero-user.is-owner,.mm-hero-user.is-mermaid{background:#30353d!important;color:#fff!important;border:1px solid #59616d!important;box-shadow:none!important}
-.mm-blue-check,.mm-premium-vip-badge,.mm-mermaid-badge{width:19px!important;height:19px!important;flex:0 0 19px!important;border-radius:50%!important;background:#e7e9ed!important;color:#202329!important;border:1px solid #fff!important;box-shadow:none!important;filter:none!important;overflow:hidden}
-.mm-blue-check svg,.mm-premium-vip-badge svg,.mm-mermaid-badge svg{width:12px!important;height:12px!important;stroke:#202329!important;fill:none!important;filter:none!important;stroke-width:2!important}
-.mm-premium-vip-badge:before{display:none!important}
-.mm-premium-wordmark{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif!important;font-style:normal!important;font-weight:800!important;letter-spacing:1px!important;text-shadow:none!important;color:#fff!important}
-.mm-premium-wordmark small{color:#d1d5db!important;text-shadow:none!important;letter-spacing:2px!important}
-.footer{border-color:#41464f!important}.footer a{color:#b6c9f5!important}
-[data-mm-custom]{color:#f4f5f7!important}
-[data-mm-custom] :is(h1,h2,h3,strong,.section-title,.stat-value,.metric-big){color:#fff!important}
-[data-mm-custom] :is(p,.section-kicker,.stat-label,.stat-note,.metric-sub,.panel-head p,.small-note,.field label,.data-line span){color:#c0c5cd!important}
-[data-mm-custom] :is(input,select,textarea){color:#fff!important;background:#1b1e23!important;border-color:#505762!important}
+/* Applied only to the default/reset Normal appearance. */
+body.mm-normal-charcoal{--ink:#f4f5f7;--muted:#c0c5cd;--line:#41464f;--paper:#17191d;--card:#252a31;--navy:#20242a;--navy2:#303640;--blue:#8daeff;--blue-soft:#343b47;--shadow:0 12px 34px rgba(0,0,0,.22);background:#17191d!important;color:#f4f5f7!important}
+body.mm-normal-charcoal .topbar{background:rgba(28,31,36,.94)!important;border-color:#3b4048!important}
+body.mm-normal-charcoal .brand-mark{background:#343941!important;color:#fff!important;border:1px solid #555c66!important;border-radius:10px!important;box-shadow:none!important}
+body.mm-normal-charcoal :is(.brand-name,.section-title,.panel-head h2,.stat-value,.metric-big,.budget-total strong,.data-line strong,.field label,.profile-topline strong){color:#f4f5f7!important}
+body.mm-normal-charcoal :is(.brand-sub,.nav a,.api-pill,.section-head p,.panel-head p,.stat-label,.stat-note,.metric-sub,.status-text,.footer,.footer strong,.small-note,.field .hint,.budget-total,.data-line span,.profile-topline span){color:#c0c5cd!important}
+body.mm-normal-charcoal :is(.stat-card,.panel,.callout,.chat-shell,.chat-top,.chat-compose,.investment-option,.week-stat,.tx-row,.budget-row,.insight,.note-box,.privacy-ai,.wage-cell,.mm-achievement,.mm-smart-empty){background:#252a31!important;color:#f4f5f7!important;border-color:#41464f!important}
+body.mm-normal-charcoal :is(.field input,.field select,.field textarea,.chat-input,.budget-row input,.budget-row select){background:#1b1e23!important;color:#fff!important;border-color:#505762!important}
+body.mm-normal-charcoal :is(.field input::placeholder,.field textarea::placeholder,.chat-input::placeholder){color:#aab1bb!important}
+body.mm-normal-charcoal :is(.tag,.preset-row button,.routine-prompts button,.chat-suggestions button,.quick-prompts button,.ai-status){background:#343941!important;color:#f1f3f6!important;border-color:#505762!important}
+body.mm-normal-charcoal :is(.btn-soft,.btn-quiet){background:#343941!important;color:#f4f5f7!important;border-color:#505762!important}
+body.mm-normal-charcoal :is(.btn-dark,.coach-avatar){background:#111317!important;color:#fff!important}
+body.mm-normal-charcoal :is(.insight-icon,.mm-achievement-icon,.country-flag){background:#3a4049!important;color:#fff!important}
+body.mm-normal-charcoal .chat-top{border-color:#41464f!important}
+body.mm-normal-charcoal .bubble.coach{background:#343941!important;color:#fff!important;border-color:#505762!important}
+body.mm-normal-charcoal .bubble.user{background:#465d88!important;color:#fff!important}
+body.mm-normal-charcoal .mm-orbit-toggle,body.mm-normal-charcoal .mm-orbit-slice button{background:#292e35!important;color:#f4f5f7!important;border:1px solid #555c66!important;box-shadow:0 8px 22px rgba(0,0,0,.35)!important}
+body.mm-normal-charcoal .mm-orbit-slice button[aria-current="page"]{background:#f0f2f5!important;color:#17191d!important;border-color:#fff!important}
+body.mm-normal-charcoal .mm-orbit-slice button:hover,body.mm-normal-charcoal .mm-orbit-slice button:focus-visible{background:#454b54!important;color:#fff!important;border-color:#b8c0ca!important;box-shadow:0 0 0 3px rgba(255,255,255,.12),0 10px 25px rgba(0,0,0,.4)!important}
+body.mm-normal-charcoal :is(.mm-hero-user,.mm-hero-user.is-owner,.mm-hero-user.is-mermaid){background:#30353d!important;color:#fff!important;border:1px solid #59616d!important;box-shadow:none!important}
+body.mm-normal-charcoal :is(.mm-blue-check,.mm-premium-vip-badge,.mm-mermaid-badge){width:19px!important;height:19px!important;flex:0 0 19px!important;border-radius:50%!important;background:#e7e9ed!important;color:#202329!important;border:1px solid #fff!important;box-shadow:none!important;filter:none!important;overflow:hidden}
+body.mm-normal-charcoal :is(.mm-blue-check svg,.mm-premium-vip-badge svg,.mm-mermaid-badge svg){width:12px!important;height:12px!important;stroke:#202329!important;fill:none!important;filter:none!important;stroke-width:2!important}
+body.mm-normal-charcoal .mm-premium-vip-badge:before{display:none!important}
+body.mm-normal-charcoal .mm-premium-wordmark{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif!important;font-style:normal!important;font-weight:800!important;letter-spacing:1px!important;text-shadow:none!important;color:#fff!important}
+body.mm-normal-charcoal .mm-premium-wordmark small{color:#d1d5db!important;text-shadow:none!important;letter-spacing:2px!important}
+body.mm-normal-charcoal .footer{border-color:#41464f!important}
+body.mm-normal-charcoal .footer a{color:#b6c9f5!important}
+body.mm-normal-charcoal [data-mm-custom]{color:#f4f5f7!important}
+body.mm-normal-charcoal [data-mm-custom] :is(h1,h2,h3,strong,.section-title,.stat-value,.metric-big){color:#fff!important}
+body.mm-normal-charcoal [data-mm-custom] :is(p,.section-kicker,.stat-label,.stat-note,.metric-sub,.panel-head p,.small-note,.field label,.data-line span){color:#c0c5cd!important}
+body.mm-normal-charcoal [data-mm-custom] :is(input,select,textarea){color:#fff!important;background:#1b1e23!important;border-color:#505762!important}
 </style>
 
+<script id="mm-normal-charcoal-mode">
+(()=>{const key='moneymap_apple_light_custom_v1';function sync(){let colors={};try{colors=JSON.parse(localStorage.getItem(key)||'{}').colors||{}}catch{}document.body.classList.toggle('mm-normal-charcoal',!Object.keys(colors).length)}sync();window.addEventListener('storage',sync);document.addEventListener('DOMContentLoaded',sync);const observer=new MutationObserver(()=>{try{const raw=localStorage.getItem(key)||'{}',colors=JSON.parse(raw).colors||{};document.body.classList.toggle('mm-normal-charcoal',!Object.keys(colors).length)}catch{}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['style']});})();
+</script>
 </body>
 </html>
