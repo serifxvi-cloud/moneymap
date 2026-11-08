@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101722">
+<title>MoneyMap Social · Community</title>
+<style>
+:root{color-scheme:dark;--bg:#0d141e;--panel:#151f2d;--panel2:#1b2939;--ink:#f4f6fb;--muted:#a4b1c3;--line:rgba(214,226,244,.13);--gold:#d7b66c;--blue:#9fc3ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% -5%,#243750 0,transparent 38%),radial-gradient(ellipse at 92% 8%,#3a2d1c 0,transparent 30%),linear-gradient(155deg,#0d141e,#111b28 65%,#101722);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+a{color:inherit}.wrap{width:min(1000px,calc(100% - 34px));margin:auto}.top{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:11px;align-items:center;text-decoration:none;font-weight:850;letter-spacing:-.5px}.coin{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#704b12;background:linear-gradient(145deg,#fff4c5,#d4a849 58%,#8b5a16);box-shadow:inset 0 0 0 2px #fff7d7,0 5px 18px #0005;font-family:Georgia,serif;font-size:22px}.home{padding:9px 14px;border:1px solid var(--line);border-radius:11px;text-decoration:none;font-size:12px;color:#dce6f5}
+.hero{padding:52px 0 28px;text-align:center}.eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:850}.hero h1{font-size:clamp(36px,6vw,62px);letter-spacing:-.065em;line-height:1.02;margin:13px 0}.hero p{max-width:620px;margin:0 auto;color:#b5c2d2;font-size:14px;line-height:1.7}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px;align-items:start;padding-bottom:60px}.panel{background:linear-gradient(145deg,rgba(28,42,59,.94),rgba(18,28,41,.96));border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 55px #0003;overflow:hidden}.panel-head{padding:21px 22px 16px;border-bottom:1px solid var(--line)}.panel-head h2{margin:0;font-size:17px;letter-spacing:-.4px}.panel-head p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.compose{padding:18px 20px 15px}.who{display:flex;align-items:center;gap:10px;margin-bottom:12px}.avatar{width:34px;height:34px;border-radius:12px;background:linear-gradient(145deg,#dbe8ff,#779bd2);color:#20334e;display:grid;place-items:center;font-weight:900}.who strong{font-size:12px}.who small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+textarea{width:100%;min-height:116px;resize:vertical;border:1px solid #526176;border-radius:14px;background:#0f1926;color:var(--ink);padding:14px;font:inherit;font-size:13px;line-height:1.6;outline:none}textarea:focus{border-color:#91b5f1;box-shadow:0 0 0 3px #8fb4ef20}.compose-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:11px}.hint{font-size:10px;color:#8998aa}.post{border:0;border-radius:12px;padding:11px 17px;background:linear-gradient(120deg,#f7e5b0,#c99c49);color:#422d0c;font-size:12px;font-weight:900;box-shadow:0 5px 18px #c99c4933}.post:disabled{opacity:.5;cursor:not-allowed}
+.feed{padding:4px 20px 18px}.feed-top{display:flex;align-items:center;justify-content:space-between;padding:13px 0;color:#aab7c8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800}.refresh{border:1px solid var(--line);border-radius:9px;padding:6px 9px;background:#ffffff09;color:#dce5f2;font-size:10px}.entry{padding:17px 0;border-top:1px solid var(--line)}.entry-head{display:flex;align-items:center;gap:10px}.entry-avatar{width:35px;height:35px;border-radius:50%;background:linear-gradient(145deg,#293b52,#172436);border:1px solid #ffffff24;display:grid;place-items:center;color:#c9d9f1;font-size:13px;font-weight:850}.entry-meta{min-width:0;flex:1}.entry-name{display:flex;align-items:center;flex-wrap:wrap;gap:7px;font-size:12px;font-weight:850}.entry-time{font-size:10px;color:#8190a3;margin-top:3px}.entry-body{white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0 0 45px;color:#e0e7f1;font-size:13px;line-height:1.7}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;font-size:8px;font-weight:950;letter-spacing:.1em;white-space:nowrap}
+.badge svg{width:12px;height:12px;flex:none}.badge-plus{color:#e5edf9;background:linear-gradient(125deg,#67778b,#d9e1ec 48%,#7d8ca2);border:1px solid #e0e8f4;box-shadow:0 2px 9px #b9c8db33}.badge-premium{color:#573b0d;background:linear-gradient(125deg,#fff0b8,#d4a448 52%,#fff2c5);border:1px solid #ffe7a3;box-shadow:0 2px 12px #d8ae5540}.badge-admin{padding:5px 10px;color:#f7e8c0;background:linear-gradient(120deg,#27364b,#52647d 42%,#a88b55 72%,#e7d4a2);border:1px solid #e5d3a4;box-shadow:0 3px 14px #c4a66b30,inset 0 1px #ffffff55;letter-spacing:.16em}.badge-admin svg{width:13px;height:13px}
+.side{padding:20px}.side h3{margin:0 0 8px;font-size:14px}.side p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}.rule{height:1px;background:var(--line);margin:17px 0}.tiers{display:grid;gap:10px}.tier{display:flex;align-items:center;gap:10px;color:#d9e2ee;font-size:11px}.tier-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#ffffff0c;border:1px solid var(--line)}
+.status{padding:12px 14px;margin:0 20px 8px;border-radius:12px;background:#ffffff09;color:#bdc8d6;font-size:11px;line-height:1.5}.status.bad{color:#ffb7ae;background:#6b282522}.status.ok{color:#b8e7d0;background:#1e664222}.empty{text-align:center;padding:35px 12px;color:#9eacbf;font-size:12px}.signin{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.signin a{font-size:11px;text-decoration:none;border:1px solid #ffffff22;border-radius:10px;padding:9px 12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:39px 0 23px}.side{order:-1}.panel-head{padding:18px}.compose{padding:15px}.feed{padding:4px 15px 15px}.entry-body{margin-left:0}.compose-foot{align-items:flex-end}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between"><a class="brand" href="index.html"><span class="coin">M</span><span>MoneyMap <span style="color:#c9a65e">Social</span></span></a><a class="home" href="index.html">← Back to MoneyMap</a></div></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">THE MONEYMAP COMMUNITY</div><h1>Better money habits,<br>built together.</h1><p>Share ideas, ask questions, celebrate progress, and learn from other MoneyMap members. Keep it kind, useful, and respectful.</p></section>
+<div class="grid">
+<section class="panel">
+ <div class="panel-head"><h2>Community board</h2><p>Join the conversation. Your public display name is based on the name part of your sign-in email, shown with @gmail.com.</p></div>
+ <div class="compose">
+  <div class="who"><div class="avatar" id="myAvatar">?</div><div><strong id="myName">Sign in to post</strong><small id="myTier">Community member</small></div><span id="myBadge"></span></div>
+  <textarea id="postText" maxlength="1200" placeholder="Share a money tip, ask a question, or start a thoughtful conversation…" disabled></textarea>
+  <div class="compose-foot"><span class="hint"><span id="charCount">0</span>/1200 · Be respectful. Never share private financial details.</span><button class="post" id="sendPost" type="button" disabled>Publish post ↗</button></div>
+ </div>
+ <div class="status" id="blogStatus" role="status">Loading MoneyMap Social…</div>
+ <div class="feed"><div class="feed-top"><span>Latest conversations</span><button class="refresh" id="refreshFeed" type="button">↻ Refresh</button></div><div id="feed"><div class="empty">Loading community posts…</div></div></div>
+</section>
+<aside class="panel side"><h3>Member badges</h3><p>Your badge follows the MoneyMap plan currently selected in your account.</p><div class="rule"></div><div class="tiers"><div class="tier"><span class="tier-icon">◇</span><span><b>Basic</b><br><small style="color:#91a0b3">Community member</small></span></div><div class="tier"><span class="tier-icon" style="color:#dce6f5">✧</span><span><b>Plus · Silver Crystal</b><br><small style="color:#91a0b3">Iridescent crystal badge</small></span></div><div class="tier"><span class="tier-icon" style="color:#f3d58a">✦</span><span><b>Premium · Gold Crystal</b><br><small style="color:#91a0b3">Golden premium badge</small></span></div></div><div class="rule"></div><h3>Community guidelines</h3><p>Be constructive and welcoming. Do not post passwords, account details, bank information, or other sensitive data. Posts are public to visitors of this board.</p><div class="signin" id="signInLinks"><a href="account.html">Sign in / Create account ↗</a><a href="subscriptions.html">View plans ↗</a></div></aside>
+</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const SUPABASE={url:'https://dmapwfwltcfsmqgrvrxq.supabase.co',key:'sb_publishable_oTsRscLiwa-XrbQtqIC9EA_q9ruORsZ'};
+const SESSION_KEY='moneymap_supabase_session_v1',TIER_KEY='moneymap_selected_tier_v1';
+const OWNER='serifxvi@gmail.com',table='/rest/v1/moneymap_blog_posts';
+const $=id=>document.getElementById(id);
+let session=null,accessToken='',busy=false;
+try{session=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{}
+const email=String(session?.user?.email||'').trim().toLowerCase();
+const signed=!!(session?.access_token&&email);
+const tier=(()=>{let v='';try{v=localStorage.getItem(TIER_KEY)||''}catch{}if(['basic','plus','premium'].includes(v))return v;return ['serifxvi@gmail.com','irenegame002@gmail.com','theodoredavidsontonara@gmail.com'].includes(email)?'premium':'basic'})();
+const displayName=email?(email.split('@')[0]||'MoneyMap member')+'@gmail.com':'Guest';
+const admin=email===OWNER;
+function badge(kind){
+ if(kind==='admin')return '<span class="badge badge-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5 20 6v6c0 5-3.3 8-8 9.5C7.3 20 4 17 4 12V6Z"/><path d="m8.5 12 2.2 2.2 4.9-5.1"/></svg>FOUNDER · ADMIN</span>';
+ if(kind==='premium')return '<span class="badge badge-premium"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 2 2.8 6.1 6.7.8-4.9 4.7 1.2 6.7-5.8-3.2-5.8 3.2 1.2-6.7-4.9-4.7 6.7-.8Z"/></svg>PREMIUM</span>';
+ if(kind==='plus')return '<span class="badge badge-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m12 2 8 7-8 13L4 9Z"/><path d="m4 9 8 4 8-4M12 13v9M8 5l4 8 4-8"/></svg>PLUS · SILVER CRYSTAL</span>';
+ return '';
+}
+function setStatus(msg,kind=''){const el=$('blogStatus');el.textContent=msg;el.className='status '+kind;}
+function api(path,options={},token=''){
+ const headers=new Headers(options.headers||{});headers.set('apikey',SUPABASE.key);headers.set('Accept','application/json');if(token)headers.set('Authorization','Bearer '+token);if(options.body)headers.set('Content-Type','application/json');
+ return fetch(SUPABASE.url+path,{...options,headers,mode:'cors',cache:'no-store'}).then(async r=>{const raw=await r.text();let d;try{d=raw?JSON.parse(raw):{}}catch{d={message:raw}}if(!r.ok)throw new Error(d.message||d.msg||d.error_description||'Community service error ('+r.status+')');return d;});
+}
+async function token(){
+ if(!session?.access_token)throw new Error('Sign in to publish a post.');
+ if(Number(session.expires_at||0)>Date.now()/1000+90)return session.access_token;
+ if(!session.refresh_token)throw new Error('Your session expired. Sign in again.');
+ const d=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:session.refresh_token})});
+ session={access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Math.floor(Date.now()/1000)+(Number(d.expires_in)||3600),user:d.user||session.user};localStorage.setItem(SESSION_KEY,JSON.stringify(session));return session.access_token;
+}
+function timeLabel(v){const d=new Date(v);return Number.isNaN(d.getTime())?'Just now':d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
+function render(rows){
+ const root=$('feed');root.replaceChildren();
+ if(!rows.length){const e=document.createElement('div');e.className='empty';e.textContent='No posts yet. Be the first to start a conversation.';root.append(e);return;}
+ rows.forEach(row=>{
+  const article=document.createElement('article');article.className='entry';
+  const head=document.createElement('div');head.className='entry-head';
+  const avatar=document.createElement('div');avatar.className='entry-avatar';avatar.textContent=(row.author_name||'M').slice(0,1).toUpperCase();
+  const meta=document.createElement('div');meta.className='entry-meta';
+  const name=document.createElement('div');name.className='entry-name';
+  const n=document.createElement('span');n.textContent=row.author_name||'MoneyMap member';name.append(n);
+  const kind=row.is_admin?'admin':row.author_tier==='premium'?'premium':row.author_tier==='plus'?'plus':'basic';
+  if(kind!=='basic'){const holder=document.createElement('span');holder.innerHTML=badge(kind);name.append(holder.firstElementChild);}
+  const time=document.createElement('div');time.className='entry-time';time.textContent=timeLabel(row.created_at);
+  meta.append(name,time);head.append(avatar,meta);
+  const body=document.createElement('p');body.className='entry-body';body.textContent=row.body||'';
+  article.append(head,body);root.append(article);
+ });
+}
+async function load(){
+ $('refreshFeed').disabled=true;
+ try{const rows=await api(table+'?select=id,user_id,author_name,author_tier,is_admin,body,created_at&order=created_at.desc&limit=100');render(rows);if(!signed)setStatus('You can read the board. Sign in with your MoneyMap account to publish a post.');else setStatus('Connected · '+rows.length+' recent posts','ok');}
+ catch(e){render([]);setStatus('Could not load the community board. '+e.message+' Make sure the blog database setup has been run in Supabase.','bad');}
+ finally{$('refreshFeed').disabled=false;}
+}
+function setupUser(){
+ $('myName').textContent=signed?displayName:'Sign in to post';
+ $('myAvatar').textContent=signed?displayName.slice(0,1).toUpperCase():'?';
+ $('myTier').textContent=admin?'MoneyMap Premium · Community founder':tier==='premium'?'MoneyMap Premium':tier==='plus'?'MoneyMap Plus':'MoneyMap Basic';
+ $('myBadge').innerHTML=admin?badge('admin'):badge(tier);
+ $('postText').disabled=!signed;$('sendPost').disabled=!signed;
+ $('postText').placeholder=signed?'Share a money tip, ask a question, or start a thoughtful conversation…':'Sign in to your MoneyMap account to publish a post.';
+ if(signed)$('signInLinks').style.display='none';
+}
+$('postText').addEventListener('input',()=>{$('charCount').textContent=$('postText').value.length;});
+$('sendPost').addEventListener('click',async()=>{
+ const body=$('postText').value.trim();if(!body||busy)return;if(!signed){setStatus('Sign in before publishing.','bad');return;}
+ busy=true;$('sendPost').disabled=true;$('sendPost').textContent='Publishing…';
+ try{const jwt=await token();await api(table,{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({user_id:session.user.id,body,author_tier:tier})},jwt);$('postText').value='';$('charCount').textContent='0';setStatus('Your post is live. Thanks for contributing!','ok');await load();}
+ catch(e){setStatus('Post could not be published: '+e.message,'bad');}
+ finally{busy=false;$('sendPost').disabled=!signed;$('sendPost').textContent='Publish post ↗';}
+});
+$('refreshFeed').addEventListener('click',load);
+setupUser();load();setInterval(load,30000);
+})();
+</script>
+</body></html>
