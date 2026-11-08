@@ -1907,10 +1907,7 @@ body.mm-normal-charcoal .footer{border-color:#41464f!important;color:#c0c5cd!imp
 <style id="mm-normal-readable-gradient-fix">
 body.mm-normal-charcoal{background:linear-gradient(180deg,#090b0f 0%,#242a33 34%,#9ca5b1 72%,#fff 100%) fixed!important}
 body.mm-normal-charcoal .hero{background:linear-gradient(180deg,#24282e 0%,#515964 48%,#d8dce2 82%,#fff 100%)!important;color:#fff!important}
-body.mm-normal-charcoal .hero :is(a,button,.btn,.btn-soft,.btn-quiet){color:#fff!important;text-decoration-color:rgba(255,255,255,.65)!important}
 body.mm-normal-charcoal .hero :is(.btn-soft,.btn-quiet){background:rgba(32,36,42,.62)!important;border-color:rgba(255,255,255,.28)!important}
-body.mm-normal-charcoal .hero :is(.hero-actions a,.hero-links a,.hero-cta a){color:#fff!important}
-body.mm-normal-charcoal .hero :is(.hero-kicker,.hero-subtitle,.hero p,.hero a){color:#f7f8fa!important}
 body.mm-normal-charcoal .hero :is(.stat-card,.panel){background:rgba(255,255,255,.78)!important;color:#20242a!important}
 body.mm-normal-charcoal .hero :is(.stat-card,.panel) :is(h1,h2,h3,strong,.stat-value,.metric-big){color:#20242a!important}
 body.mm-normal-charcoal .hero :is(.stat-card,.panel) :is(p,small,.stat-label,.stat-note,.metric-sub){color:#536071!important}
@@ -1945,6 +1942,37 @@ body.mm-normal-charcoal .hero :is(.stat-card,.panel) :is(p,small,.stat-label,.st
 @media(prefers-reduced-motion:reduce){
  .mm-gradient-outline :is(.hero,.panel,.stat-card,.mm-account-panel,.callout,.insight,.note-box,.privacy-ai,.week-stat,.tx-row,.budget-row,.investment-option,.wage-cell,.mm-achievement,.chat-shell,.chat-top,.chat-compose),
  .mm-gradient-outline :is(.hero,.panel,.stat-card,.mm-account-panel,.callout,.insight,.note-box,.privacy-ai,.week-stat,.tx-row,.budget-row,.investment-option,.wage-cell,.mm-achievement,.chat-shell,.chat-top,.chat-compose) :is(h1,h2,h3,h4,strong,b,p,small,label,span,a,button){animation:none!important}
+}
+</style>
+<style id="mm-fix-real-hero-text-contrast">
+/* Target the actual typewriter title and hero copy, not just generic panel labels. */
+body.mm-gradient-outline #overview .mm-typewriter-title,
+body.mm-gradient-outline #overview .mm-typewriter-title *,
+body.mm-gradient-outline #overview .eyebrow,
+body.mm-gradient-outline #overview .mm-creator-credit,
+body.mm-gradient-outline #overview .mm-creator-credit *,
+body.mm-gradient-outline #overview>div:first-child>p,
+body.mm-gradient-outline #overview .hero-actions a{
+ animation:mmHeroTextAdaptive 12s ease-in-out infinite!important;
+ transition:color 1.2s ease,text-shadow 1.2s ease!important;
+ text-shadow:0 0 1.4px currentColor!important;
+}
+@keyframes mmHeroTextAdaptive{
+ 0%,100%{color:#fff;text-shadow:0 0 1.4px rgba(255,255,255,.24)}
+ 50%{color:#11151c;text-shadow:0 0 1.4px rgba(0,0,0,.14)}
+}
+body.mm-gradient-outline #overview .mm-typewriter-title,
+body.mm-gradient-outline #overview .mm-typewriter-title *,
+body.mm-gradient-outline #overview .mm-creator-credit strong{font-weight:800}
+body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:currentColor!important }
+@media(prefers-reduced-motion:reduce){
+ body.mm-gradient-outline #overview .mm-typewriter-title,
+ body.mm-gradient-outline #overview .mm-typewriter-title *,
+ body.mm-gradient-outline #overview .eyebrow,
+ body.mm-gradient-outline #overview .mm-creator-credit,
+ body.mm-gradient-outline #overview .mm-creator-credit *,
+ body.mm-gradient-outline #overview>div:first-child>p,
+ body.mm-gradient-outline #overview .hero-actions a{animation:none!important;color:#fff!important}
 }
 </style>
 </body>
