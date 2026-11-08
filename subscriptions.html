@@ -22,13 +22,79 @@ h2{font-size:27px;letter-spacing:-.04em;margin:22px 0 7px}.desc{font-size:13px;l
 footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26px auto 0;max-width:700px}
 @media(max-width:850px){.plans{grid-template-columns:1fr}.plan{min-height:0}.desc{min-height:0}.top{margin-bottom:34px}}
 @media(prefers-reduced-motion:reduce){*,*:before{animation:none!important;transition:none!important}}
+
+/* Premium gold: richer metallic layers, engraved frame and floating ornaments */
+.gold{isolation:isolate;background:linear-gradient(118deg,#fff8d9 0%,#e8c66f 11%,#9a641b 23%,#f9e6a0 37%,#c28b32 52%,#fff0b2 66%,#9d681f 82%,#f8df91 100%);background-size:240% 240%;animation:goldFlow 12s ease-in-out infinite alternate;box-shadow:0 26px 80px #c58a2d33,0 0 0 1px #ffe6a0, inset 0 1px 0 #fff9d9,inset 0 -18px 38px #7d4c1822}
+.gold:before{opacity:.72;background:repeating-linear-gradient(118deg,#ffffff55 0 1px,transparent 1px 13px),linear-gradient(125deg,#fff9d9aa,transparent 25%,#8b591b33 48%,#fff6cf88 66%,transparent 80%);background-size:180% 180%;mix-blend-mode:soft-light}
+.gold:after{content:"✧  ·  ✦  ·  ✧";position:absolute;right:17px;top:92px;color:#fff8d2;font-size:18px;letter-spacing:8px;text-shadow:0 2px 12px #895411;opacity:.8;pointer-events:none;animation:ornament 5s ease-in-out infinite alternate}
+.gold .sigil{background:linear-gradient(145deg,#fff9df,#d7a83e 55%,#fff1b5);border:1px solid #fff8d5;box-shadow:0 5px 16px #80501855,inset 0 1px 3px white;color:#71450f;text-shadow:0 1px 0 #fff}
+.gold h2{color:#4d300e;text-shadow:0 1px 0 #fff5c9}
+.gold .tag{color:#765018}
+.gold .current{background:linear-gradient(100deg,#fff5c9,#d9ad4f,#fff0b0);border:1px solid #fff7d1;box-shadow:0 7px 18px #80501833,inset 0 1px 0 white;color:#59380f}
+.gold .features li:before{color:#75480f;text-shadow:0 1px 0 #fff}
+.gold .price{color:#68420e}
+@keyframes goldFlow{from{background-position:0% 35%}to{background-position:100% 70%}}
+@keyframes ornament{from{transform:translateY(0) rotate(-4deg);opacity:.5}to{transform:translateY(9px) rotate(5deg);opacity:1}}
+/* Pointer-driven ASCII arcade */
+.arcade{position:relative;overflow:hidden;margin:0 auto 38px;max-width:850px;border:1px solid #d7b96f66;border-radius:24px;padding:18px 20px 16px;background:radial-gradient(ellipse at 50% 0%,#26384b,#101720 72%);box-shadow:0 18px 55px #0006,inset 0 1px #ffffff22}
+.arcade-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;color:#e9d49a;font-size:10px;font-weight:850;letter-spacing:.17em;text-transform:uppercase}
+.arcade-top span:last-child{color:#aebbd0;letter-spacing:.08em}
+.arcade-stage{position:relative;min-height:154px;border-radius:15px;background:linear-gradient(180deg,#080e16aa,#111d2a99);border:1px solid #ffffff14;overflow:hidden;cursor:crosshair;touch-action:pan-y}
+.arcade-art{position:absolute;inset:0;display:grid;place-items:center;margin:0;padding:12px;color:#e8c76e;text-align:center;font:700 clamp(9px,1.7vw,15px)/1.22 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;letter-spacing:.02em;text-shadow:0 0 18px #d8a94a55;pointer-events:none;user-select:none}
+.arcade-hud{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:11px;color:#b8c4d4;font-size:11px}
+.arcade-hud strong{color:#ffe09a;font-variant-numeric:tabular-nums}
+.arcade-help{opacity:.72}
+.arcade-player,.arcade-coin{position:absolute;z-index:2;display:grid;place-items:center;width:22px;height:22px;transform:translate(-50%,-50%);font:900 16px/1 ui-monospace,monospace;pointer-events:none}
+.arcade-player{color:#fff4bd;text-shadow:0 0 12px #ffcf59,0 0 22px #ffcf59}
+.arcade-coin{color:#f8cb59;text-shadow:0 0 12px #f8c34e;animation:coinPulse 1s ease-in-out infinite alternate}
+.arcade-start{border:1px solid #d7b96f77;background:#d6ae5b18;color:#f6dfaa;border-radius:999px;padding:7px 12px;font:700 10px inherit;cursor:pointer}
+.arcade-start:hover{background:#d6ae5b35}
+@keyframes coinPulse{to{transform:translate(-50%,-50%) scale(1.25);opacity:.7}}
+@media(max-width:600px){.arcade{padding:14px}.arcade-stage{min-height:140px}.arcade-hud{align-items:flex-start;flex-direction:column;gap:5px}}
+@media(prefers-reduced-motion:reduce){.gold,.gold:after{animation:none}}
+
 </style></head>
 <body><main class="wrap">
 <div class="top"><div class="brand">Money<span>Map</span> <small style="font-size:10px;letter-spacing:.16em;color:#aab3c1">SUBSCRIPTIONS</small></div><a class="back" href="index.html">← Back to MoneyMap</a></div>
 <header><div class="eyebrow">Find your level</div><h1>One clear view.<br>Three ways to grow.</h1><p>Choose the MoneyMap experience that fits you. Every higher tier includes the features of the tiers below it.</p></header>
+
+<section class="arcade" aria-label="Interactive MoneyMap ASCII game">
+ <div class="arcade-top"><span>MoneyMap · ASCII arcade</span><span>Mouse control / collect the coins</span></div>
+ <div class="arcade-stage" id="asciiStage" role="application" aria-label="Move your mouse or finger to collect the gold dollar signs">
+  <pre class="arcade-art" aria-hidden="true">
+ __  __                      __  __
+|  \/  | ___  _ __   ___ _   _|  \/  | __ _ _ __
+| |\/| |/ _ \| '_ \ / _ \ | | | |\/| |/ _` | '_ \
+| |  | | (_) | | | |  __/ |_| | |  | | (_| | |_) |
+|_|  |_|\___/|_| |_|\___|\__, |_|  |_|\__,_| .__/
+                         |___/              |_|
+        [ SAVE · GROW · REPEAT ]
+  </pre>
+  <span class="arcade-player" id="asciiPlayer" aria-hidden="true">@</span>
+  <span class="arcade-coin" id="asciiCoin" aria-hidden="true">$</span>
+ </div>
+ <div class="arcade-hud"><span>COINS COLLECTED: <strong id="asciiScore">00</strong> · BEST: <strong id="asciiBest">00</strong></span><button class="arcade-start" id="asciiReset" type="button">↻ Reset game</button><span class="arcade-help" id="asciiHint">Move @ onto the gold $ to collect it.</span></div>
+</section>
 <section class="plans" aria-label="Subscription plans">
 <article class="plan silver"><div class="plan-head"><span class="tag">Essential access</span><span class="sigil">B</span></div><h2>MoneyMap Basic</h2><p class="desc">The essentials for building confident everyday money habits.</p><div class="price">CORE EXPERIENCE</div><ul class="features"><li>Budgeting and finance dashboard</li><li>Money Quest game access</li><li>Five curated theme presets</li><li>Fun Blue default appearance</li><li class="off">Custom colors and gradients</li><li class="off">Trading Simulator</li></ul><div class="current">BASIC · SILVER</div></article>
 <article class="plan pearl"><div class="plan-head"><span class="tag">Expanded access</span><span class="sigil">+</span></div><h2>MoneyMap Plus</h2><p class="desc">More creative control, more ways to personalize, and more to practise.</p><div class="price">EVERYTHING IN BASIC, PLUS</div><ul class="features"><li>All Basic features</li><li>All theme presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><div class="current">PLUS · IRIDESCENT PEARL</div></article>
 <article class="plan gold"><div class="plan-head"><span class="tag">Complete access</span><span class="sigil">✦</span></div><h2>MoneyMap Premium</h2><p class="desc">The complete MoneyMap experience, with every current feature unlocked.</p><div class="price">EVERYTHING IN PLUS, PLUS</div><ul class="features"><li>All Plus and Basic features</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Full access to current features</li></ul><div class="current">PREMIUM · GOLD</div></article>
 </section><footer>Subscription information only. Plan upgrades, payment processing, and billing are not available yet. Your current access is determined by your MoneyMap account.</footer>
-</main></body></html>
+</main>
+<script>
+(()=>{
+ const stage=document.getElementById('asciiStage'), player=document.getElementById('asciiPlayer'), coin=document.getElementById('asciiCoin');
+ const scoreEl=document.getElementById('asciiScore'),bestEl=document.getElementById('asciiBest'),hint=document.getElementById('asciiHint');
+ if(!stage||!player||!coin)return;
+ let score=0,best=0,x=50,y=50,cx=24,cy=30;
+ try{best=Number(localStorage.getItem('mm_ascii_best')||0)}catch(e){}
+ bestEl.textContent=String(best).padStart(2,'0');
+ const placeCoin=()=>{cx=8+Math.random()*84;cy=12+Math.random()*76;coin.style.left=cx+'%';coin.style.top=cy+'%'};
+ const move=e=>{const r=stage.getBoundingClientRect();x=Math.max(2,Math.min(98,(e.clientX-r.left)/r.width*100));y=Math.max(5,Math.min(95,(e.clientY-r.top)/r.height*100));player.style.left=x+'%';player.style.top=y+'%';if(Math.hypot((x-cx)*r.width/100,(y-cy)*r.height/100)<22){score++;scoreEl.textContent=String(score).padStart(2,'0');if(score>best){best=score;bestEl.textContent=String(best).padStart(2,'0');try{localStorage.setItem('mm_ascii_best',best)}catch(e){}}hint.textContent=['Nice! Keep collecting.','Your money momentum is growing!','Great move — one more coin!'][score%3];placeCoin()}};
+ stage.addEventListener('pointermove',move);
+ stage.addEventListener('pointerdown',e=>{stage.setPointerCapture?.(e.pointerId);move(e)});
+ document.getElementById('asciiReset')?.addEventListener('click',()=>{score=0;scoreEl.textContent='00';hint.textContent='New round! Move @ onto the gold $.';placeCoin()});
+ player.style.left=x+'%';player.style.top=y+'%';placeCoin();
+})();
+</script>
+</body></html>
