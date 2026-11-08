@@ -525,6 +525,16 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
     <div class="mm-achievement-progress"><span id="mmAchievementProgress"></span></div>
     <div class="mm-achievement-grid" id="mmAchievementGrid"><div class="mm-smart-empty">Your achievements will appear as you use MoneyMap.</div></div>
   </section>
+<section class="panel mm-membership-page" id="membership">
+ <div class="section-head"><div><div class="section-kicker">MONEYMAP MEMBERSHIP</div><h2 class="section-title">Choose your MoneyMap experience</h2><p>See what your plan includes. Plus and Premium include everything from the plans below them.</p></div><span class="tag blue" id="mmMembershipCurrentPill">Checking plan…</span></div>
+ <div class="mm-current-plan" aria-live="polite"><div><span class="mm-plan-eyebrow">YOUR CURRENT PLAN</span><h3 id="mmMembershipCurrentName">MoneyMap Basic</h3><p id="mmMembershipCurrentDesc">Your essential tools to build better money habits.</p></div><span class="mm-current-plan-mark" id="mmMembershipCurrentMark">B</span></div>
+ <div class="mm-plan-grid">
+  <article class="mm-plan-card"><div class="mm-plan-top"><span class="mm-plan-eyebrow">START HERE</span><span class="mm-plan-symbol">B</span></div><h3>MoneyMap Basic</h3><p class="mm-plan-summary">The essentials for everyday money management.</p><ul><li>All core budgeting and finance tools</li><li>Money Quest game access</li><li>Five curated appearance presets</li><li>Fun Blue as the default theme</li><li>No custom color editing</li><li class="mm-plan-excluded">Trading Simulator not included</li></ul><span class="mm-plan-included">Included for every account</span></article>
+  <article class="mm-plan-card mm-plan-plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Plus</h3><p class="mm-plan-summary">More ways to personalize and practise.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span></article>
+  <article class="mm-plan-card mm-plan-premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span></article>
+ </div>
+ <p class="mm-membership-note">Plans describe feature access in this version of MoneyMap. Upgrades, payments, and billing are not available yet.</p>
+</section>
   <section class="panel" id="profile">
     <div class="section-head"><div><div class="section-kicker">06 / Your situation</div><h2 class="section-title">Build your money profile</h2><p>More context helps the coach identify patterns that a calculator would miss.</p></div><span class="tag">Saved on this device</span></div>
     <div class="field-grid">
@@ -1826,7 +1836,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
- const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['account-access','☁','Account']];
+ const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['account-access','☁','Account']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
   const index=items.findIndex(x=>x[0]===id);if(index<0)return;
@@ -1996,6 +2006,16 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
   document.body.classList.toggle('mm-tier-plus',tier==='plus');
   document.body.classList.toggle('mm-tier-premium',tier==='premium');
   setTierBadge(tier);
+  const currentName=document.getElementById('mmMembershipCurrentName');
+  const currentDesc=document.getElementById('mmMembershipCurrentDesc');
+  const currentPill=document.getElementById('mmMembershipCurrentPill');
+  const currentMark=document.getElementById('mmMembershipCurrentMark');
+  if(currentName)currentName.textContent=tierNames[tier];
+  if(currentDesc)currentDesc.textContent=tier==='premium'?'You have the complete MoneyMap experience, including Plus and Basic features.':tier==='plus'?'You have full customization and Trading Simulator access, plus every Basic feature.':'Your essential tools, Money Quest, and five curated themes.';
+  if(currentPill)currentPill.textContent='Current plan · '+tierNames[tier];
+  if(currentMark)currentMark.textContent=tier==='premium'?'✦':tier==='plus'?'+':'B';
+  document.querySelectorAll('.mm-plan-card').forEach((card,i)=>card.classList.toggle('is-current',(tier==='basic'&&i===0)||(tier==='plus'&&i===1)||(tier==='premium'&&i===2)));
+
   // Money Quest is the one included game for Basic. Trading is Plus and Premium.
   const trading=document.getElementById('trading-game');
   if(trading)trading.hidden=basic;
@@ -2080,6 +2100,29 @@ body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-
  #overview{animation:none!important;background-position:50% 50%!important}
  #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11151c!important;-webkit-text-fill-color:#11151c!important}
 }
+</style>
+<style id="mm-membership-page-style">
+.mm-membership-page{scroll-margin-top:22px}
+.mm-current-plan{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px;margin:18px 0 22px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(120deg,rgba(75,126,210,.12),rgba(255,255,255,.42))}
+.mm-plan-eyebrow{font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mm-current-plan h3{font-size:24px;margin:5px 0;color:var(--ink)}
+.mm-current-plan p{margin:0;color:var(--muted);font-size:13px}
+.mm-current-plan-mark,.mm-plan-symbol{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:var(--blue-soft);color:var(--blue);font-size:20px;font-weight:900}
+.mm-plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.mm-plan-card{min-width:0;padding:19px;border:1px solid var(--line);border-radius:20px;background:var(--card);display:flex;flex-direction:column;gap:10px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.mm-plan-card.is-current{border:2px solid var(--blue);box-shadow:0 8px 28px rgba(65,112,190,.16);transform:translateY(-3px)}
+.mm-plan-top{display:flex;justify-content:space-between;align-items:center}
+.mm-plan-card h3{margin:2px 0 0;font-size:20px;color:var(--ink)}
+.mm-plan-summary{margin:0;min-height:38px;font-size:13px;line-height:1.5;color:var(--muted)}
+.mm-plan-card ul{padding-left:18px;margin:4px 0 8px;display:grid;gap:9px;flex:1}
+.mm-plan-card li{font-size:12px;line-height:1.45;color:var(--ink)}
+.mm-plan-card li::marker{color:var(--blue)}
+.mm-plan-card .mm-plan-excluded{color:var(--muted);text-decoration:line-through}
+.mm-plan-included{display:inline-flex;align-self:flex-start;padding:7px 10px;border-radius:999px;background:var(--blue-soft);color:var(--ink);font-size:10px;font-weight:800}
+.mm-plan-plus .mm-plan-symbol{background:#e7f0ff;color:#3168bc}
+.mm-plan-premium .mm-plan-symbol{background:linear-gradient(135deg,#fff1c6,#d7ad55);color:#62430d}
+.mm-membership-note{margin:16px 0 0;color:var(--muted);font-size:11px}
+@media(max-width:850px){.mm-plan-grid{grid-template-columns:1fr}.mm-plan-summary{min-height:0}.mm-current-plan{padding:16px}}
 </style>
 </body>
 </html>
