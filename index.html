@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Browser-enforced protections. GitHub Pages cannot set arbitrary HTTP response headers. -->
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co https://*.supabase.co https://api.frankfurter.dev https://open.er-api.com https://api.worldbank.org https://translate.googleapis.com; worker-src 'self' blob:; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https://dmapwfwltcfsmqgrvrxq.supabase.co https://*.supabase.co https://api.frankfurter.dev https://open.er-api.com https://api.worldbank.org https://translate.googleapis.com; worker-src 'self' blob:; upgrade-insecure-requests" />
   <meta name="theme-color" content="#f5f8ff" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="MoneyMap" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <meta name="description" content="A private, interactive money manager with country and currency selection, budgeting, wage calculations, inflation estimates, and a personal finance coach." />
   <title>MoneyMap — Manage Your Money, For a Better Future</title>
   <style>
@@ -1308,10 +1308,13 @@ function init(){
   selectedCurrency=$('currencySelect').value||'USD';if(!CURRENCIES.some(c=>c.code===selectedCurrency))selectedCurrency='USD';$('currencySelect').value=selectedCurrency;
   renderBudget();bindEvents();updateAll();saveState(false);refreshInflation(false);convertFx();showApiStatus('Connecting to public data',false);
 }
-// Keep a dashboard initialization error from preventing the independent account system from starting.
-try{init();}catch(error){console.error('MoneyMap dashboard initialization failed:',error);window.mmDashboardInitError=String(error&&error.message||error);}
-try{initWeekly();}catch(error){console.error('MoneyMap weekly ledger initialization failed:',error);window.mmWeeklyInitError=String(error&&error.message||error);}
-try{refreshCurrencyCatalog().then(()=>{updateAll();renderWeekly();}).catch(error=>console.warn('MoneyMap currency catalog:',error));}catch(error){console.warn('MoneyMap currency catalog startup:',error);}
+// The dedicated account portal must not initialize dashboard widgets that are not rendered in this view.
+const mmIsAccountPortal=new URLSearchParams(location.search).get('account')==='1';
+if(!mmIsAccountPortal){
+  try{init();}catch(error){console.error('MoneyMap dashboard initialization failed:',error);window.mmDashboardInitError=String(error&&error.message||error);}
+  try{initWeekly();}catch(error){console.error('MoneyMap weekly ledger initialization failed:',error);window.mmWeeklyInitError=String(error&&error.message||error);}
+  try{refreshCurrencyCatalog().then(()=>{updateAll();renderWeekly();}).catch(error=>console.warn('MoneyMap currency catalog:',error));}catch(error){console.warn('MoneyMap currency catalog startup:',error);}
+}
 /* MONEYMAP_CLOUD_ACCOUNTS_V1 - direct Supabase Auth + REST; no SDK/npm */
 const MM_CLOUD_CONFIG_KEY='moneymap_supabase_config_v1';
 const MM_CLOUD_SESSION_KEY='moneymap_supabase_session_v1';
@@ -1864,7 +1867,7 @@ mmCloudInit();
 <script>
 // MoneyMap installable phone app (PWA). API requests are never cached.
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(err => console.warn('MoneyMap offline install setup:', err)));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('MoneyMap offline install setup:', err)));
 }
 </script>
 
