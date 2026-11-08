@@ -310,7 +310,7 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 @media(prefers-reduced-motion:reduce){#mmWelcomeParty{transition:none}.mm-party-piece{animation-duration:1.2s!important}}
 </style>
 <style id="mm-premium-font-studio-style">
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=Didot&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bodoni+Moda:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=Josefin+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Libre+Caslon+Display&family=Lora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 .mm-font-studio{margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,var(--panel,rgba(255,255,255,.82)),rgba(126,151,190,.07));box-shadow:0 12px 32px rgba(30,50,80,.07)}
 .mm-font-studio-head{display:flex;align-items:center;justify-content:space-between;gap:15px}.mm-font-studio-head h3{margin:7px 0 4px;font-size:22px;letter-spacing:-.04em}.mm-font-studio-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6;max-width:570px}.mm-font-crown{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:linear-gradient(145deg,#fff2c5,#c99c45 58%,#76501c);border:1px solid #e4c77d;color:#4e3511;font:700 24px Georgia,serif;box-shadow:inset 0 1px 0 #fff9dc,0 8px 20px #b78b3826}
 .mm-font-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-top:18px}.mm-font-controls label{display:grid;gap:7px;width:min(100%,390px);font-size:11px;font-weight:800;color:var(--muted)}.mm-font-controls select{width:100%;min-height:43px;padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font:inherit}.mm-font-controls button{min-height:43px;padding:10px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font-weight:800;cursor:pointer}.mm-font-preview{display:grid;gap:7px;margin-top:15px;padding:22px;border-radius:16px;background:linear-gradient(120deg,#10151d,#202a38);color:#f6e6bf;border:1px solid #b38a42;box-shadow:inset 0 0 0 1px #d2b36b24}.mm-font-preview span{font-size:9px;letter-spacing:.2em;font-weight:800;color:#c9a85e}.mm-font-preview strong{font-size:clamp(22px,4vw,34px);font-weight:600;letter-spacing:-.035em}.mm-font-preview small{font-size:10px;color:#c7cbd2}.mm-font-status{margin:12px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
@@ -412,6 +412,34 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 }
 @media(prefers-reduced-motion:reduce){#overview.hero{animation:none!important;background-position:50% 50%!important}}
 </style>
+<style id="mm-iridescent-preset-v1">
+.mm-surface-preset{display:grid;gap:7px;margin-top:14px;max-width:430px}
+.mm-surface-preset label{font-size:11px;font-weight:850;color:var(--muted)}
+.mm-surface-preset select{width:100%;min-height:42px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font:inherit}
+.mm-surface-preset small{font-size:10px;line-height:1.5;color:var(--muted)}
+#overview.hero.mm-iridescent-active{background-image:radial-gradient(440px circle at var(--mm-wave-x,50%) var(--mm-wave-y,50%),rgba(255,255,255,.38),rgba(210,218,239,.22) 17%,rgba(191,177,221,.14) 31%,rgba(159,218,224,.12) 43%,transparent 72%),linear-gradient(125deg,#030405 0%,#15171b 40%,#34373d 72%,#090a0c 100%)!important;background-size:auto,220% 220%!important;animation:mmOverviewGradientDrift 18s ease-in-out infinite alternate!important;transition:background-image .25s ease}
+#overview.hero.mm-iridescent-active:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,rgba(255,255,255,.035),transparent 32%,rgba(223,230,255,.055) 55%,transparent 78%);mix-blend-mode:screen}
+#overview.hero.mm-iridescent-active>*{position:relative;z-index:1}
+#overview.hero.mm-iridescent-active .hero-mini{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.8)}
+#overview.hero.mm-iridescent-active .mm-typewriter-title,#overview.hero.mm-iridescent-active .mm-typewriter-title *{color:#f7f8fb!important;-webkit-text-fill-color:#f7f8fb!important}
+#overview.hero.mm-iridescent-active .mm-creator-credit,#overview.hero.mm-iridescent-active .mm-creator-credit *{color:#c4cbd5!important;-webkit-text-fill-color:#c4cbd5!important}
+#overview.hero.mm-iridescent-active>div:first-child>p{color:#e5e8ee!important;-webkit-text-fill-color:#e5e8ee!important}
+@media(prefers-reduced-motion:reduce){#overview.hero.mm-iridescent-active{animation:none!important}}
+</style>
+<script id="mm-iridescent-interaction">
+(()=>{'use strict';
+ const hero=document.getElementById('overview'),preset=document.getElementById('mmSurfacePreset');
+ if(!hero||!preset)return;
+ const KEY='moneymap_overview_surface_v1';
+ let saved='monochrome';try{saved=localStorage.getItem(KEY)||'monochrome'}catch(e){}
+ function apply(value){const mode=value==='iridescent'?'iridescent':'monochrome';hero.classList.toggle('mm-iridescent-active',mode==='iridescent');preset.value=mode;try{localStorage.setItem(KEY,mode)}catch(e){}}
+ preset.addEventListener('change',()=>apply(preset.value));
+ const move=(event)=>{if(!hero.classList.contains('mm-iridescent-active'))return;const r=hero.getBoundingClientRect();const x=Math.max(0,Math.min(100,(event.clientX-r.left)/r.width*100));const y=Math.max(0,Math.min(100,(event.clientY-r.top)/r.height*100));hero.style.setProperty('--mm-wave-x',x+'%');hero.style.setProperty('--mm-wave-y',y+'%')};
+ hero.addEventListener('pointermove',move,{passive:true});
+ hero.addEventListener('pointerdown',move,{passive:true});
+ apply(saved);
+})();
+</script>
 </head>
 <body>
 <header class="topbar">
@@ -652,7 +680,19 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
   <option value="manrope">Manrope · Clean modern</option>
   <option value="montserrat">Montserrat · Geometric</option>
   <option value="cormorant">Cormorant Garamond · Classic editorial</option>
+  <option value="bodoni">Bodoni Moda · High-fashion serif</option>
+  <option value="librecaslon">Libre Caslon Display · Heritage luxury</option>
+  <option value="lora">Lora · Warm editorial</option>
+  <option value="librebaskerville">Libre Baskerville · Bookish classic</option>
+  <option value="outfit">Outfit · Contemporary geometric</option>
+  <option value="sora">Sora · Futuristic clean</option>
+  <option value="jakarta">Plus Jakarta Sans · Premium modern</option>
+  <option value="dmsans">DM Sans · Minimal interface</option>
+  <option value="ibmplex">IBM Plex Sans · Technical</option>
+  <option value="josefin">Josefin Sans · Elegant minimal</option>
+  <option value="archivo">Archivo · Bold editorial</option>
  </select><button type="button" id="mmFontReset">Reset font</button></div>
+ <div class="mm-surface-preset"><label for="mmSurfacePreset">Overview surface preset</label><select id="mmSurfacePreset"><option value="monochrome">Black to medium-dark grey</option><option value="iridescent">Black &amp; white iridescent · Interactive</option></select><small>In iridescent mode, move your mouse across the Overview to create a soft pearl-like color wave.</small></div>
  <div class="mm-font-preview" id="mmFontPreview"><span>YOUR MONEY. YOUR STYLE.</span><strong>Make every detail yours.</strong><small>MoneyMap Premium Typography</small></div>
  <p class="mm-font-status" id="mmFontStatus" role="status" aria-live="polite">Premium members can apply custom fonts throughout MoneyMap.</p>
 </div>
@@ -2327,7 +2367,18 @@ body.mm-tier-basic #financial-analysis{display:none!important}
   space:'"Space Grotesk",Arial,sans-serif',
   manrope:'"Manrope",Arial,sans-serif',
   montserrat:'"Montserrat",Arial,sans-serif',
-  cormorant:'"Cormorant Garamond",Georgia,serif'
+  cormorant:'"Cormorant Garamond",Georgia,serif',
+  bodoni:'"Bodoni Moda",Didot,serif',
+  librecaslon:'"Libre Caslon Display",Georgia,serif',
+  lora:'"Lora",Georgia,serif',
+  librebaskerville:'"Libre Baskerville",Georgia,serif',
+  outfit:'"Outfit",Arial,sans-serif',
+  sora:'"Sora",Arial,sans-serif',
+  jakarta:'"Plus Jakarta Sans",Arial,sans-serif',
+  dmsans:'"DM Sans",Arial,sans-serif',
+  ibmplex:'"IBM Plex Sans",Arial,sans-serif',
+  josefin:'"Josefin Sans",Arial,sans-serif',
+  archivo:'"Archivo",Arial,sans-serif'
  };
  const premium=()=>document.body.dataset.mmTier==='premium';
  const read=()=>{try{return localStorage.getItem(KEY)||'apple'}catch(e){return'apple'}};
