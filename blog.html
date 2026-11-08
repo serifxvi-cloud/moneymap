@@ -143,14 +143,31 @@ $('customEmojiFile').addEventListener('change',async()=>{
 });
 $('postText').addEventListener('input',()=>{$('charCount').textContent=$('postText').value.length;});
 $('sendPost').addEventListener('click',async()=>{
- const body=$('postText').value.trim();if(!body||busy)return;if(!signed){setStatus('Sign in before publishing.','bad');return;}
- busy=true;$('sendPost').disabled=true;$('sendPost').textContent='Publishing…';
- try{const jwt=await token();await api(table,{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({user_id:session.user.id,body,author_tier:tier})},jwt);$('postText').value='';$('charCount').textContent='0';setStatus('Your post is live. Thanks for contributing!','ok');await load();}
- catch(e){setStatus('Post could not be published: '+e.message,'bad');}
+ const body=$('postText').value.trim();if((!body&&!pendingFiles.length)||busy)return;if(!signed){setStatus('Sign in before publishing.','bad');return;}
+ busy=true;$('sendPost').disabled=true;$('sendPost').textContent='Uploading…';
+ try{
+  const attachments=[];
+  for(const file of pendingFiles){
+   const video=file.type.startsWith('video/'),limit=video?100:20;
+   if(file.size>limit*1048576)throw new Error(file.name+' exceeds '+limit+' MB.');
+   if(!video&&!file.type.startsWith('image/'))throw new Error('Unsupported file: '+file.name);
+   if(video&&!['video/mp4','video/webm','video/quicktime'].includes(file.type))throw new Error('Use MP4, WebM or MOV video.');
+   attachments.push(await uploadFile(file,'media'));
+  }
+  const jwt=await token();
+  await api(table,{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({user_id:session.user.id,body,author_tier:tier,attachments})},jwt);
+  $('postText').value='';$('charCount').textContent='0';pendingFiles=[];$('mediaFiles').value='';$('mediaPreview').replaceChildren();
+  setStatus('Your post is live. Thanks for contributing!','ok');await load();
+ }catch(e){setStatus('Post could not be published: '+e.message,'bad');}
  finally{busy=false;$('sendPost').disabled=!signed;$('sendPost').textContent='Publish post ↗';}
 });
 $('refreshFeed').addEventListener('click',load);
-setupUser();load();setInterval(load,30000);
+setupUser();load();
+if(supa){
+ supa.channel('moneymap-social-live')
+  .on('postgres_changes',{event:'INSERT',schema:'public',table:'moneymap_blog_posts'},()=>load())
+  .subscribe(status=>{if(status==='SUBSCRIBED')setStatus('Live · new posts appear automatically','ok');else if(status==='CHANNEL_ERROR')setStatus('Realtime unavailable. Enable the table in Supabase Realtime publication.','bad');});
+}else setStatus('Realtime client could not load. Check your internet connection.','bad');
 })();
 </script>
 </body></html>
