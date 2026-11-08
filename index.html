@@ -2035,5 +2035,21 @@ body.mm-tier-basic #mmThemeRows,body.mm-tier-basic #mmGradientA,body.mm-tier-bas
 body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-tier-basic .mm-gradient-controls>.mm-gradient-toggle{display:none!important}
 [hidden]{display:none!important}
 </style>
+<style id="mm-overview-opposite-text-v1">
+/* Keep overview text synchronized with the dark-to-light animated hero surface. */
+#overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){
+ animation:mmOverviewOppositeText 12s ease-in-out infinite!important;
+ transition:color 1.2s ease,text-shadow 1.2s ease!important;
+}
+@keyframes mmOverviewOppositeText{
+ 0%,100%{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 0 1.3px rgba(255,255,255,.16)!important}
+ 50%{color:#10141b!important;-webkit-text-fill-color:#10141b!important;text-shadow:0 0 1.1px rgba(0,0,0,.1)!important}
+}
+#overview .hero-actions a{ text-decoration-color:currentColor!important }
+#overview .mm-typewriter-title .mm-type-caret{border-color:currentColor!important}
+@media(prefers-reduced-motion:reduce){
+ #overview :is(.mm-typewriter-title,.mm-typewriter-title *, .eyebrow,.mm-creator-credit,.mm-creator-credit *,>div:first-child>p,.hero-actions a,.hero-actions a *, .hero-right .mm-premium-caption,.hero-right .hero-mini span,.hero-right .hero-mini strong,.hero-right .hero-mini small){animation:none!important;color:#11141a!important;-webkit-text-fill-color:#11141a!important}
+}
+</style>
 </body>
 </html>
