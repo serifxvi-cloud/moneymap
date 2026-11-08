@@ -22,6 +22,9 @@ alter table public.moneymap_blog_posts add column if not exists body text not nu
 alter table public.moneymap_blog_posts add column if not exists attachments jsonb not null default '[]'::jsonb;
 alter table public.moneymap_blog_posts add column if not exists created_at timestamptz not null default now();
 
+alter table public.moneymap_blog_posts drop constraint if exists moneymap_blog_posts_body_check;
+alter table public.moneymap_blog_posts drop constraint if exists moneymap_blog_body_length;
+alter table public.moneymap_blog_posts add constraint moneymap_blog_body_length check (char_length(body) <= 1200);
 alter table public.moneymap_blog_posts enable row level security;
 
 create or replace function public.moneymap_blog_set_author()
