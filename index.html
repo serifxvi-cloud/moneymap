@@ -1359,7 +1359,22 @@ function mmCloudRenderAccount(){const signed=!!(mmCloudSession&&mmCloudSession.a
 function mmCloudStoreSession(data){mmCloudSession={access_token:data.access_token,refresh_token:data.refresh_token,expires_at:Math.floor(Date.now()/1000)+(Number(data.expires_in)||3600),user:data.user||mmCloudSession?.user||null};localStorage.setItem(MM_CLOUD_SESSION_KEY,JSON.stringify(mmCloudSession));mmCloudRenderAccount();}
 async function mmCloudAccessToken(){if(!mmCloudSession?.access_token)throw new Error('Please sign in to your MoneyMap account.');if(mmCloudSession.expires_at>Date.now()/1000+90)return mmCloudSession.access_token;if(!mmCloudSession.refresh_token)throw new Error('Your login expired. Please sign in again.');const data=await mmCloudFetch('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:mmCloudSession.refresh_token})});mmCloudStoreSession(data);return mmCloudSession.access_token;}
 async function mmCloudSignUp(){if(mmCloudBusy)return;const email=document.getElementById('mmAccountEmail').value.trim(),password=document.getElementById('mmAccountPassword').value;if(!email||password.length<8){mmCloudSetStatus('Enter a valid email and a password of at least 8 characters.','bad');return;}mmCloudBusy=true;try{const emailRedirectTo=window.location.origin+window.location.pathname;const data=await mmCloudFetch('/auth/v1/signup',{method:'POST',body:JSON.stringify({email,password,options:{emailRedirectTo}})});if(data.access_token){mmCloudStoreSession(data);await mmCloudAfterLogin();}else{mmCloudSetStatus('Account request sent. Check your email for the confirmation link, then return here and sign in. If email confirmation is disabled in your project, try signing in now.','ok');}}catch(e){mmCloudSetStatus('Could not create account: '+e.message,'bad');}finally{mmCloudBusy=false;}}
-async function mmCloudSignIn(){if(mmCloudBusy)return;const email=document.getElementById('mmAccountEmail').value.trim(),password=document.getElementById('mmAccountPassword').value;if(!email||!password){mmCloudSetStatus('Enter your email and password first.','bad');return;}mmCloudBusy=true;mmCloudSetStatus('Signing in…');try{const data=await mmCloudFetch('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});mmCloudStoreSession(data);await mmCloudAfterLogin();}catch(e){mmCloudSetStatus('Sign-in failed: '+e.message,'bad');}finally{mmCloudBusy=false;}}
+async function mmCloudSignIn(){
+ if(mmCloudBusy)return;
+ const email=document.getElementById('mmAccountEmail').value.trim().toLowerCase();
+ const password=document.getElementById('mmAccountPassword').value;
+ if(!email||!/^\S+@\S+\.\S+$/.test(email)||!password){mmCloudSetStatus('Enter a valid email address and your password.','bad');return;}
+ mmCloudBusy=true;mmCloudSetStatus('Connecting securely…');
+ try{
+  const data=await mmCloudFetch('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+  if(!data.access_token||!data.user)throw new Error('The account server did not return a valid login session. Please try again.');
+  mmCloudStoreSession(data);await mmCloudAfterLogin();
+ }catch(e){
+  const message=String(e.message||'Unknown sign-in error');
+  const friendly=/invalid login credentials|invalid_credentials/i.test(message)?'That email and password do not match. Check both fields or use Reset password.':/email not confirmed/i.test(message)?'Please confirm your email using the link sent to your inbox, then sign in again.':/too many requests/i.test(message)?'Too many attempts. Wait a few minutes before trying again.':message;
+  mmCloudSetStatus('Sign-in failed: '+friendly,'bad');
+ }finally{mmCloudBusy=false;}
+}
 async function mmCloudResetPassword(){const email=document.getElementById('mmAccountEmail').value.trim();if(!email){mmCloudSetStatus('Enter your account email first.','bad');return;}try{await mmCloudFetch('/auth/v1/recover',{method:'POST',body:JSON.stringify({email})});mmCloudSetStatus('If this email is registered, Supabase will send password-reset instructions. Check your inbox.','ok');}catch(e){mmCloudSetStatus('Could not request password reset: '+e.message,'bad');}}
 async function mmCloudSignOut(){try{if(mmCloudSession?.access_token){const token=await mmCloudAccessToken();await mmCloudFetch('/auth/v1/logout',{method:'POST'},token);}}catch(e){console.warn('Cloud sign-out notice:',e.message)}localStorage.removeItem(MM_CLOUD_SESSION_KEY);mmCloudSession=null;mmCloudApplying=true;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(TX_STORAGE_KEY);localStorage.removeItem(CHAT_STORAGE_KEY);localStorage.removeItem(MM_CLOUD_NOTES_KEY);document.getElementById('mmPersonalNotes').value='';restoreState();loadWeeklyTransactions();renderWeekly();const root=document.getElementById('chatMessages');if(root)root.innerHTML='';updateAll();}finally{mmCloudApplying=false;}mmCloudRenderAccount();mmCloudSetStatus('Signed out. This device’s private finance data was cleared; your cloud account remains saved securely.','ok');}
 function mmCloudSnapshot(){return {version:1,savedAt:new Date().toISOString(),profile:safeJSON(localStorage.getItem(STORAGE_KEY),{}),transactions:safeJSON(localStorage.getItem(TX_STORAGE_KEY),[]),chat:safeJSON(localStorage.getItem(CHAT_STORAGE_KEY),[]),notes:localStorage.getItem(MM_CLOUD_NOTES_KEY)||''};}
@@ -1405,7 +1420,9 @@ async function mmCloudSignInGoogle(){
     const c=mmCloudConfig();
     const target=base+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(redirect)+'&apikey='+encodeURIComponent(c.key);
     mmCloudSetStatus('Opening Google sign-in…');
-    window.location.assign(target);
+    // The account page embeds this app in an iframe; OAuth must leave the frame.
+    const topWindow=window.top||window;
+    topWindow.location.assign(target);
   }catch(e){mmCloudSetStatus('Google sign-in is not configured yet: '+e.message,'bad');}
 }
 async function mmCloudHandleOAuthReturn(){
@@ -1426,6 +1443,9 @@ function mmCloudInit(){
   mmCloudLoadConfigUI();
     document.getElementById('mmSignUp').addEventListener('click',mmCloudSignUp);
   document.getElementById('mmSignIn').addEventListener('click',mmCloudSignIn);
+  ['mmAccountEmail','mmAccountPassword'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();mmCloudSignIn();}});
+  });
   document.getElementById('mmGoogleSignIn').addEventListener('click',mmCloudSignInGoogle);
   document.getElementById('mmSignOut').addEventListener('click',mmCloudSignOut);
   document.getElementById('mmSyncNow').addEventListener('click',mmCloudSaveNow);
