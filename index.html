@@ -289,6 +289,17 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 
 </style>
 
+<style id="mm-welcome-party-css">
+#mmWelcomeParty{position:fixed;z-index:10050;top:22px;left:50%;width:min(430px,calc(100vw - 28px));transform:translate(-50%,-24px) scale(.96);opacity:0;pointer-events:none;padding:20px 52px 19px 22px;border:1px solid rgba(255,255,255,.8);border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.97),rgba(232,243,255,.94));color:#172c4c;box-shadow:0 18px 55px rgba(37,83,145,.23);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);font-family:inherit;overflow:hidden;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.85,.25,1)}
+#mmWelcomeParty.mm-welcome-show{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
+#mmWelcomeParty .mm-welcome-title{font-size:20px;font-weight:900;letter-spacing:-.6px;line-height:1.2}
+#mmWelcomeParty .mm-welcome-sub{font-size:12px;color:#55708f;margin-top:5px;font-weight:650}
+#mmWelcomeParty .mm-welcome-close{position:absolute;right:11px;top:10px;width:31px;height:31px;border:0;border-radius:50%;background:#e9f1fc;color:#31547e;font-size:19px;line-height:1;cursor:pointer}
+#mmWelcomeParty .mm-welcome-close:hover{background:#d8e8ff;transform:scale(1.07)}
+.mm-party-piece{position:fixed;z-index:10049;top:-22px;left:var(--x);width:var(--w);height:var(--h);border-radius:var(--r);background:var(--c);pointer-events:none;animation:mmPartyRain var(--d) cubic-bezier(.18,.65,.35,1) var(--delay) forwards;box-shadow:0 2px 5px rgba(35,55,90,.12)}
+@keyframes mmPartyRain{0%{transform:translate3d(0,-10px,0) rotate(0deg);opacity:0}8%{opacity:1}100%{transform:translate3d(var(--drift),105vh,0) rotate(var(--spin));opacity:.9}}
+@media(prefers-reduced-motion:reduce){#mmWelcomeParty{transition:none}.mm-party-piece{animation-duration:1.2s!important}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -1183,7 +1194,35 @@ function mmCloudHasLocalData(s){return !!((s.profile&&Object.keys(s.profile).len
 async function mmCloudGetRemote(token){const uid=mmCloudSession.user.id;const q='?select=data,updated_at&user_id=eq.'+encodeURIComponent(uid)+'&limit=1';const rows=await mmCloudFetch('/rest/v1/moneymap_profiles'+q,{method:'GET'},token);return Array.isArray(rows)&&rows.length?rows[0]:null;}
 async function mmCloudWriteRemote(snapshot,token){const uid=mmCloudSession.user.id;await mmCloudFetch('/rest/v1/moneymap_profiles?on_conflict=user_id',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:uid,data:snapshot,updated_at:new Date().toISOString()})},token);}
 function mmCloudApplySnapshot(snapshot){if(!snapshot)return;mmCloudApplying=true;try{if(snapshot.profile)localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshot.profile));if(Array.isArray(snapshot.transactions))localStorage.setItem(TX_STORAGE_KEY,JSON.stringify(snapshot.transactions));if(Array.isArray(snapshot.chat))localStorage.setItem(CHAT_STORAGE_KEY,JSON.stringify(snapshot.chat));localStorage.setItem(MM_CLOUD_NOTES_KEY,String(snapshot.notes||''));document.getElementById('mmPersonalNotes').value=String(snapshot.notes||'');restoreState();selectedCountry=document.getElementById('countrySelect').value||'';selectedCurrency=document.getElementById('currencySelect').value||'USD';renderBudget();updateAll();loadWeeklyTransactions();renderWeekly();const root=document.getElementById('chatMessages');root.innerHTML='';if(aiConversation.length){aiConversation.forEach(x=>addMessage(x.content,x.role==='assistant'?'coach':'user'));}else{addMessage('Hi! I’m your MoneyMap AI coach. Your account is connected. Ask me about your spending, goals, or daily routine.','coach');}}finally{mmCloudApplying=false;}}
-async function mmCloudAfterLogin(){mmCloudSetStatus('Signed in. Checking your private account…');mmCloudRenderAccount();try{const token=await mmCloudAccessToken();const remote=await mmCloudGetRemote(token);const local=mmCloudSnapshot();if(remote&&remote.data){if(mmCloudHasLocalData(local)){const takeCloud=confirm('This account has its own saved MoneyMap data.\n\nChoose OK to load that account’s data on this device.\nChoose Cancel to replace that account’s cloud data with the data currently on this device.');if(takeCloud){mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been loaded.','ok');}else{await mmCloudWriteRemote(local,token);mmCloudSetStatus('This device’s data has been saved to your account.','ok');}}else{mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been restored.','ok');}}else{const hasLocal=mmCloudHasLocalData(local);const upload=hasLocal&&confirm('This account is new and has no saved data yet.\n\nChoose OK to copy the data currently on this device into this account. Choose Cancel to start this account with a clean, private workspace.');if(upload){await mmCloudWriteRemote(local,token);mmCloudSetStatus('Your selected data has been saved to this account.','ok');}else{const empty={version:1,savedAt:new Date().toISOString(),profile:{},transactions:[],chat:[],notes:''};mmCloudApplySnapshot(empty);await mmCloudWriteRemote(empty,token);mmCloudSetStatus('Your new private MoneyMap account is ready.','ok');}}mmCloudRenderAccount();}catch(e){mmCloudSetStatus('Signed in, but private cloud sync failed: '+e.message+'. The account database may need its one-time administrator setup.','bad');}}
+function mmShowWelcome(){
+ if(new URLSearchParams(location.search).get('account')==='1'||!mmCloudSession?.user)return;
+ const user=mmCloudSession.user,meta=user.user_metadata||{};
+ const raw=meta.full_name||meta.name||meta.preferred_username||user.email?.split('@')[0]||'there';
+ const name=String(raw).trim().split(/\\s+/).map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(' ');
+ document.getElementById('mmWelcomeParty')?.remove();
+ document.querySelectorAll('.mm-party-piece').forEach(x=>x.remove());
+ const toast=document.createElement('div');toast.id='mmWelcomeParty';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');
+ const title=document.createElement('div');title.className='mm-welcome-title';title.textContent='Hello, '+name+'! 🎉';
+ const sub=document.createElement('div');sub.className='mm-welcome-sub';sub.textContent='Welcome back to your MoneyMap.';
+ const close=document.createElement('button');close.className='mm-welcome-close';close.type='button';close.setAttribute('aria-label','Close welcome message');close.textContent='×';
+ toast.append(title,sub,close);document.body.append(toast);
+ let closed=false;const pieces=[];
+ const colors=['#69a9ff','#ffd166','#ff7aa8','#72d6b0','#a78bfa','#ff9f68','#53c9d8'];
+ for(let i=0;i<64;i++){
+  const p=document.createElement('i');p.className='mm-party-piece';
+  p.style.setProperty('--x',Math.random()*100+'vw');p.style.setProperty('--w',(5+Math.random()*7)+'px');p.style.setProperty('--h',(8+Math.random()*10)+'px');
+  p.style.setProperty('--r',Math.random()>.5?'2px':'50%');p.style.setProperty('--c',colors[i%colors.length]);
+  p.style.setProperty('--d',(2.5+Math.random()*1.8)+'s');p.style.setProperty('--delay',(Math.random()*.65)+'s');
+  p.style.setProperty('--drift',(-65+Math.random()*130)+'px');p.style.setProperty('--spin',(180+Math.random()*720)+'deg');
+  document.body.append(p);pieces.push(p);
+ }
+ const cleanup=()=>{if(closed)return;closed=true;toast.classList.remove('mm-welcome-show');setTimeout(()=>{toast.remove();pieces.forEach(p=>p.remove())},400)};
+ close.addEventListener('click',cleanup);
+ requestAnimationFrame(()=>toast.classList.add('mm-welcome-show'));
+ const timer=setTimeout(cleanup,4000);
+ close.addEventListener('click',()=>clearTimeout(timer),{once:true});
+}
+async function mmCloudAfterLogin(){mmCloudSetStatus('Signed in. Checking your private account…');mmCloudRenderAccount();try{const token=await mmCloudAccessToken();const remote=await mmCloudGetRemote(token);const local=mmCloudSnapshot();if(remote&&remote.data){if(mmCloudHasLocalData(local)){const takeCloud=confirm('This account has its own saved MoneyMap data.\n\nChoose OK to load that account’s data on this device.\nChoose Cancel to replace that account’s cloud data with the data currently on this device.');if(takeCloud){mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been loaded.','ok');}else{await mmCloudWriteRemote(local,token);mmCloudSetStatus('This device’s data has been saved to your account.','ok');}}else{mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been restored.','ok');}}else{const hasLocal=mmCloudHasLocalData(local);const upload=hasLocal&&confirm('This account is new and has no saved data yet.\n\nChoose OK to copy the data currently on this device into this account. Choose Cancel to start this account with a clean, private workspace.');if(upload){await mmCloudWriteRemote(local,token);mmCloudSetStatus('Your selected data has been saved to this account.','ok');}else{const empty={version:1,savedAt:new Date().toISOString(),profile:{},transactions:[],chat:[],notes:''};mmCloudApplySnapshot(empty);await mmCloudWriteRemote(empty,token);mmCloudSetStatus('Your new private MoneyMap account is ready.','ok');}}mmCloudRenderAccount();}catch(e){mmCloudSetStatus('Signed in, but private cloud sync failed: '+e.message+'. The account database may need its one-time administrator setup.','bad');}finally{mmShowWelcome();}}
 async function mmCloudSaveNow(){if(!mmCloudSession?.access_token){mmCloudSetStatus('Sign in first to sync your notes and finances.','bad');return;}try{const token=await mmCloudAccessToken();await mmCloudWriteRemote(mmCloudSnapshot(),token);mmCloudSetStatus('Saved to your MoneyMap cloud account just now.','ok');}catch(e){mmCloudSetStatus('Cloud save failed: '+e.message,'bad');}}
 function mmCloudScheduleSave(){if(mmCloudApplying||!mmCloudSession?.access_token)return;if(mmCloudSaveTimer)clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=setTimeout(()=>mmCloudSaveNow(),1200);}
 async function mmCloudSignInGoogle(){
