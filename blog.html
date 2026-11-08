@@ -40,6 +40,7 @@ textarea{width:100%;min-height:116px;resize:vertical;border:1px solid #526176;bo
 <aside class="panel side"><h3>Member badges</h3><p>Your badge follows the MoneyMap plan currently selected in your account.</p><div class="rule"></div><div class="tiers"><div class="tier"><span class="tier-icon">◇</span><span><b>Basic</b><br><small style="color:#91a0b3">Community member</small></span></div><div class="tier"><span class="tier-icon" style="color:#dce6f5">✧</span><span><b>Plus · Silver Crystal</b><br><small style="color:#91a0b3">Iridescent crystal badge</small></span></div><div class="tier"><span class="tier-icon" style="color:#f3d58a">✦</span><span><b>Premium · Gold Crystal</b><br><small style="color:#91a0b3">Golden premium badge</small></span></div></div><div class="rule"></div><h3>Community guidelines</h3><p>Be constructive and welcoming. Do not post passwords, account details, bank information, or other sensitive data. Posts are public to visitors of this board.</p><div class="signin" id="signInLinks"><a href="account.html">Sign in / Create account ↗</a><a href="subscriptions.html">View plans ↗</a></div></aside>
 </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (()=>{
 'use strict';
@@ -50,6 +51,9 @@ const $=id=>document.getElementById(id);
 let session=null,accessToken='',busy=false;
 try{session=JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{}
 const email=String(session?.user?.email||'').trim().toLowerCase();
+const supa=window.supabase?.createClient(SUPABASE.url,SUPABASE.key,{auth:{persistSession:false,autoRefreshToken:false}});
+let pendingFiles=[],customEmojis=[];
+try{customEmojis=JSON.parse(localStorage.getItem('mm_blog_custom_emojis_v1')||'[]')}catch{}
 const signed=!!(session?.access_token&&email);
 const tier=(()=>{let v='';try{v=localStorage.getItem(TIER_KEY)||''}catch{}if(['basic','plus','premium'].includes(v))return v;return ['serifxvi@gmail.com','irenegame002@gmail.com','theodoredavidsontonara@gmail.com'].includes(email)?'premium':'basic'})();
 const displayName=email?(email.split('@')[0]||'MoneyMap member')+'@gmail.com':'Guest';
@@ -88,12 +92,15 @@ function render(rows){
   const time=document.createElement('div');time.className='entry-time';time.textContent=timeLabel(row.created_at);
   meta.append(name,time);head.append(avatar,meta);
   const body=document.createElement('p');body.className='entry-body';body.textContent=row.body||'';
-  article.append(head,body);root.append(article);
+  article.append(head,body);
+  const media=document.createElement('div');media.className='entry-media';
+  (Array.isArray(row.attachments)?row.attachments:[]).forEach(item=>{if(!item||!item.url)return;if(item.type==='video'){const v=document.createElement('video');v.src=item.url;v.controls=true;v.preload='metadata';media.append(v);}else{const im=document.createElement('img');im.src=item.url;im.alt='Community media';im.loading='lazy';media.append(im);}});
+  if(media.childNodes.length)article.append(media);root.append(article);
  });
 }
 async function load(){
  $('refreshFeed').disabled=true;
- try{const rows=await api(table+'?select=id,user_id,author_name,author_tier,is_admin,body,created_at&order=created_at.desc&limit=100');render(rows);if(!signed)setStatus('You can read the board. Sign in with your MoneyMap account to publish a post.');else setStatus('Connected · '+rows.length+' recent posts','ok');}
+ try{const rows=await api(table+'?select=id,user_id,author_name,author_tier,is_admin,body,attachments,created_at&order=created_at.desc&limit=100');render(rows);if(!signed)setStatus('You can read the board. Sign in with your MoneyMap account to publish a post.');else setStatus('Connected · '+rows.length+' recent posts','ok');}
  catch(e){render([]);setStatus('Could not load the community board. '+e.message+' Make sure the blog database setup has been run in Supabase.','bad');}
  finally{$('refreshFeed').disabled=false;}
 }
