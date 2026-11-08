@@ -77,6 +77,11 @@ async function token(){
  session={access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Math.floor(Date.now()/1000)+(Number(d.expires_in)||3600),user:d.user||session.user};localStorage.setItem(SESSION_KEY,JSON.stringify(session));return session.access_token;
 }
 function timeLabel(v){const d=new Date(v);return Number.isNaN(d.getTime())?'Just now':d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
+function linkifyText(value){
+ const frag=document.createDocumentFragment(),re=/https?:\\/\\/[^\\s<]+/g;let last=0,m;
+ while((m=re.exec(value))){frag.append(document.createTextNode(value.slice(last,m.index)));const a=document.createElement('a');a.href=m[0];a.target='_blank';a.rel='noopener noreferrer';a.textContent=m[0];frag.append(a);last=re.lastIndex;}
+ frag.append(document.createTextNode(value.slice(last)));return frag;
+}
 function render(rows){
  const root=$('feed');root.replaceChildren();
  if(!rows.length){const e=document.createElement('div');e.className='empty';e.textContent='No posts yet. Be the first to start a conversation.';root.append(e);return;}
@@ -94,10 +99,10 @@ function render(rows){
   const body=document.createElement('p');body.className='entry-body';
   const raw=String(row.body||''),emojiPattern=/:custom(\d+):/g;let cursor=0,match;
   while((match=emojiPattern.exec(raw))){body.append(document.createTextNode(raw.slice(cursor,match.index)));const em=(Array.isArray(row.attachments)?row.attachments:[]).find(x=>x.type==='emoji'&&x.name===match[0]);if(em){const im=document.createElement('img');im.className='entry-emoji';im.src=em.url;im.alt='Custom emoji';body.append(im);}else body.append(document.createTextNode(match[0]));cursor=emojiPattern.lastIndex;}
-  body.append(document.createTextNode(raw.slice(cursor)));
+  body.append(linkifyText(raw.slice(cursor)));
   article.append(head,body);
   const media=document.createElement('div');media.className='entry-media';
-  (Array.isArray(row.attachments)?row.attachments:[]).forEach(item=>{if(!item||!item.url)return;if(item.type==='video'){const v=document.createElement('video');v.src=item.url;v.controls=true;v.preload='metadata';media.append(v);}else{const im=document.createElement('img');im.src=item.url;im.alt='Community media';im.loading='lazy';media.append(im);}});
+  (Array.isArray(row.attachments)?row.attachments:[]).filter(item=>item.type!=='emoji').forEach(item=>{if(!item||!item.url)return;if(item.type==='video'){const v=document.createElement('video');v.src=item.url;v.controls=true;v.preload='metadata';media.append(v);}else{const im=document.createElement('img');im.src=item.url;im.alt='Community media';im.loading='lazy';media.append(im);}});
   if(media.childNodes.length)article.append(media);root.append(article);
  });
 }
