@@ -369,6 +369,41 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 @media(max-width:560px){#overview.hero{padding:25px 18px;border-radius:20px;gap:22px}#overview .mm-typewriter-title{font-size:clamp(32px,9vw,42px)}#overview .hero-right{gap:8px}#overview .hero-mini{padding:13px 11px;min-height:100px}#overview .hero-mini strong{font-size:18px}#overview .hero-actions .btn{padding:10px 11px}}
 @media(prefers-reduced-motion:reduce){#overview *{scroll-behavior:auto!important}}
 </style>
+<style id="mm-overview-button-contrast-motion-v1">
+/* Keep controls readable; only the panel gradient shifts gently. */
+#overview.hero{
+ background:linear-gradient(120deg,#526174 0%,#8795a5 34%,#cbd3dc 68%,#71849a 100%)!important;
+ background-size:220% 220%!important;
+ animation:mmOverviewGradientDrift 18s ease-in-out infinite alternate!important;
+}
+@keyframes mmOverviewGradientDrift{0%{background-position:0% 45%}100%{background-position:100% 55%}}
+#overview .hero-actions{display:flex!important;flex-wrap:wrap!important;gap:9px!important;align-items:center}
+#overview .hero-actions .btn,
+#overview .hero-actions a{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:39px;padding:10px 13px!important;border-radius:12px!important;
+ font-size:11px!important;font-weight:800!important;line-height:1.25!important;
+ color:#17243a!important;-webkit-text-fill-color:#17243a!important;
+ text-shadow:none!important;opacity:1!important;visibility:visible!important;
+ background:rgba(248,251,255,.78)!important;
+ border:1px solid rgba(74,96,124,.42)!important;
+ box-shadow:0 3px 10px rgba(26,43,64,.08),inset 0 1px 0 rgba(255,255,255,.8)!important;
+}
+#overview .hero-actions .btn-primary{
+ background:#fff!important;color:#122039!important;-webkit-text-fill-color:#122039!important;
+ border-color:#fff!important;box-shadow:0 5px 14px rgba(24,39,59,.12)!important
+}
+#overview .hero-actions .btn-soft{
+ background:#e8eef5!important;color:#17243a!important;-webkit-text-fill-color:#17243a!important
+}
+#overview .hero-actions .btn:hover{transform:translateY(-2px);filter:brightness(1.04)}
+#overview .mm-typography-mini{color:#f4d99a!important;-webkit-text-fill-color:#f4d99a!important}
+@media(max-width:560px){
+ #overview .hero-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #overview .hero-actions .btn,#overview .hero-actions a{width:100%;text-align:center;padding:10px 8px!important;font-size:10px!important}
+}
+@media(prefers-reduced-motion:reduce){#overview.hero{animation:none!important;background-position:50% 50%!important}}
+</style>
 </head>
 <body>
 <header class="topbar">
