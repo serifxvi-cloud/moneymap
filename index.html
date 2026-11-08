@@ -2434,5 +2434,34 @@ body.mm-tier-basic #financial-analysis{display:none!important}
  render();
 })();
 </script>
+
+<style id="mm-overview-button-visibility-fix">
+/* Keep every Overview action readable and visually consistent, regardless of theme animation. */
+#overview .hero-actions a.btn,
+#overview .hero-actions button.btn{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:40px!important;padding:11px 15px!important;border-radius:12px!important;
+ background:#edf3fb!important;color:#20334e!important;-webkit-text-fill-color:#20334e!important;
+ border:1px solid #cbd8e9!important;box-shadow:0 3px 10px rgba(10,25,45,.12),inset 0 1px 0 rgba(255,255,255,.9)!important;
+ font-size:11px!important;font-weight:800!important;line-height:1.25!important;text-shadow:none!important;
+ opacity:1!important;visibility:visible!important;animation:none!important;transition:transform .18s ease,background .18s ease,box-shadow .18s ease!important;
+}
+#overview .hero-actions a.btn.btn-primary,
+#overview .hero-actions button.btn.btn-primary{
+ background:#fff!important;color:#17345f!important;-webkit-text-fill-color:#17345f!important;border-color:#fff!important;
+}
+#overview .hero-actions a.btn.btn-soft,
+#overview .hero-actions button.btn.btn-soft{
+ background:#dfe8f4!important;color:#20334e!important;-webkit-text-fill-color:#20334e!important;border-color:#c5d3e5!important;
+}
+#overview .hero-actions a.btn.btn-quiet,
+#overview .hero-actions button.btn.btn-quiet{
+ background:#edf3fb!important;color:#20334e!important;-webkit-text-fill-color:#20334e!important;border-color:#cbd8e9!important;
+}
+#overview .hero-actions a.btn:hover,
+#overview .hero-actions button.btn:hover{transform:translateY(-2px)!important;filter:none!important;background:#fff!important;box-shadow:0 7px 16px rgba(10,25,45,.16)!important}
+#overview .hero-actions a.btn:focus-visible,
+#overview .hero-actions button.btn:focus-visible{outline:3px solid #9dbaf0!important;outline-offset:3px!important}
+</style>
 </body>
 </html>
