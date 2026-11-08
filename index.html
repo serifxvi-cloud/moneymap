@@ -319,22 +319,13 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 @media(max-width:620px){.mm-font-studio{padding:16px}.mm-font-studio-head{align-items:flex-start}.mm-font-controls{align-items:stretch}.mm-font-controls label{width:100%}.mm-font-controls button{width:100%}}
 </style>
 <style id="mm-font-shortcut-style">.mm-font-shortcut{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 20px;padding:17px 20px;border:1px solid #b99550;border-radius:18px;background:linear-gradient(110deg,#111319,#292113 58%,#111319);color:#f2dfb5;box-shadow:0 10px 28px #1112}.mm-font-shortcut div{display:grid;gap:4px}.mm-font-shortcut span{font-size:9px;letter-spacing:.16em;font-weight:900;color:#d4b46a}.mm-font-shortcut strong{font-size:15px;letter-spacing:-.02em}.mm-font-shortcut small{font-size:11px;color:#c6c0b3}.mm-font-shortcut a{flex:none;padding:10px 14px;border:1px solid #b99550;border-radius:999px;color:#f1d99d;text-decoration:none;font-size:11px;font-weight:850}.mm-font-shortcut a:hover{background:#b9955022}@media(max-width:620px){.mm-font-shortcut{align-items:stretch;flex-direction:column}.mm-font-shortcut a{text-align:center}}</style>
-<style id="mm-hero-quicklinks-v1">
-.mm-hero-quicklinks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px;max-width:680px}
-.mm-quicklink{display:flex;align-items:center;gap:10px;min-width:0;padding:11px 13px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.075);color:#f6f8fc!important;text-decoration:none!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:transform .2s ease,background .2s ease,border-color .2s ease}
-.mm-quicklink:hover{transform:translateY(-2px);background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.42)}
-.mm-quicklink-icon{display:grid;place-items:center;flex:none;width:31px;height:31px;border-radius:10px;background:rgba(255,255,255,.12);font-size:17px;color:#e9edf4}
-.mm-quicklink>span:nth-child(2){display:grid;gap:2px;min-width:0}
-.mm-quicklink strong{font-size:11px;font-weight:850;letter-spacing:.005em;color:#fff}
-.mm-quicklink small{font-size:9px;color:#c5d0df}
-.mm-quicklink-arrow{margin-left:auto;color:#c9d3e0;font-size:13px}
-.mm-quicklink-gold{background:linear-gradient(115deg,rgba(62,47,22,.94),rgba(112,82,31,.84));border-color:#c8a45c;box-shadow:inset 0 1px 0 #fff5d044,0 5px 16px #0002}
-.mm-quicklink-gold .mm-quicklink-icon{background:linear-gradient(145deg,#fff0bd,#d7a947);color:#5c3d0b}
-.mm-quicklink-gold strong{color:#ffe8ae}
-.mm-quicklink-gold small,.mm-quicklink-gold .mm-quicklink-arrow{color:#e7d1a0}
-.mm-quicklink-account{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.38)}
-@media(max-width:520px){.mm-hero-quicklinks{grid-template-columns:1fr;gap:8px}.mm-quicklink{padding:10px 12px}}
-@media(prefers-reduced-motion:reduce){.mm-quicklink{transition:none}.mm-quicklink:hover{transform:none}}
+
+<style id="mm-typography-mini-style">
+.mm-typography-mini{display:inline-flex;align-items:center;gap:7px;margin:7px 0 2px;padding:6px 10px;border:1px solid rgba(205,170,94,.72);border-radius:999px;background:linear-gradient(110deg,rgba(38,31,19,.92),rgba(92,67,29,.88));color:#f4d99a!important;text-decoration:none!important;font-size:10px;font-weight:800;letter-spacing:.015em;box-shadow:inset 0 1px 0 #fff4d333,0 3px 10px #0002;transition:transform .18s ease,filter .18s ease}
+.mm-typography-mini:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.mm-typography-mini>span:first-child{font-size:12px;color:#ffe6a5}
+.mm-typography-mini-tag{padding:2px 5px;border-radius:999px;background:#e8c875;color:#4b330d;font-size:7px;letter-spacing:.09em}
+@media(prefers-reduced-motion:reduce){.mm-typography-mini{transition:none}}
 </style>
 </head>
 <body>
@@ -370,9 +361,10 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
       <div id="mmHeroUsername" class="mm-hero-user" aria-live="polite"><strong>Your MoneyMap</strong></div>
       <div class="eyebrow">A clearer view of your money</div>
       <h1 class="mm-typewriter-title" aria-label="Manage Your Money, For a Better Future"><span class="mm-type-line" id="mmTypeLineOne"></span><br/><span class="mm-type-line" id="mmTypeLineTwo"></span><span class="mm-type-caret" aria-hidden="true"></span></h1>
+      <a class="mm-typography-mini" href="#membership"><span aria-hidden="true">✦</span> Typography Studio <span class="mm-typography-mini-tag">PREMIUM</span></a>
        <div class="mm-creator-credit" aria-label="Created by Theodore"><span class="mm-credit-line"></span><span>Created by <strong>Theodore</strong></span><span class="mm-credit-line"></span></div>
       <p>Understand what you earn, where it goes, and what to do next. Set your country, build a realistic monthly budget, and get practical guidance based on your actual routine.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="profile.html">My public profile ↗</a><a class="btn btn-quiet" href="#profile">Set up my money profile</a><a class="btn btn-quiet" href="#coach">Talk to the money coach ↗</a><a class="btn btn-quiet mm-trading-shortcut" href="#trading-game">Open Trading Simulator ↗</a></div><nav class="mm-hero-quicklinks" aria-label="Account and membership shortcuts"><a class="mm-quicklink mm-quicklink-gold" href="#membership"><span class="mm-quicklink-icon">✦</span><span><strong>Typography Studio</strong><small>Premium fonts</small></span><span class="mm-quicklink-arrow">↗</span></a><a class="mm-quicklink" href="subscriptions.html" target="_blank" rel="noopener"><span class="mm-quicklink-icon">◇</span><span><strong>Subscriptions</strong><small>Manage your plan</small></span><span class="mm-quicklink-arrow">↗</span></a><a class="mm-quicklink" href="blog.html" target="_blank" rel="noopener"><span class="mm-quicklink-icon">◎</span><span><strong>Community Blog</strong><small>Explore posts</small></span><span class="mm-quicklink-arrow">↗</span></a><a class="mm-quicklink mm-quicklink-account" href="account.html" target="_blank" rel="noopener"><span class="mm-quicklink-icon">↗</span><span><strong>Continue to Account</strong><small>Sign in or create account</small></span><span class="mm-quicklink-arrow">↗</span></a></nav>
+      <div class="hero-actions"><a class="btn btn-primary" href="profile.html">My public profile ↗</a><a class="btn btn-quiet" href="#profile">Set up my money profile</a><a class="btn btn-quiet" href="#coach">Talk to the money coach ↗</a><a class="btn btn-quiet mm-trading-shortcut" href="#trading-game">Open Trading Simulator ↗</a><a class="btn btn-quiet" href="subscriptions.html" target="_blank" rel="noopener">Subscriptions ↗</a><a class="btn btn-quiet" href="blog.html" target="_blank" rel="noopener">Community blog ↗</a><a class="btn btn-soft" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a></div>
     </div>
     <div class="hero-right">
     <div class="mm-premium-stage" aria-label="Floating three-dimensional MoneyMap Premium gold crystal">
