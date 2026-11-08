@@ -151,6 +151,14 @@ create table if not exists public.moneymap_member_profiles (
   constraint moneymap_profile_stats_object check (jsonb_typeof(game_stats) = 'object'),
   constraint moneymap_profile_badges_array check (jsonb_typeof(badges) = 'array')
 );
+alter table public.moneymap_member_profiles add column if not exists username text;
+update public.moneymap_member_profiles
+set username = case when lower(email) = 'serifxvi@gmail.com' then 'serifxvi' else split_part(email,'@',1) end
+where username is null or btrim(username) = '';
+alter table public.moneymap_member_profiles alter column username set not null;
+create unique index if not exists moneymap_member_profiles_username_lower_uidx
+on public.moneymap_member_profiles (lower(username));
+
 alter table public.moneymap_member_profiles enable row level security;
 
 create or replace function public.moneymap_profile_set_email()
@@ -164,6 +172,7 @@ begin
   select email into verified_email from auth.users where id = new.user_id;
   if verified_email is null then raise exception 'Account email unavailable.'; end if;
   new.email := verified_email;
+  new.username := case when lower(verified_email) = 'serifxvi@gmail.com' then 'serifxvi' else split_part(verified_email, '@', 1) end;
   new.about := btrim(coalesce(new.about, ''));
   if char_length(new.about) > 500 then raise exception 'About me is limited to 500 characters.'; end if;
   new.updated_at := now();
