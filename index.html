@@ -372,10 +372,18 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 <style id="mm-overview-button-contrast-motion-v1">
 /* Keep controls readable; only the panel gradient shifts gently. */
 #overview.hero{
- background:linear-gradient(120deg,#526174 0%,#8795a5 34%,#cbd3dc 68%,#71849a 100%)!important;
+ background:linear-gradient(120deg,#08090b 0%,#17191d 34%,#30343a 68%,#111316 100%)!important;
  background-size:220% 220%!important;
  animation:mmOverviewGradientDrift 18s ease-in-out infinite alternate!important;
 }
+#overview.hero{border-color:rgba(220,226,235,.24)!important;box-shadow:0 18px 44px rgba(0,0,0,.24)!important}
+#overview .mm-typewriter-title,#overview .mm-typewriter-title *{color:#f5f7fb!important;-webkit-text-fill-color:#f5f7fb!important}
+#overview .mm-creator-credit,#overview .mm-creator-credit *{color:#b8c2d0!important;-webkit-text-fill-color:#b8c2d0!important}
+#overview>div:first-child>p{color:#e0e5ec!important;-webkit-text-fill-color:#e0e5ec!important}
+#overview .hero-actions .btn,#overview .hero-actions a{background:rgba(244,247,251,.94)!important;color:#171a20!important;-webkit-text-fill-color:#171a20!important;border-color:rgba(255,255,255,.65)!important}
+#overview .hero-actions .btn-primary{background:#fff!important;color:#11151b!important;-webkit-text-fill-color:#11151b!important}
+#overview .eyebrow{color:#a8bce0!important;-webkit-text-fill-color:#a8bce0!important}
+#overview .mm-creator-credit strong{color:#f5f7fb!important;-webkit-text-fill-color:#f5f7fb!important}
 @keyframes mmOverviewGradientDrift{0%{background-position:0% 45%}100%{background-position:100% 55%}}
 #overview .hero-actions{display:flex!important;flex-wrap:wrap!important;gap:9px!important;align-items:center}
 #overview .hero-actions .btn,
