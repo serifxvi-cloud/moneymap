@@ -309,6 +309,15 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
 @keyframes mmPartyRain{0%{transform:translate3d(0,-10px,0) rotate(0deg);opacity:0}8%{opacity:1}100%{transform:translate3d(var(--drift),105vh,0) rotate(var(--spin));opacity:.9}}
 @media(prefers-reduced-motion:reduce){#mmWelcomeParty{transition:none}.mm-party-piece{animation-duration:1.2s!important}}
 </style>
+<style id="mm-premium-font-studio-style">
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=Didot&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+.mm-font-studio{margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,var(--panel,rgba(255,255,255,.82)),rgba(126,151,190,.07));box-shadow:0 12px 32px rgba(30,50,80,.07)}
+.mm-font-studio-head{display:flex;align-items:center;justify-content:space-between;gap:15px}.mm-font-studio-head h3{margin:7px 0 4px;font-size:22px;letter-spacing:-.04em}.mm-font-studio-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6;max-width:570px}.mm-font-crown{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:linear-gradient(145deg,#fff2c5,#c99c45 58%,#76501c);border:1px solid #e4c77d;color:#4e3511;font:700 24px Georgia,serif;box-shadow:inset 0 1px 0 #fff9dc,0 8px 20px #b78b3826}
+.mm-font-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-top:18px}.mm-font-controls label{display:grid;gap:7px;width:min(100%,390px);font-size:11px;font-weight:800;color:var(--muted)}.mm-font-controls select{width:100%;min-height:43px;padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font:inherit}.mm-font-controls button{min-height:43px;padding:10px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface,#fff);color:var(--ink);font-weight:800;cursor:pointer}.mm-font-preview{display:grid;gap:7px;margin-top:15px;padding:22px;border-radius:16px;background:linear-gradient(120deg,#10151d,#202a38);color:#f6e6bf;border:1px solid #b38a42;box-shadow:inset 0 0 0 1px #d2b36b24}.mm-font-preview span{font-size:9px;letter-spacing:.2em;font-weight:800;color:#c9a85e}.mm-font-preview strong{font-size:clamp(22px,4vw,34px);font-weight:600;letter-spacing:-.035em}.mm-font-preview small{font-size:10px;color:#c7cbd2}.mm-font-status{margin:12px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-font-active input,body.mm-premium-font-active select,body.mm-premium-font-active textarea{font-family:var(--mm-user-font)!important}
+.mm-font-studio.mm-font-locked{position:relative}.mm-font-studio.mm-font-locked:after{content:"✦ PREMIUM FEATURE";position:absolute;right:18px;top:18px;padding:6px 9px;border-radius:999px;background:#17130d;color:#e6c77d;border:1px solid #a98743;font-size:9px;font-weight:900;letter-spacing:.12em}
+@media(max-width:620px){.mm-font-studio{padding:16px}.mm-font-studio-head{align-items:flex-start}.mm-font-controls{align-items:stretch}.mm-font-controls label{width:100%}.mm-font-controls button{width:100%}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -531,9 +540,25 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
  <div class="mm-plan-grid">
   <article class="mm-plan-card" data-mm-plan-card="basic"><div class="mm-plan-top"><span class="mm-plan-eyebrow">START HERE</span><span class="mm-plan-symbol">B</span></div><h3>MoneyMap Basic</h3><p class="mm-plan-summary">The essentials for everyday money management.</p><ul><li>All core budgeting and finance tools</li><li>Money Quest game access</li><li>Five curated appearance presets</li><li>Fun Blue as the default theme</li><li>No custom color editing</li><li class="mm-plan-excluded">Trading Simulator not included</li></ul><span class="mm-plan-included">Included for every account</span><button class="mm-plan-select" type="button" data-mm-select-tier="basic">Switch to Basic</button></article>
   <article class="mm-plan-card mm-plan-plus" data-mm-plan-card="plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Plus</h3><p class="mm-plan-summary">More ways to personalize and practise.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="plus">Switch to Plus</button></article>
-  <article class="mm-plan-card mm-plan-premium" data-mm-plan-card="premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="premium">Switch to Premium</button></article>
+  <article class="mm-plan-card mm-plan-premium" data-mm-plan-card="premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Exclusive premium typography studio with custom fonts</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="premium">Switch to Premium</button></article>
  </div>
  <p class="mm-membership-note">Plans describe feature access in this version of MoneyMap. Upgrades, payments, and billing are not available yet.</p>
+<div class="mm-font-studio" id="mmFontStudio">
+ <div class="mm-font-studio-head"><div><span class="mm-plan-eyebrow">PREMIUM PERSONALIZATION</span><h3>Typography Studio</h3><p>Give MoneyMap your own signature. Choose a typeface and preview it across the interface.</p></div><span class="mm-font-crown">Aa</span></div>
+ <div class="mm-font-controls"><label for="mmPremiumFontSelect">Your typeface</label><select id="mmPremiumFontSelect">
+  <option value="apple">Apple · San Francisco style</option>
+  <option value="emirates">Emirates-inspired · Elegant editorial</option>
+  <option value="didot">Didot · Fashion luxury</option>
+  <option value="cinzel">Cinzel · Imperial lettering</option>
+  <option value="playfair">Playfair Display · Refined serif</option>
+  <option value="space">Space Grotesk · Modern futuristic</option>
+  <option value="manrope">Manrope · Clean modern</option>
+  <option value="montserrat">Montserrat · Geometric</option>
+  <option value="cormorant">Cormorant Garamond · Classic editorial</option>
+ </select><button type="button" id="mmFontReset">Reset font</button></div>
+ <div class="mm-font-preview" id="mmFontPreview"><span>YOUR MONEY. YOUR STYLE.</span><strong>Make every detail yours.</strong><small>MoneyMap Premium Typography</small></div>
+ <p class="mm-font-status" id="mmFontStatus" role="status" aria-live="polite">Premium members can apply custom fonts throughout MoneyMap.</p>
+</div>
 </section>
   <section class="panel" id="profile">
     <div class="section-head"><div><div class="section-kicker">06 / Your situation</div><h2 class="section-title">Build your money profile</h2><p>More context helps the coach identify patterns that a calculator would miss.</p></div><span class="tag">Saved on this device</span></div>
@@ -2217,5 +2242,46 @@ body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-
 body.mm-tier-basic #financial-analysis{display:none!important}
 @media(max-width:760px){.mm-analysis-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-analysis-grid{grid-template-columns:1fr}.mm-analysis-toolbar{align-items:flex-start;flex-direction:column}}
 </style>
+<script id="mm-premium-font-studio">
+(()=>{'use strict';
+ const KEY='moneymap_premium_font_v1',select=document.getElementById('mmPremiumFontSelect'),studio=document.getElementById('mmFontStudio'),preview=document.getElementById('mmFontPreview'),status=document.getElementById('mmFontStatus'),reset=document.getElementById('mmFontReset');
+ if(!select||!studio||!preview||!status)return;
+ const stacks={
+  apple:'-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif',
+  emirates:'"Cormorant Garamond",Georgia,serif',
+  didot:'Didot,"Bodoni MT","Times New Roman",serif',
+  cinzel:'"Cinzel",Georgia,serif',
+  playfair:'"Playfair Display",Georgia,serif',
+  space:'"Space Grotesk",Arial,sans-serif',
+  manrope:'"Manrope",Arial,sans-serif',
+  montserrat:'"Montserrat",Arial,sans-serif',
+  cormorant:'"Cormorant Garamond",Georgia,serif'
+ };
+ const premium=()=>document.body.dataset.mmTier==='premium';
+ const read=()=>{try{return localStorage.getItem(KEY)||'apple'}catch(e){return'apple'}};
+ function render(){
+  const allowed=premium(),choice=stacks[select.value]?select.value:'apple';
+  studio.classList.toggle('mm-font-locked',!allowed);
+  select.disabled=!allowed;reset.disabled=!allowed;
+  if(allowed){
+   document.documentElement.style.setProperty('--mm-user-font',stacks[choice]);
+   document.body.classList.add('mm-premium-font-active');
+   preview.style.fontFamily=stacks[choice];
+   status.textContent='Active typeface: '+select.options[select.selectedIndex].text+'. Your choice is saved on this device.';
+  }else{
+   document.body.classList.remove('mm-premium-font-active');
+   document.documentElement.style.removeProperty('--mm-user-font');
+   preview.style.fontFamily=stacks[choice];
+   status.textContent='Custom fonts are exclusive to Premium. Choose Premium in your plan settings to unlock Typography Studio.';
+  }
+ }
+ select.value=read();if(!stacks[select.value])select.value='apple';
+ select.addEventListener('change',()=>{if(!premium()){select.value=read();render();return;}try{localStorage.setItem(KEY,select.value)}catch(e){}render()});
+ reset.addEventListener('click',()=>{if(!premium())return;select.value='apple';try{localStorage.setItem(KEY,'apple')}catch(e){}render()});
+ window.addEventListener('moneymap:tier-changed',render);
+ window.addEventListener('storage',e=>{if(!e.key||e.key===KEY||e.key==='moneymap_selected_tier_v1'){select.value=read();render()}});
+ render();
+})();
+</script>
 </body>
 </html>
