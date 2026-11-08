@@ -115,7 +115,7 @@ using (bucket_id = 'community-media' and owner = auth.uid());
 -- Ensure every member who publishes on the community board also gets a public profile.
 create or replace function public.moneymap_profile_from_blog_post()
 returns trigger language plpgsql security definer set search_path = ''
-as $
+as $$
 declare account_email text;
 begin
   select email into account_email from auth.users where id = new.user_id;
@@ -128,7 +128,7 @@ begin
   end if;
   return new;
 end;
-$;
+$$;
 drop trigger if exists moneymap_blog_profile_creator on public.moneymap_blog_posts;
 create trigger moneymap_blog_profile_creator after insert on public.moneymap_blog_posts
 for each row execute function public.moneymap_profile_from_blog_post();
