@@ -92,7 +92,7 @@ function render(rows){
   const time=document.createElement('div');time.className='entry-time';time.textContent=timeLabel(row.created_at);
   meta.append(name,time);head.append(avatar,meta);
   const body=document.createElement('p');body.className='entry-body';
-  const raw=String(row.body||''),emojiPattern=/:custom(\\d+):/g;let cursor=0,match;
+  const raw=String(row.body||''),emojiPattern=/:custom(\d+):/g;let cursor=0,match;
   while((match=emojiPattern.exec(raw))){body.append(document.createTextNode(raw.slice(cursor,match.index)));const em=(Array.isArray(row.attachments)?row.attachments:[]).find(x=>x.type==='emoji'&&x.name===match[0]);if(em){const im=document.createElement('img');im.className='entry-emoji';im.src=em.url;im.alt='Custom emoji';body.append(im);}else body.append(document.createTextNode(match[0]));cursor=emojiPattern.lastIndex;}
   body.append(document.createTextNode(raw.slice(cursor)));
   article.append(head,body);
@@ -157,7 +157,7 @@ $('sendPost').addEventListener('click',async()=>{
    if(video&&!['video/mp4','video/webm','video/quicktime'].includes(file.type))throw new Error('Use MP4, WebM or MOV video.');
    attachments.push(await uploadFile(file,'media'));
   }
-  const emojiPattern=/:custom(\\d+):/g;let match;while((match=emojiPattern.exec(body))){const item=customEmojis[Number(match[1])];if(item)attachments.push({type:'emoji',url:item.url,name:match[0]});}
+  const emojiPattern=/:custom(\d+):/g;let match;while((match=emojiPattern.exec(body))){const item=customEmojis[Number(match[1])];if(item)attachments.push({type:'emoji',url:item.url,name:match[0]});}
   const jwt=await token();
   await api(table,{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({user_id:session.user.id,body,author_tier:tier,attachments})},jwt);
   $('postText').value='';$('charCount').textContent='0';pendingFiles=[];$('mediaFiles').value='';$('mediaPreview').replaceChildren();
