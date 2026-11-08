@@ -1498,6 +1498,38 @@ function mmCloudInit(){
   const resetButton=document.getElementById('mmResetPassword');if(resetButton)resetButton.onclick=event=>{event.preventDefault();mmCloudResetPassword();};
   const notesField=document.getElementById('mmPersonalNotes');if(notesField)notesField.addEventListener('input',()=>{localStorage.setItem(MM_CLOUD_NOTES_KEY,notesField.value);mmCloudScheduleSave();});
   document.getElementById('mmSaveOpenAIKey')?.addEventListener('click',saveOpenAIKeyFromPage);
+  // Keep the dashboard and account iframe in step: localStorage is shared, but each
+  // document has its own JavaScript session object.
+  window.addEventListener('storage',event=>{
+    if(event.storageArea!==localStorage)return;
+    if(event.key===MM_CLOUD_SESSION_KEY){
+      const previousId=mmCloudSession?.user?.id||'';
+      let next=null;try{next=event.newValue?JSON.parse(event.newValue):null;}catch{}
+      mmCloudSession=next&&next.access_token&&next.user?next:null;
+      mmCloudRenderAccount();
+      const nextId=mmCloudSession?.user?.id||'';
+      if(nextId&&nextId!==previousId){mmCloudAfterLogin();}
+      else if(!nextId&&previousId){
+        if(mmCloudSaveTimer){clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=null;}
+        mmCloudApplying=true;
+        try{
+          restoreState();loadWeeklyTransactions();renderWeekly();
+          const chat=document.getElementById('chatMessages');if(chat)chat.innerHTML='';
+          updateAll();
+        }catch(error){console.warn('MoneyMap cross-tab sign-out refresh:',error);}
+        finally{mmCloudApplying=false;}
+        mmCloudSetStatus('Signed out in another MoneyMap tab. This device is no longer connected to cloud sync.','');
+      }
+      return;
+    }
+    // Notes and preferences can be edited from the account iframe or another tab.
+    if(event.key===MM_CLOUD_NOTES_KEY){
+      const notes=document.getElementById('mmPersonalNotes');if(notes)notes.value=event.newValue||'';
+    }
+    if(MM_CLOUD_PREFERENCE_KEYS.includes(event.key)&&event.newValue!==null){
+      window.dispatchEvent(new CustomEvent('moneymap:preference-storage-change',{detail:{key:event.key,value:event.newValue}}));
+    }
+  });
   if(window.location.hash.includes('access_token=')){mmCloudHandleOAuthReturn();}
   else if(mmCloudSession?.access_token){mmCloudAfterLogin();}else{mmCloudSetStatus('Create your free MoneyMap account with your email and password, or sign in.','');}
   const originalSaveState=saveState;saveState=function(show=true){originalSaveState(show);mmCloudScheduleSave();};
