@@ -112,3 +112,70 @@ for delete to authenticated
 using (bucket_id = 'community-media' and owner = auth.uid());
 
 notify pgrst, 'reload schema';
+
+ 
+-- Public MoneyMap member profiles (Discord-style compact profile card).
+create table if not exists public.moneymap_member_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  email text not null,
+  about text not null default '',
+  avatar_url text,
+  plan_tier text not null default 'basic' check (plan_tier in ('basic','plus','premium')),
+  game_stats jsonb not null default '{"streak":0,"best":0,"wins":0}'::jsonb,
+  badges jsonb not null default '[]'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint moneymap_profile_about_length check (char_length(about) <= 500),
+  constraint moneymap_profile_stats_object check (jsonb_typeof(game_stats) = 'object'),
+  constraint moneymap_profile_badges_array check (jsonb_typeof(badges) = 'array')
+);
+alter table public.moneymap_member_profiles enable row level security;
+
+create or replace function public.moneymap_profile_set_email()
+returns trigger language plpgsql security definer set search_path = ''
+as $$
+declare verified_email text;
+begin
+  if auth.uid() is distinct from new.user_id then
+    raise exception 'You can only edit your own profile.';
+  end if;
+  select email into verified_email from auth.users where id = new.user_id;
+  if verified_email is null then raise exception 'Account email unavailable.'; end if;
+  new.email := verified_email;
+  new.about := btrim(coalesce(new.about, ''));
+  if char_length(new.about) > 500 then raise exception 'About me is limited to 500 characters.'; end if;
+  new.updated_at := now();
+  return new;
+end;
+$$;
+drop trigger if exists moneymap_profile_email_guard on public.moneymap_member_profiles;
+create trigger moneymap_profile_email_guard before insert or update on public.moneymap_member_profiles
+for each row execute function public.moneymap_profile_set_email();
+
+drop policy if exists "Public can view MoneyMap member profiles" on public.moneymap_member_profiles;
+create policy "Public can view MoneyMap member profiles"
+on public.moneymap_member_profiles for select to anon, authenticated using (true);
+drop policy if exists "Members can create their own profile" on public.moneymap_member_profiles;
+create policy "Members can create their own profile"
+on public.moneymap_member_profiles for insert to authenticated with check (auth.uid() = user_id);
+drop policy if exists "Members can update their own profile" on public.moneymap_member_profiles;
+create policy "Members can update their own profile"
+on public.moneymap_member_profiles for update to authenticated
+using (auth.uid() = user_id) with check (auth.uid() = user_id);
+grant select on public.moneymap_member_profiles to anon, authenticated;
+grant insert, update on public.moneymap_member_profiles to authenticated;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('member-avatars','member-avatars',true,5242880,array['image/jpeg','image/png','image/webp'])
+on conflict (id) do update set public=excluded.public,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
+drop policy if exists "Public can view member avatars" on storage.objects;
+create policy "Public can view member avatars" on storage.objects for select to anon, authenticated
+using (bucket_id='member-avatars');
+drop policy if exists "Members upload own avatar" on storage.objects;
+create policy "Members upload own avatar" on storage.objects for insert to authenticated
+with check (bucket_id='member-avatars' and (storage.foldername(name))[1]=auth.uid()::text);
+drop policy if exists "Members update own avatar" on storage.objects;
+create policy "Members update own avatar" on storage.objects for update to authenticated
+using (bucket_id='member-avatars' and owner=auth.uid())
+with check (bucket_id='member-avatars' and owner=auth.uid());
+notify pgrst, 'reload schema';
