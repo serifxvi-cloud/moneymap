@@ -553,27 +553,19 @@ html{scroll-behavior:smooth;scroll-padding-top:92px}
     <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px"><button class="btn btn-primary" id="analyzeBtn">Analyze my finances</button><button class="btn btn-quiet" id="saveBtn">Save profile</button><span class="status-text" id="saveStatus" aria-live="polite"></span></div>
   </section>
 
-  <section class="panel" id="coach">
-    <div class="section-head"><div><div class="section-kicker">07 / Personal finance assistant</div><h2 class="section-title">Talk to your money coach</h2><p>Ask questions, describe your daily habits, or enter expenses in plain language.</p></div><span class="ai-status offline" id="aiStatus"><span class="dot" id="aiStatusDot"></span><span id="aiStatusText">Checking AI connection…</span></span></div>
-    <div class="coach-layout">
-      <div>
-        <div class="chat-shell">
-          <div class="chat-top"><div class="coach-avatar">M</div><div><strong>MoneyMap Coach</strong><small>Uses your profile, budget and weekly entries</small></div><span class="tag" style="margin-left:auto">Private mode</span></div>
-          <div class="chat-messages" id="chatMessages" aria-live="polite"><div class="bubble coach">Hi! I’m your MoneyMap AI coach. Add your income and expenses in the weekly log, then tell me what a normal weekday and weekend look like. I can analyze your actual numbers, ask follow-up questions, and help you make a realistic plan.</div></div>
-          <div class="chat-compose"><input class="chat-input" id="chatInput" type="text" placeholder="Ask anything about your money or describe a situation…" aria-label="Message your money coach" /><button class="btn btn-primary" id="sendChatBtn">Send ↗</button></div>
-        </div>
-        <div class="quick-prompts"><button data-prompt="Analyze my weekly income and spending. What stands out?">Analyze my week</button><button data-prompt="Ask me questions to understand my daily routine and where my money goes.">Interview me about my routine</button><button data-prompt="Suggest a realistic savings amount based on my weekly cash flow.">Set a savings target</button><button data-prompt="Give me several realistic ways to increase my income based on my skills and free time.">Earn more</button><button data-prompt="Help me identify spending I can reduce without hurting my quality of life.">Find spending leaks</button><button data-prompt="Explain investment options suitable for my country, risk level and time horizon. Ask for missing information first.">Investment options</button><button data-prompt="Build me a practical 7-day spending plan using my weekly income.">Plan the next 7 days</button><button data-prompt="Help me compare needs, wants, debt payments and savings.">Needs vs wants</button></div>
-        <div class="privacy-ai">Privacy: the weekly ledger and profile stay in this browser unless you ask the AI to analyze them. When you chat, your message, recent chat history, and current MoneyMap profile/weekly summary are sent to OpenAI to generate a reply. The API key is encrypted for this Windows user and is never stored in browser storage. Do not enter passwords, bank login details, card numbers, or account numbers.</div>
-      </div>
-      <div class="coach-side">
-        <div class="callout"><h3>Investment direction</h3><p id="investmentSummary">Complete your profile and savings details to see a risk-aware starting point. The suggestions below are general education, not a personalized securities recommendation.</p><div class="investment-list" id="investmentList"><div class="investment-option"><strong>First priority — financial foundation</strong><p>Build accessible emergency savings and understand high-interest debt before taking investment risk.</p></div></div></div>
-        <div class="callout"><h3>Income growth ideas</h3><p id="incomeIdeas">Add your occupation, skills, and free hours each week. The coach will suggest practical ways to increase income without assuming you can work unlimited hours.</p></div>
-        <div class="callout"><h3>Live AI coach</h3><p id="aiSetupMessage">Your AI key is saved securely on this Windows device. Keep the MoneyMap server window open while using the coach.</p>
-          <div class="field" style="margin-top:12px"><label for="mmOpenAIKey">Change OpenAI API key</label><input id="mmOpenAIKey" type="password" autocomplete="new-password" placeholder="Paste a replacement API key only if needed" /></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="btn btn-soft" type="button" id="mmSaveOpenAIKey">Save API key on this device</button><span class="hint" id="mmOpenAIKeyStatus" aria-live="polite">Your saved key is never displayed.</span></div>
-        </div>
-      </div>
+  <section class="panel mm-deep-analysis" id="financial-analysis">
+    <div class="section-head"><div><div class="section-kicker">07 / PLUS FINANCIAL INTELLIGENCE</div><h2 class="section-title">Your Deep Financial Analysis</h2><p>A practical breakdown of your income, spending habits, cash flow, savings opportunities, and ways to earn more — calculated from your MoneyMap records.</p></div><span class="tag blue">Plus + Premium</span></div>
+    <div class="mm-analysis-toolbar"><div><strong id="mmAnalysisStatus">Waiting for your financial data</strong><small id="mmAnalysisRange">Based on all transactions recorded in this browser</small></div><button class="btn btn-primary" id="mmRunAnalysis" type="button">Refresh analysis ↻</button></div>
+    <div class="mm-analysis-metrics" id="mmAnalysisMetrics"></div>
+    <div class="mm-analysis-grid">
+      <article class="mm-analysis-card"><h3>Income health</h3><div id="mmIncomeAnalysis"></div></article>
+      <article class="mm-analysis-card"><h3>Spending breakdown</h3><div id="mmSpendingAnalysis"></div></article>
+      <article class="mm-analysis-card"><h3>What to minimize</h3><div id="mmReduceAnalysis"></div></article>
+      <article class="mm-analysis-card"><h3>How to earn more</h3><div id="mmEarnAnalysis"></div></article>
+      <article class="mm-analysis-card"><h3>Savings strategy</h3><div id="mmSavingsAnalysis"></div></article>
+      <article class="mm-analysis-card"><h3>Your next actions</h3><div id="mmActionAnalysis"></div></article>
     </div>
+    <p class="mm-analysis-disclaimer">This is educational budgeting guidance, not a guarantee of income or investment returns. Analysis quality improves as you record complete income and expense entries across several weeks.</p>
   </section>
 
   <div class="footer"><div><strong>MoneyMap</strong> · Your entries are saved in this browser. AI requests send the selected financial context to the configured AI provider.</div><div>Made by <span class="footer-credit">theodore</span> · <a href="https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG" target="_blank" rel="noopener">Inflation data</a> · <a href="https://www.frankfurter.dev/" target="_blank" rel="noopener">FX data</a></div></div>
@@ -1836,7 +1828,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
- const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['coach','✧','AI Coach'],['trading-game','↗','Trading'],['account-access','☁','Account']];
+ const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['financial-analysis','▤','Deep Analysis'],['trading-game','↗','Trading'],['account-access','☁','Account']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
   const index=items.findIndex(x=>x[0]===id);if(index<0)return;
@@ -2123,6 +2115,84 @@ body.mm-tier-basic .mm-gradient-controls>label:has(input[type="color"]),body.mm-
 .mm-plan-premium .mm-plan-symbol{background:linear-gradient(135deg,#fff1c6,#d7ad55);color:#62430d}
 .mm-membership-note{margin:16px 0 0;color:var(--muted);font-size:11px}
 @media(max-width:850px){.mm-plan-grid{grid-template-columns:1fr}.mm-plan-summary{min-height:0}.mm-current-plan{padding:16px}}
+</style>
+<script id="mm-plus-deep-financial-analysis">
+(()=>{
+ const $=id=>document.getElementById(id);
+ const money=n=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency:selectedCurrency||'USD',maximumFractionDigits:0}).format(n)}catch{return (selectedCurrency||'')+' '+Math.round(n).toLocaleString()}};
+ const line=(label,value,detail='')=>'<div class="mm-analysis-line"><span>'+label+'</span><strong>'+value+'</strong>'+(detail?'<small>'+detail+'</small>':'')+'</div>';
+ const list=(items)=>items.length?'<ul class="mm-analysis-list">'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'<p class="mm-analysis-muted">Not enough recorded data yet. Add transactions in Weekly income & spending.</p>';
+ function analyze(){
+  const rows=Array.isArray(weeklyTransactions)?weeklyTransactions:[];
+  const incomes=rows.filter(x=>x.type==='income'),expenses=rows.filter(x=>x.type==='expense');
+  const income=incomes.reduce((a,x)=>a+Number(x.amount||0),0),spend=expenses.reduce((a,x)=>a+Number(x.amount||0),0),net=income-spend;
+  const dates=rows.map(x=>x.date).filter(Boolean).sort();
+  const months=new Set(dates.map(d=>d.slice(0,7))).size;
+  const days=new Set(dates).size;
+  const cats={};expenses.forEach(x=>{const k=String(x.category||'Other');cats[k]=(cats[k]||0)+Number(x.amount||0)});
+  const ranked=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  const recurring=incomes.length?income/Math.max(1,new Set(incomes.map(x=>x.date?.slice(0,7))).size):0;
+  const expenseMonths=Math.max(1,months),monthlySpend=spend/expenseMonths,monthlyIncomeRecorded=recurring;
+  const baseIncome=typeof monthlyIncome==='function'?Number(monthlyIncome())||0:0;
+  const expectedIncome=Math.max(baseIncome,monthlyIncomeRecorded);
+  const savingsRate=income>0?net/income*100:null;
+  const fmtPct=x=>Number.isFinite(x)?x.toFixed(1)+'%':'—';
+  const metric=(label,value,sub)=>'<div class="mm-analysis-metric"><span>'+label+'</span><strong>'+value+'</strong><small>'+sub+'</small></div>';
+  $('mmAnalysisMetrics').innerHTML=metric('Recorded income',money(income),incomes.length+' income entries')+metric('Recorded spending',money(spend),expenses.length+' expense entries')+metric('Net cash flow',money(net),net>=0?'Positive recorded balance':'Recorded spending exceeds income')+metric('Savings rate',savingsRate===null?'—':fmtPct(savingsRate),savingsRate===null?'Add income entries to calculate':'Net divided by recorded income');
+  $('mmAnalysisStatus').textContent=rows.length?rows.length+' transactions analyzed':'No transaction history yet';
+  $('mmAnalysisRange').textContent=dates.length?'Recorded period: '+dates[0]+' to '+dates[dates.length-1]+' · '+days+' active days · '+months+' month(s)':'Add entries in Weekly income & spending to unlock personalized findings.';
+  const incomeItems=[];
+  if(incomes.length){incomeItems.push('Your recorded income averages '+money(income/Math.max(1,months))+' per recorded month.');if(new Set(incomes.map(x=>x.date?.slice(0,7))).size>1)incomeItems.push('Compare month-to-month income to see whether earnings are stable or seasonal.');}
+  else incomeItems.push('No income entries are recorded yet. Log salary, allowance, freelance payments, business revenue, or other money received.');
+  if(baseIncome>0)incomeItems.push('Your profile indicates monthly income of '+money(baseIncome)+'. Keep this aligned with actual deposits.');
+  incomeItems.push('For irregular income, plan essentials using a conservative low-month estimate rather than your best month.');
+  $('mmIncomeAnalysis').innerHTML=line('Income sources',String(new Set(incomes.map(x=>x.category||x.note||'Income')).size||0),'Distinct labels in recorded income')+list(incomeItems);
+  const spendItems=ranked.slice(0,5).map(([k,v])=>k+': '+money(v)+' ('+(spend?v/spend*100:0).toFixed(1)+'% of recorded spending)');
+  if(ranked.length)spendItems.unshift('Your largest spending category is '+ranked[0][0]+', at '+money(ranked[0][1])+'.');
+  $('mmSpendingAnalysis').innerHTML=line('Average monthly spend',money(monthlySpend),months+' recorded month(s)')+list(spendItems);
+  const reduce=[];
+  ranked.slice(0,3).forEach(([k,v])=>reduce.push('Review '+k+': set a realistic cap 5–10% below its recent average, then track whether the change is sustainable.'));
+  reduce.push('Audit subscriptions, delivery fees, convenience purchases, and unused services; cancel only what you do not use.');
+  reduce.push('Separate needs, wants, debt payments, and savings before cutting essentials.');
+  reduce.push('Avoid reducing health, safety, education, or necessary transport just to hit an arbitrary target.');
+  $('mmReduceAnalysis').innerHTML=list(reduce);
+  const occupation=$('occupation')?.value?.trim()||'your current skills';
+  const hours=Math.max(0,Number($('availableHours')?.value)||0);
+  const earn=[];
+  earn.push('Start with '+occupation+': package one skill into a small service, tutoring offer, repair, design task, or freelance deliverable.');
+  earn.push(hours>0?'You entered '+hours+' free hours per week. Test one small paid offer for 2 weeks and measure actual hourly profit.':'Add your available free hours in Your Profile to make the earning plan more realistic.');
+  earn.push('Ask for extra shifts, negotiate pay using measurable results, or apply for roles with a clear pay progression.');
+  earn.push('For a small business, test demand with pre-orders or a limited batch before spending heavily on inventory.');
+  earn.push('Track net earnings after materials, platform fees, transport, and taxes — not just revenue.');
+  $('mmEarnAnalysis').innerHTML=list(earn);
+  const emergency=Number($('emergencyFund')?.value)||0,monthlyNeed=monthlySpend||baseIncome*.5,target=monthlyNeed*3;
+  const save=[];
+  if(savingsRate!==null)save.push('Your recorded net savings rate is '+fmtPct(savingsRate)+'.');
+  save.push('A first emergency-fund milestone is about 1 month of essential costs; work toward 3–6 months over time.');
+  save.push('Based on recorded spending, a 3-month spending reserve would be around '+money(target)+'.');
+  save.push('You currently entered '+money(emergency)+' in emergency savings.');
+  const debt=Number($('debtRate')?.value)||0;if(debt>=10)save.push('Your highest stated debt rate is '+debt+'%. Compare this cost against savings returns; paying down expensive debt may be the stronger priority.');
+  $('mmSavingsAnalysis').innerHTML=list(save);
+  const actions=[];
+  if(!rows.length)actions.push('Record every income and expense for at least 2–4 weeks before making large decisions.');
+  else actions.push('Review the top spending category weekly and set a clear limit for the next 7 days.');
+  actions.push('Reconcile your profile monthly income with real income entries.');
+  actions.push('Choose one spending reduction and one income experiment; review the results after 30 days.');
+  actions.push('Keep a cash buffer before considering risky investments.');
+  $('mmActionAnalysis').innerHTML=list(actions);
+ }
+ window.mmRunDeepAnalysis=analyze;
+ $('mmRunAnalysis')?.addEventListener('click',analyze);
+ window.addEventListener('moneymap:transactions-updated',analyze);
+ document.addEventListener('change',e=>{if(e.target.closest('#profile'))analyze()});
+ analyze();
+})();
+</script>
+<style id="mm-plus-deep-analysis-style">
+.mm-analysis-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;border:1px solid var(--line);border-radius:16px;margin:16px 0}.mm-analysis-toolbar strong,.mm-analysis-toolbar small{display:block}.mm-analysis-toolbar small{font-size:11px;color:var(--muted);margin-top:4px}
+.mm-analysis-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}.mm-analysis-metric{padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.mm-analysis-metric span,.mm-analysis-metric small{display:block;color:var(--muted);font-size:11px}.mm-analysis-metric strong{display:block;font-size:clamp(17px,2vw,24px);margin:8px 0;overflow-wrap:anywhere}.mm-analysis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mm-analysis-card{padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--card)}.mm-analysis-card h3{margin:0 0 12px;font-size:16px}.mm-analysis-line{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}.mm-analysis-line small{color:var(--muted)}.mm-analysis-list{padding-left:18px;margin:10px 0 0;display:grid;gap:9px}.mm-analysis-list li{font-size:12px;line-height:1.55}.mm-analysis-muted,.mm-analysis-disclaimer{font-size:11px;line-height:1.6;color:var(--muted)}.mm-analysis-disclaimer{margin-top:16px}
+body.mm-tier-basic #financial-analysis{display:none!important}
+@media(max-width:760px){.mm-analysis-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-analysis-grid{grid-template-columns:1fr}.mm-analysis-toolbar{align-items:flex-start;flex-direction:column}}
 </style>
 </body>
 </html>
