@@ -88,10 +88,10 @@ function render(rows){
  rows.forEach(row=>{
   const article=document.createElement('article');article.className='entry';
   const head=document.createElement('div');head.className='entry-head';
-  const avatar=document.createElement('div');avatar.className='entry-avatar';avatar.textContent=(row.author_name||'M').slice(0,1).toUpperCase();
+  const avatar=document.createElement('a');avatar.className='entry-avatar';avatar.href='profile.html?id='+encodeURIComponent(row.user_id);avatar.title='View member profile';avatar.style.textDecoration='none';avatar.textContent=(row.author_name||'M').slice(0,1).toUpperCase();
   const meta=document.createElement('div');meta.className='entry-meta';
   const name=document.createElement('div');name.className='entry-name';
-  const n=document.createElement('span');n.textContent=row.author_name||'MoneyMap member';name.append(n);
+  const n=document.createElement('a');n.href='profile.html?id='+encodeURIComponent(row.user_id);n.textContent=row.author_name||'MoneyMap member';n.style.color='inherit';n.style.textDecoration='none';n.title='View member profile';name.append(n);
   const kind=row.is_admin?'admin':row.author_tier==='premium'?'premium':row.author_tier==='plus'?'plus':'basic';
   if(kind!=='basic'){const holder=document.createElement('span');holder.innerHTML=badge(kind);name.append(holder.firstElementChild);}
   const time=document.createElement('div');time.className='entry-time';time.textContent=timeLabel(row.created_at);
