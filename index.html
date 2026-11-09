@@ -2866,10 +2866,13 @@ body.mm-tier-premium #overview .mm-elite-wordmark .mm-elite-script{
    heading.classList.add('mm-elite-greeting');
    heading.setAttribute('data-elite-rendered','true');
    if(signed){
-     const first=document.createElement('span');first.className='mm-type-line';first.textContent='Manage Your Money,';
-     const second=document.createElement('span');second.className='mm-type-line';second.textContent='For Better Future';
-     heading.replaceChildren(first,document.createElement('br'),second);
-     heading.setAttribute('aria-label','Manage Your Money, For Better Future');
+     const first=document.createElement('span');first.textContent='Welcome Back, ';
+     const who=document.createElement('span');who.className='mm-elite-greeting-name';who.textContent=name;
+     const second=document.createElement('span');second.textContent='to MoneyMap ';
+     const brandLine=document.createElement('span');brandLine.className='mm-elite-wordmark';
+     brandLine.innerHTML='<span class="mm-elite-prefix">Elite</span>';
+     heading.replaceChildren(first,who,document.createElement('br'),second,document.createElement('br'),brandLine);
+     heading.setAttribute('aria-label','Welcome Back, '+name+' to MoneyMap Elite');
    }else{
      const brandLine=document.createElement('span');brandLine.className='mm-elite-wordmark';
      brandLine.innerHTML='<span class="mm-elite-prefix">MoneyMap Elite</span>';
