@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "MoneyMap",
+  "short_name": "MoneyMap",
+  "description": "Your personal money manager.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f8ff",
+  "theme_color": "#f5f8ff",
+  "icons": [
+    {
+      "src": "./icons/icon-basic.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
