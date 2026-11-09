@@ -13,17 +13,17 @@ header{text-align:center;max-width:760px;margin:0 auto 36px}.eyebrow{color:#aabb
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
 .plan{position:relative;overflow:hidden;border-radius:26px;padding:25px 23px 24px;color:#20242a;min-height:530px;display:flex;flex-direction:column;box-shadow:0 22px 65px #0007;border:1px solid #ffffff66}
 .plan:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;background:linear-gradient(125deg,#ffffff99,transparent 30%,#ffffff33 58%,transparent 75%);background-size:240% 240%;animation:shine 10s ease-in-out infinite alternate}
-.plan>*{position:relative}.silver{background:linear-gradient(145deg,#f7f8fa 0%,#c7cbd1 22%,#eef0f3 48%,#aeb4bd 72%,#f9fafb 100%)}
-.pearl{background:linear-gradient(135deg,#fff8fb 0%,#d8e7f2 18%,#f0def1 37%,#d5f0e9 55%,#f9e8d3 76%,#f8f9ff 100%);background-size:220% 220%;animation:pearl 16s ease-in-out infinite alternate}
-.gold{background:linear-gradient(145deg,#fff4c8 0%,#d6ad58 22%,#fff0b5 44%,#b77c26 70%,#ffe8a0 100%)}
+.plan>*{position:relative}.silver{background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%);color:#f7f8fa;border:1px solid #aeb5c0}
+.pearl{background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%);color:#f7f8fa;border:1px solid #aeb5c0}
+.gold{background:linear-gradient(145deg,#111 0%,#25221b 48%,#090909 100%);color:#fff8e8;border:1px solid #c9a85f}
 @keyframes shine{from{background-position:0% 20%}to{background-position:100% 80%}}@keyframes pearl{from{background-position:0% 30%}to{background-position:100% 70%}}
 .plan-head{display:flex;justify-content:space-between;align-items:center}.tag{font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;opacity:.7}.sigil{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;background:#ffffff8c;border:1px solid #ffffffb8;font-weight:900;font-size:20px}
 h2{font-size:27px;letter-spacing:-.04em;margin:22px 0 7px}.desc{font-size:13px;line-height:1.6;opacity:.72;min-height:42px}.price{font-size:12px;font-weight:800;margin:17px 0 20px}.features{padding:0;margin:0 0 24px;list-style:none;display:grid;gap:12px}.features li{font-size:13px;line-height:1.4;display:flex;gap:9px}.features li:before{content:"✓";font-weight:900}.features .off{opacity:.48}.features .off:before{content:"—"}.plan-select{position:relative;z-index:2;margin-top:auto;width:100%;border:1px solid #ffffffb5;background:#ffffff80;color:#20242a;border-radius:13px;padding:12px;text-align:center;font-size:12px;font-weight:850;cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s}
 .plan-select:hover{transform:translateY(-2px);filter:brightness(1.04);box-shadow:0 8px 20px #0002}
 .plan-select[aria-pressed="true"]{cursor:default;opacity:.72}
-.gold .plan-select{background:linear-gradient(100deg,#fff5c9,#d9ad4f,#fff0b0);border-color:#fff7d1;color:#59380f;box-shadow:0 7px 18px #80501833,inset 0 1px 0 white}
-.pearl .plan-select{background:linear-gradient(110deg,#ffffffc9,#d9e9f4d9,#f4dff0d9);color:#38465a}
-.silver .plan-select{background:linear-gradient(110deg,#fff,#c8cdd5,#f8f9fb);color:#333a45}
+.gold .plan-select{background:linear-gradient(100deg,#fff0bd,#d1a64d,#9b702b);border-color:#f4d995;color:#201707;box-shadow:0 7px 18px #80501833,inset 0 1px 0 white}
+.pearl .plan-select{background:linear-gradient(110deg,#f2f3f5,#aab1bc);color:#14171c;border-color:#e4e7eb}
+.silver .plan-select{background:linear-gradient(110deg,#f2f3f5,#aab1bc);color:#14171c;border-color:#e4e7eb}
 .current{margin-top:auto;border:1px solid #ffffffb5;background:#ffffff80;color:#20242a;border-radius:13px;padding:12px;text-align:center;font-size:12px;font-weight:850}
 footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26px auto 0;max-width:700px}
 @media(max-width:850px){.plans{grid-template-columns:1fr}.plan{min-height:0}.desc{min-height:0}.top{margin-bottom:34px}}
@@ -67,6 +67,16 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
 .arcade-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--px,50%) var(--py,50%),#e7c36b18,transparent 26%);transition:background .12s}
 .arcade-player{z-index:3;color:#fff8d7;font-size:19px}
 .arcade-coin{z-index:3;font-size:18px}
+<style id="mm-tier-black-metal-v1">
+.plan.silver,.plan.pearl{color:#f7f8fa;background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%);border:1px solid #aeb5c0;box-shadow:0 22px 65px #0008,inset 0 1px #ffffff22}
+.plan.silver :is(h2,.desc,.tag,.features li,.price),.plan.pearl :is(h2,.desc,.tag,.features li,.price){color:#f1f3f6}
+.plan.silver .sigil,.plan.pearl .sigil{background:linear-gradient(145deg,#f5f6f8,#9ba3af 55%,#e4e7eb);color:#171a20;border:1px solid #fff}
+.plan.silver .current,.plan.pearl .current{background:linear-gradient(110deg,#f2f3f5,#aab1bc);color:#14171c;border-color:#e4e7eb}
+.plan.gold{color:#fff8e8;background:linear-gradient(145deg,#111 0%,#25221b 48%,#090909 100%);border:1px solid #c9a85f;box-shadow:0 26px 80px #0009,0 0 0 1px #d6b15b44,inset 0 1px #ffebb733}
+.plan.gold :is(h2,.desc,.tag,.features li,.price){color:#fff3d3}
+.plan.gold .sigil,.plan.gold .current{background:linear-gradient(145deg,#fff0bd,#c49a45 55%,#76531d);color:#211707;border:1px solid #f8dfa0}
+.plan.gold .features li:before{color:#f0cd7c}
+</style>
 </style></head>
 <body><main class="wrap">
 <div class="top"><div class="brand">Money<span>Map</span> <small style="font-size:10px;letter-spacing:.16em;color:#aab3c1">SUBSCRIPTIONS</small></div><a class="back" href="index.html">← Back to MoneyMap</a></div>
@@ -88,9 +98,9 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
  <div class="arcade-hud"><span>COINS: <strong id="asciiScore">00</strong> · BEST: <strong id="asciiBest">00</strong></span><button class="arcade-start" id="asciiReset" type="button">↻ Reset</button><span class="arcade-help" id="asciiHint">Guide @ to collect $ · click anywhere for a sparkle burst.</span></div>
 </section>
 <section class="plans" aria-label="Subscription plans">
-<article class="plan silver"><div class="plan-head"><span class="tag">Essential access</span><span class="sigil">B</span></div><h2>MoneyMap Basic</h2><p class="desc">The essentials for building confident everyday money habits.</p><div class="price">CORE EXPERIENCE</div><ul class="features"><li>Budgeting and finance dashboard</li><li>Money Quest game access</li><li>Five curated theme presets</li><li>Fun Blue default appearance</li><li class="off">Custom colors and gradients</li><li class="off">Trading Simulator</li></ul><button class="plan-select" type="button" data-select-tier="basic">Select Basic</button><div class="current">BASIC · SILVER</div></article>
-<article class="plan pearl"><div class="plan-head"><span class="tag">Expanded access</span><span class="sigil">+</span></div><h2>MoneyMap Plus</h2><p class="desc">More creative control, more ways to personalize, and more to practise.</p><div class="price">EVERYTHING IN BASIC, PLUS</div><ul class="features"><li>All Basic features</li><li>All theme presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><button class="plan-select" type="button" data-select-tier="plus">Select Plus</button><div class="current">PLUS · IRIDESCENT PEARL</div></article>
-<article class="plan gold"><div class="plan-head"><span class="tag">Complete access</span><span class="sigil">✦</span></div><h2>MoneyMap Premium</h2><p class="desc">The complete MoneyMap experience, with every current feature unlocked.</p><div class="price">EVERYTHING IN PLUS, PLUS</div><ul class="features"><li>All Plus and Basic features</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Premium typography studio: Apple-style, Emirates-inspired, editorial serif, and more</li><li>Full access to current features</li></ul><button class="plan-select" type="button" data-select-tier="premium">Select Premium</button><div class="current">PREMIUM · GOLD</div></article>
+<article class="plan silver"><div class="plan-head"><span class="tag">Essential access</span><span class="sigil">B</span></div><h2>MoneyMap Basic</h2><p class="desc">The essentials for building confident everyday money habits.</p><div class="price">CORE EXPERIENCE</div><ul class="features"><li>Budgeting and finance dashboard</li><li>Money Quest game access</li><li>Five curated theme presets</li><li>Fun Blue default appearance</li><li class="off">Custom colors and gradients</li><li class="off">Trading Simulator</li></ul><button class="plan-select" type="button" data-select-tier="basic">Select Basic</button><div class="current">BASIC · BLACK & WHITE</div></article>
+<article class="plan pearl"><div class="plan-head"><span class="tag">Expanded access</span><span class="sigil">+</span></div><h2>MoneyMap Premium</h2><p class="desc">More creative control, deeper personalization, and room to practice.</p><div class="price">EVERYTHING IN BASIC, PLUS</div><ul class="features"><li>All Basic features</li><li>All theme presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><button class="plan-select" type="button" data-select-tier="plus">Select Premium</button><div class="current">PREMIUM · BLACK SILVER</div></article>
+<article class="plan gold"><div class="plan-head"><span class="tag">Complete access</span><span class="sigil">✦</span></div><h2>MoneyMap Elite</h2><p class="desc">The ultimate MoneyMap experience, with every feature and exclusive member privileges.</p><div class="price">EVERYTHING IN PLUS, PLUS</div><ul class="features"><li>All Plus and Basic features</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Exclusive Elite membership badge</li><li>Elite typography studio: Apple-style, Emirates-inspired, editorial serif, and more</li><li>Full access to current features</li></ul><button class="plan-select" type="button" data-select-tier="premium">Select Elite</button><div class="current">ELITE · BLACK GOLD</div></article>
 </section><footer>Choose a plan to switch the experience on this browser. This is a local preview selector; payment processing and secure subscription billing are not connected yet.</footer>
 <p id="tierSwitchNotice" role="status" aria-live="polite" style="text-align:center;color:#d9c58f;font-size:12px;min-height:18px;margin:18px 0 0"></p>
 </main>
