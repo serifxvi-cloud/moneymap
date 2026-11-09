@@ -548,20 +548,7 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 
 
 
-  <section class="mm-quest panel" id="moneyQuest" aria-label="Money Quest">
-    <div class="mm-quest-top">
-      <div><div class="mm-quest-kicker">🎮 YOUR MINI MONEY ADVENTURE</div><h2>Money Quest</h2><p>Small missions. Smarter money moves. Earn XP as you build good habits.</p></div>
-      <div class="mm-xp-card"><span>YOUR XP</span><strong id="mmQuestXP">0 XP</strong><small id="mmQuestLevel">Level 1 · Money Rookie</small></div>
-    </div>
-    <div class="mm-quest-progress"><span id="mmQuestProgress"></span></div>
-    <div class="mm-quest-meta"><span id="mmQuestProgressText">0 of 3 missions completed</span><span id="mmQuestStreak">✨ Start your streak today</span></div>
-    <div class="mm-missions">
-      <article class="mm-mission"><div class="mm-mission-emoji">🧾</div><div><strong>Track one thing</strong><p>Add one income or expense to see where your money goes.</p><a href="#transactions">Go to transactions ↗</a></div><button type="button" data-quest="track">Claim +20 XP</button></article>
-      <article class="mm-mission"><div class="mm-mission-emoji">🎯</div><div><strong>Check your game plan</strong><p>Review your budget and spot one category to improve.</p><a href="#budget">Open my budget ↗</a></div><button type="button" data-quest="budget">Claim +20 XP</button></article>
-      <article class="mm-mission"><div class="mm-mission-emoji">🐷</div><div><strong>Think future-you</strong><p>Choose a small savings goal you can realistically reach.</p><a href="#profile">Set up your profile ↗</a></div><button type="button" data-quest="save">Claim +20 XP</button></article>
-    </div>
-    <div class="mm-quest-bottom"><span id="mmQuestBadge">🏅 First mission badge waiting</span><button type="button" class="mm-quest-reset" id="mmQuestReset">New day? Reset missions</button></div>
-  </section>
+
 
   <section class="stats-grid" aria-label="Monthly financial overview">
     <div class="stat-card"><div class="stat-label">Monthly income</div><div class="stat-value" id="statIncome">—</div><div class="stat-note">Converted from your pay schedule</div></div>
@@ -2105,7 +2092,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (()=>{
  const main=document.querySelector('main.shell'),nav=document.getElementById('mmOrbitNav'),menu=document.getElementById('mmOrbitMenu'),toggle=document.getElementById('mmOrbitToggle');
  if(!main||!nav||!menu||!toggle||nav.dataset.ready)return;nav.dataset.ready='1';
- const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['financial-analysis','▤','Deep Analysis'],['trading-game','↗','Trading'],['account-access','☁','Account']];
+ const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest','https://money-quest.org/en'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['financial-analysis','▤','Deep Analysis'],['trading-game','↗','Trading'],['account-access','☁','Account']];
  const pages=items.map(x=>document.getElementById(x[0])).filter(Boolean);
  function activate(id,updateHash=true){
   const index=items.findIndex(x=>x[0]===id);if(index<0)return;
@@ -2569,7 +2556,7 @@ body.mm-tier-basic #financial-analysis{display:none!important}
 })();
 </script>
 <style id="mm-mobile-navigation-hub">
-.mm-mobile-hub{width:min(1280px,calc(100% - 42px));margin:20px auto 24px;padding:20px 22px 17px;border:1px solid rgba(206,220,241,.8);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(239,245,253,.88));box-shadow:0 14px 38px rgba(41,70,115,.09);backdrop-filter:blur(22px)}
+.mm-mobile-hub{position:relative;isolation:isolate;width:min(1280px,calc(100% - 42px));margin:20px auto 24px;padding:22px 23px 18px;border:1px solid rgba(184,207,244,.82);border-radius:27px;background:radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.98) 0,rgba(255,255,255,0) 43%),radial-gradient(ellipse at 96% 8%,rgba(180,211,255,.55) 0,rgba(180,211,255,0) 38%),linear-gradient(135deg,#fafdff 0%,#edf4ff 48%,#e6efff 100%);box-shadow:0 18px 48px rgba(47,83,143,.13),inset 0 1px 0 rgba(255,255,255,.96);backdrop-filter:blur(26px);overflow:hidden}.mm-mobile-hub:before{content:"";position:absolute;z-index:-1;inset:auto -8% -95px 38%;height:190px;border-radius:50%;background:radial-gradient(ellipse,rgba(111,159,237,.18),transparent 68%);pointer-events:none}.mm-mobile-hub:after{content:"";position:absolute;z-index:-1;top:16px;right:18%;width:115px;height:115px;border:1px solid rgba(255,255,255,.72);border-radius:34px;transform:rotate(28deg);opacity:.42;pointer-events:none}
 .mm-hub-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 0 13px}.mm-hub-heading h2{font-size:19px;letter-spacing:-.5px;margin:3px 0 0;color:#24334a}.mm-hub-kicker{font-size:9px;font-weight:900;letter-spacing:1.6px;color:#7b91b2}.mm-hub-hint{font-size:10px;color:#8a98ac;white-space:nowrap;padding-bottom:3px}
 .mm-favorites-row{display:flex;gap:17px;overflow-x:auto;overscroll-behavior-inline:contain;padding:4px 2px 13px;scrollbar-width:thin;scroll-snap-type:x proximity}
 .mm-favorite-link{flex:0 0 70px;display:flex;align-items:center;flex-direction:column;gap:7px;text-decoration:none;color:#5b6d86;scroll-snap-align:start}
@@ -2580,6 +2567,14 @@ body.mm-tier-basic #financial-analysis{display:none!important}
 .mm-section-card{flex:0 0 116px;min-height:93px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;padding:13px;border:1px solid #e0e8f4;border-radius:17px;background:linear-gradient(145deg,#fff,#f2f6fc);color:#33445e;text-decoration:none;scroll-snap-align:start;transition:transform .2s,border-color .2s,box-shadow .2s}
 .mm-section-card:hover,.mm-section-card:focus-visible{transform:translateY(-3px);border-color:#9dbcf0;box-shadow:0 9px 20px rgba(49,91,155,.13);outline:none}.mm-section-card[aria-current="page"]{background:linear-gradient(145deg,#eaf2ff,#dce9ff);border-color:#9bbaf0}
 .mm-section-card span{font-size:21px}.mm-section-card strong{font-size:11px;line-height:1.2}
+.mm-section-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(237,244,255,.9));border-color:rgba(196,213,239,.92);box-shadow:0 5px 16px rgba(48,78,126,.055),inset 0 1px 0 #fff}
+.mm-section-card:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.48),transparent 55%);pointer-events:none}
+.mm-section-card span,.mm-section-card strong{position:relative}
+.mm-section-card.mm-section-external{background:linear-gradient(145deg,#fff9e9 0%,#fff0c9 52%,#fce4a5 100%);border-color:#efd59b;color:#745016;box-shadow:0 7px 19px rgba(174,128,42,.12),inset 0 1px 0 #fff}
+.mm-section-card.mm-section-external span{display:flex;align-items:center;justify-content:center;width:35px;height:35px;border-radius:12px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 #fff;font-size:19px}
+.mm-section-card.mm-section-external:after{content:"↗";position:absolute;right:12px;top:12px;font-size:12px;color:#a57b2d}
+.mm-section-card.mm-section-external:hover{border-color:#d7ae57;box-shadow:0 11px 24px rgba(174,128,42,.2)}
+
 @media(max-width:700px){.mm-mobile-hub{width:calc(100% - 22px);margin:12px auto 17px;padding:16px 14px 12px;border-radius:21px}.mm-hub-heading h2{font-size:17px}.mm-hub-hint{font-size:9px}.mm-favorites-row{gap:14px}.mm-favorite-link{flex-basis:62px}.mm-favorite-icon{width:48px;height:48px}.mm-section-card{flex-basis:105px;min-height:88px;padding:11px}}
 @media(prefers-reduced-motion:reduce){.mm-favorite-icon,.mm-section-card{transition:none}}
 </style>
@@ -2588,17 +2583,17 @@ body.mm-tier-basic #financial-analysis{display:none!important}
  const items=[['overview','⌂','Overview'],['moneyQuest','✦','Money Quest'],['budget','▤','Budget'],['wage','＄','Wage & FX'],['weekly','▦','Weekly Log'],['smart-insights','◒','Insights'],['money-calendar','▦','Calendar'],['achievements','★','Awards'],['profile','◉','Profile'],['membership','♢','Membership'],['financial-analysis','▤','Deep Analysis'],['trading-game','↗','Trading'],['account-access','☁','Account']];
  const rail=document.getElementById('mmSectionScroller'),favorites=document.getElementById('mmRecentFavorites');
  if(!rail||!favorites||rail.dataset.ready)return;rail.dataset.ready='1';
- const available=items.filter(x=>document.getElementById(x[0]));
+ const available=items.filter(x=>x[3]||document.getElementById(x[0]));
  const key='moneymap_recent_sections_v1';
  const read=()=>{try{return JSON.parse(localStorage.getItem(key)||'[]').filter(id=>available.some(x=>x[0]===id))}catch{return []}};
  const draw=()=>{
-  rail.innerHTML='';available.forEach(([id,icon,name])=>{const a=document.createElement('a');a.className='mm-section-card';a.href='#'+id;a.dataset.section=id;a.innerHTML='<span aria-hidden="true"></span><strong></strong>';a.querySelector('span').textContent=icon;a.querySelector('strong').textContent=name;rail.append(a)});
-  const recent=read().slice(0,6);favorites.innerHTML='';
+  rail.innerHTML='';available.forEach(([id,icon,name,url])=>{const a=document.createElement('a');a.className='mm-section-card'+(url?' mm-section-external':'');a.href=url||'#'+id;if(url){a.target='_blank';a.rel='noopener noreferrer';a.setAttribute('aria-label',name+' (opens in a new tab)')}else a.dataset.section=id;a.innerHTML='<span aria-hidden="true"></span><strong></strong>';a.querySelector('span').textContent=icon;a.querySelector('strong').textContent=name;rail.append(a)});
+  const recent=read().slice(0,6).filter(id=>{const item=available.find(x=>x[0]===id);return item&&!item[3]}).slice(0,6);favorites.innerHTML='';
   if(!recent.length){const a=document.createElement('a');a.className='mm-favorite-empty';a.href='#overview';a.innerHTML='<span>⌂</span><small>Start here</small>';favorites.append(a)}
   recent.forEach(id=>{const item=available.find(x=>x[0]===id);if(!item)return;const a=document.createElement('a');a.className='mm-favorite-link';a.href='#'+id;a.innerHTML='<span class="mm-favorite-icon"></span><small></small>';a.querySelector('span').textContent=item[1];a.querySelector('small').textContent=item[2];favorites.append(a)});
   const current=location.hash.slice(1);rail.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',a.dataset.section===current?'page':'false'));
  };
- const remember=id=>{if(!available.some(x=>x[0]===id))return;const next=[id,...read().filter(x=>x!==id)].slice(0,6);try{localStorage.setItem(key,JSON.stringify(next))}catch{}draw()};
+ const remember=id=>{if(!available.some(x=>x[0]===id&&!x[3]))return;const next=[id,...read().filter(x=>x!==id)].slice(0,6);try{localStorage.setItem(key,JSON.stringify(next))}catch{}draw()};
  rail.addEventListener('click',e=>{const a=e.target.closest('a[data-section]');if(a)remember(a.dataset.section)});
  favorites.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(a)remember(a.getAttribute('href').slice(1))});
  window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);remember(id)});
