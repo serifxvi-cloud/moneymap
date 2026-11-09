@@ -799,6 +799,7 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
         <button class="btn mm-google-btn" id="mmGoogleSignIn" type="button"><span class="mm-google-g">G</span> Continue with Google</button>
         <button class="btn btn-soft" id="mmSignUp" type="button">Create account</button>
         <button class="btn btn-quiet" id="mmResetPassword" type="button">Reset password</button>
+        <button class="btn btn-quiet" id="mmResendVerification" type="button">Resend verification email</button>
         <button class="btn btn-quiet" id="mmSignOut" type="button" disabled>Sign out</button>
         <button class="btn btn-quiet" id="mmSyncNow" type="button" disabled>Sync now</button>
       </div>
@@ -1409,6 +1410,18 @@ async function mmCloudSignIn(){
  catch(e){const msg=String(e&&e.message||'Unknown sign-in error');const friendly=/invalid login credentials|invalid_credentials/i.test(msg)?'Email or password is incorrect. Check your details or use Reset password.':/email not confirmed/i.test(msg)?'Your email is not confirmed yet. Open the confirmation link sent to your inbox.':/too many requests/i.test(msg)?'Too many attempts. Wait a few minutes and try again.':msg;mmCloudSetStatus('Sign-in failed: '+friendly,'bad');}
  finally{mmCloudBusy=false;if(button){button.disabled=false;button.textContent='Sign in';}}
 }
+async function mmCloudResendVerification(){
+ if(mmCloudBusy)return;
+ const email=document.getElementById('mmAccountEmail')?.value.trim().toLowerCase();
+ if(!email||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){mmCloudSetStatus('Enter the email address you used to create your account.','bad');return;}
+ const button=document.getElementById('mmResendVerification');
+ mmCloudBusy=true;if(button){button.disabled=true;button.textContent='Sending…';}
+ try{
+  await mmCloudFetch('/auth/v1/resend',{method:'POST',body:JSON.stringify({type:'signup',email, options:{emailRedirectTo:'https://serifxvi-cloud.github.io/moneymap/'}})});
+  mmCloudSetStatus('A fresh verification email has been requested. Open the newest email and use its link to verify your account.','ok');
+ }catch(e){mmCloudSetStatus('Could not resend verification email: '+e.message,'bad');}
+ finally{mmCloudBusy=false;if(button){button.disabled=false;button.textContent='Resend verification email';}}
+}
 async function mmCloudResetPassword(){const email=document.getElementById('mmAccountEmail').value.trim();if(!email){mmCloudSetStatus('Enter your account email first.','bad');return;}try{await mmCloudFetch('/auth/v1/recover',{method:'POST',body:JSON.stringify({email,options:{redirectTo:'https://serifxvi-cloud.github.io/moneymap/'}})});mmCloudSetStatus('If this email is registered, Supabase will send password-reset instructions. Check your inbox.','ok');}catch(e){mmCloudSetStatus('Could not request password reset: '+e.message,'bad');}}
 async function mmCloudSignOut(){if(mmCloudSaveTimer){clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=null;}if(mmCloudSession?.access_token){const flushed=await mmCloudSaveNow();if(!flushed)mmCloudSetStatus('Could not save the latest changes before sign-out. Your last successful cloud backup is still available.','bad');}try{if(mmCloudSession?.access_token){const token=await mmCloudAccessToken();await mmCloudFetch('/auth/v1/logout',{method:'POST'},token);}}catch(e){console.warn('Cloud sign-out notice:',e.message)}localStorage.removeItem(MM_CLOUD_SESSION_KEY);mmCloudSession=null;mmCloudApplying=true;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(TX_STORAGE_KEY);localStorage.removeItem(CHAT_STORAGE_KEY);localStorage.removeItem(MM_CLOUD_NOTES_KEY);MM_CLOUD_PREFERENCE_KEYS.forEach(key=>localStorage.removeItem(key));document.getElementById('mmPersonalNotes').value='';restoreState();loadWeeklyTransactions();renderWeekly();const root=document.getElementById('chatMessages');if(root)root.innerHTML='';updateAll();}finally{mmCloudApplying=false;}mmCloudRenderAccount();mmCloudSetStatus('Signed out. This device’s private finance data was cleared; your cloud account remains saved securely.','ok');}
 const MM_CLOUD_PREFERENCE_KEYS=['moneymap_apple_light_custom_v1','moneymap_overview_surface_v1','moneymap_premium_font_v1','moneymap_selected_tier_v1','moneymap_language_v2','moneymap_language_v1'];
@@ -1535,6 +1548,7 @@ function mmCloudInit(){
   const signOutButton=document.getElementById('mmSignOut');if(signOutButton)signOutButton.onclick=event=>{event.preventDefault();mmCloudSignOut();};
   const syncButton=document.getElementById('mmSyncNow');if(syncButton)syncButton.onclick=event=>{event.preventDefault();mmCloudSaveNow();};
   const resetButton=document.getElementById('mmResetPassword');if(resetButton)resetButton.onclick=event=>{event.preventDefault();mmCloudResetPassword();};
+  const resendButton=document.getElementById('mmResendVerification');if(resendButton)resendButton.onclick=event=>{event.preventDefault();mmCloudResendVerification();};
   const notesField=document.getElementById('mmPersonalNotes');if(notesField)notesField.addEventListener('input',()=>{localStorage.setItem(MM_CLOUD_NOTES_KEY,notesField.value);mmCloudScheduleSave();});
   document.getElementById('mmSaveOpenAIKey')?.addEventListener('click',saveOpenAIKeyFromPage);
   // Keep the dashboard and account iframe in step: localStorage is shared, but each
