@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "MoneyMap Elite",
+  "short_name": "MoneyMap Elite",
+  "description": "Your personal money manager.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "icons": [
+    {
+      "src": "./icons/icon-elite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
