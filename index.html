@@ -12,8 +12,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="MoneyMap" />
   <link rel="manifest" id="mmTierManifest" href="./manifest.webmanifest" />
-  <link rel="icon" id="mmTierFavicon" type="image/svg+xml" href="./icons/icon-elite.svg" />
-  <link rel="apple-touch-icon" id="mmTierAppleIcon" href="./icons/icon-elite.svg" />
+  <link rel="icon" id="mmTierFavicon" type="image/svg+xml" href="./favicon.svg?v=42" />
+  <link rel="apple-touch-icon" id="mmTierAppleIcon" href="./icons/icon-elite.svg?v=42" />
   <meta name="description" content="A private, interactive money manager with country and currency selection, budgeting, wage calculations, inflation estimates, and a personal finance coach." />
   <title>MoneyMap — Manage Your Money, For a Better Future</title>
   <style>
@@ -2953,7 +2953,7 @@ body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
    const tier=document.body.dataset.mmTier||'basic';
    const safe=['basic','plus','premium'].includes(tier)?tier:'basic';
    const variant=safe==='premium'?'premium':safe==='plus'?'premium':'basic';
-   const icon='./icons/icon-'+variant+'.svg';
+   const icon='./icons/icon-'+variant+'.svg?v=42';
    if(favicon&&favicon.getAttribute('href')!==icon)favicon.setAttribute('href',icon);
    if(apple&&apple.getAttribute('href')!==icon)apple.setAttribute('href',icon);
    if(theme)theme.setAttribute('content',variant==='premium'?'#111318':'#f5f8ff');
