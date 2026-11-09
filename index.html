@@ -473,23 +473,46 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
   }
 }
 </style>
+<style id="mm-tier-luxury-palette-v1">
+.mm-plan-card[data-mm-plan-card="basic"]{background:linear-gradient(145deg,#fff 0%,#f2f3f5 52%,#e2e4e8 100%)!important;border:1px solid #c9cdd3!important;color:#101216!important;box-shadow:0 14px 34px rgba(12,16,24,.10)!important}
+.mm-plan-card[data-mm-plan-card="basic"] :is(.mm-plan-eyebrow,.mm-plan-summary,li){color:#24272d!important}
+.mm-plan-card[data-mm-plan-card="basic"] .mm-plan-symbol{background:#111318!important;color:#fff!important;border:1px solid #555b65!important}
+.mm-plan-card[data-mm-plan-card="plus"]{background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%)!important;border:1px solid #aeb5c0!important;color:#f7f8fa!important;box-shadow:0 16px 38px rgba(10,12,16,.22),inset 0 1px rgba(255,255,255,.16)!important}
+.mm-plan-card[data-mm-plan-card="plus"] :is(h3,.mm-plan-eyebrow,.mm-plan-summary,li,.mm-plan-included){color:#edf0f4!important}
+.mm-plan-card[data-mm-plan-card="plus"] .mm-plan-symbol{background:linear-gradient(145deg,#f5f6f8,#9ba3af 55%,#e4e7eb)!important;color:#171a20!important;border:1px solid #fff!important}
+.mm-plan-card[data-mm-plan-card="premium"]{background:linear-gradient(145deg,#111 0%,#25221b 48%,#090909 100%)!important;border:1px solid #c9a85f!important;color:#fff8e8!important;box-shadow:0 18px 44px rgba(0,0,0,.28),0 0 0 1px rgba(214,177,91,.18),inset 0 1px rgba(255,235,183,.16)!important}
+.mm-plan-card[data-mm-plan-card="premium"] :is(h3,.mm-plan-eyebrow,.mm-plan-summary,li,.mm-plan-included){color:#fff3d3!important}
+.mm-plan-card[data-mm-plan-card="premium"] .mm-plan-symbol{background:linear-gradient(145deg,#fff0bd,#c49a45 55%,#76531d)!important;color:#17120a!important;border:1px solid #f8dfa0!important}
+.mm-plan-card .mm-plan-select{border-radius:12px!important}
+.mm-plan-card[data-mm-plan-card="basic"] .mm-plan-select{background:#111318!important;color:#fff!important;border:1px solid #111318!important}
+.mm-plan-card[data-mm-plan-card="plus"] .mm-plan-select{background:linear-gradient(110deg,#f2f3f5,#aab1bc)!important;color:#14171c!important;border:1px solid #e4e7eb!important}
+.mm-plan-card[data-mm-plan-card="premium"] .mm-plan-select{background:linear-gradient(110deg,#fff0bd,#d1a64d 55%,#9b702b)!important;color:#201707!important;border:1px solid #f4d995!important}
+.mm-tier-basic .mm-membership-label{background:#111318!important;color:#fff!important;border-color:#111318!important}
+.mm-tier-plus .mm-membership-label{background:linear-gradient(120deg,#f4f5f7,#aeb5bf)!important;color:#171a20!important;border-color:#8f98a5!important}
+.mm-tier-premium .mm-membership-label{background:linear-gradient(120deg,#fff0bd,#c99d43)!important;color:#33230a!important;border-color:#b78a35!important}
+.mm-current-plan{background:linear-gradient(120deg,#17191d,#343943)!important;border-color:#aeb5c0!important}
+.mm-current-plan h3,.mm-current-plan p,.mm-current-plan .mm-plan-eyebrow{color:#fff!important}
+.mm-current-plan-mark{background:linear-gradient(145deg,#fff0bd,#c49a45)!important;color:#15110a!important;border:1px solid #f4d995!important}
+</style>
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top" aria-label="MoneyMap home"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" width="38" height="38" role="img" aria-label="MoneyMap emblem">
+    <a class="brand" href="#top" aria-label="MoneyMap home"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48">
+  <text x="24" y="23.5" text-anchor="middle" textLength="36" lengthAdjust="spacingAndGlyphs" font-family="Bodoni MT, Didot, Georgia, Times New Roman, serif" font-size="32" font-weight="700" fill="url(#mmLogoBlue)" stroke="#1556ad" stroke-width=".55" paint-order="stroke" filter="url(#mmLogoGloss)">M</text>
+  <path d="M17 24 13 31 18 34 24 30 30 34 35 31 31 24" fill="#fff" stroke="#b8cce9" stroke-width=".9"/>
+  <path d="M18 25 15 31 21 29 24 32 27 29 33 31 30 25" fill="#e33b45"/>
+  <path d="M21 25 19 30 24 27 29 30 27 25" fill="#2f70ce"/>
+  <circle cx="24" cy="37" r="10.2" fill="#80500f" stroke="#f6d987" stroke-width=".65"/>
+  <circle cx="24" cy="37" r="9.35" fill="url(#mmLogoGold)" stroke="#fff0bd" stroke-width="1.1"/>
+  <circle cx="24" cy="37" r="7.35" fill="none" stroke="#fff0bd" stroke-width=".9"/>
+  <text x="24" y="40.5" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-weight="bold" fill="#80500f">$</text>
   <defs>
-    <linearGradient id="mmEliteFrame" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7e5ad"/><stop offset=".45" stop-color="#d8ad58"/><stop offset="1" stop-color="#9d6c27"/></linearGradient>
-    <linearGradient id="mmEliteM" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#b9d5ff"/></linearGradient>
-    <linearGradient id="mmEliteDollar" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff1c4"/><stop offset="1" stop-color="#d6a84f"/></linearGradient>
+    <linearGradient id="mmLogoBlue" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a9d5ff"/><stop offset=".24" stop-color="#5da8ff"/><stop offset=".58" stop-color="#2879e8"/><stop offset="1" stop-color="#1552b5"/></linearGradient>
+    <linearGradient id="mmLogoGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7ca"/><stop offset=".42" stop-color="#f0c45b"/><stop offset="1" stop-color="#b9781c"/></linearGradient>
+    <filter id="mmLogoGloss" x="-25%" y="-25%" width="150%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation=".45" result="blur"/><feOffset in="blur" dy=".55" result="shadow"/><feComponentTransfer in="shadow" result="shadowAlpha"><feFuncA type="linear" slope=".28"/></feComponentTransfer><feMerge><feMergeNode in="shadowAlpha"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <path d="M8 5.5 17 8.2 24 5.5 31 8.2 40 5.5v26.2L31 34l-7-2.7L17 34l-9-2.3Z" fill="rgba(255,255,255,.055)" stroke="url(#mmEliteFrame)" stroke-width="1.45" stroke-linejoin="round"/>
-  <path d="M17 8.2v25.5M31 8.2v25.5" fill="none" stroke="#a9c7f4" stroke-opacity=".72" stroke-width="1"/>
-  <path d="m14 25.5 4.2-12 5.8 8.2 5.8-8.2 4.2 12" fill="none" stroke="url(#mmEliteM)" stroke-width="3.15" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M24 34.1v2.2" stroke="#f2d28d" stroke-width="1.5" stroke-linecap="round"/>
-  <circle cx="24" cy="41" r="5.5" fill="#10233e" stroke="url(#mmEliteFrame)" stroke-width="1.35"/>
-  <text x="24" y="43.35" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" font-weight="700" fill="url(#mmEliteDollar)">$</text>
-</svg></div></div><div><div class="brand-name">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
+</svg></div>></div><div><div class="brand-name">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
     <nav class="nav"><a href="#overview">Overview</a><a href="#budget">Budget</a><a href="#smart-insights">Insights</a><a href="#money-calendar">Calendar</a><a href="#achievements">Achievements</a><a href="#weekly">Weekly log</a><a href="#wage">Wage scale</a><a href="#coach">AI coach</a><a href="#profile">Your profile</a><a href="blog.html" target="_blank" rel="noopener">Community blog ↗</a></nav>
     <div class="top-actions"><label class="mm-lang-wrap" title="Change language">🌐 <select id="mmLanguage" aria-label="Language"><option value="en">English</option><option value="id">Bahasa Indonesia</option><option value="zh-CN">中文（简体）</option><option value="de">Deutsch</option><option value="es">Español</option><option value="pt">Português</option></select></label><div class="api-pill"><span class="dot" id="apiDot"></span><span id="apiStatus">Data not checked</span></div><button class="btn mm-customize-btn" id="mmOpenTheme" type="button" aria-label="Customize appearance">✦ Customize</button><a class="btn btn-primary mm-account-toplink" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a><button class="btn btn-soft" id="exportBtn">Export data</button></div>
   </div>
@@ -694,8 +717,8 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
  <div class="mm-current-plan" aria-live="polite"><div><span class="mm-plan-eyebrow">YOUR CURRENT PLAN</span><h3 id="mmMembershipCurrentName">MoneyMap Basic</h3><p id="mmMembershipCurrentDesc">Your essential tools to build better money habits.</p></div><span class="mm-current-plan-mark" id="mmMembershipCurrentMark">B</span></div>
  <div class="mm-plan-grid">
   <article class="mm-plan-card" data-mm-plan-card="basic"><div class="mm-plan-top"><span class="mm-plan-eyebrow">START HERE</span><span class="mm-plan-symbol">B</span></div><h3>MoneyMap Basic</h3><p class="mm-plan-summary">The essentials for everyday money management.</p><ul><li>All core budgeting and finance tools</li><li>Money Quest game access</li><li>Five curated appearance presets</li><li>Fun Blue as the default theme</li><li>No custom color editing</li><li class="mm-plan-excluded">Trading Simulator not included</li></ul><span class="mm-plan-included">Included for every account</span><button class="mm-plan-select" type="button" data-mm-select-tier="basic">Switch to Basic</button></article>
-  <article class="mm-plan-card mm-plan-plus" data-mm-plan-card="plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Plus</h3><p class="mm-plan-summary">More ways to personalize and practise.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="plus">Switch to Plus</button></article>
-  <article class="mm-plan-card mm-plan-premium" data-mm-plan-card="premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">The complete MoneyMap experience.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Premium membership badge</li><li>Exclusive premium typography studio with custom fonts</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="premium">Switch to Premium</button></article>
+  <article class="mm-plan-card mm-plan-plus" data-mm-plan-card="plus"><div class="mm-plan-top"><span class="mm-plan-eyebrow">MORE CONTROL</span><span class="mm-plan-symbol">+</span></div><h3>MoneyMap Premium</h3><p class="mm-plan-summary">More creative control, deeper personalization, and room to practice.</p><ul><li>Everything in Basic</li><li>All appearance presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><span class="mm-plan-included">Includes Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="plus">Switch to Premium</button></article>
+  <article class="mm-plan-card mm-plan-premium" data-mm-plan-card="premium"><div class="mm-plan-top"><span class="mm-plan-eyebrow">FULL EXPERIENCE</span><span class="mm-plan-symbol">✦</span></div><h3>MoneyMap Elite</h3><p class="mm-plan-summary">The ultimate MoneyMap experience, with every feature and exclusive member privileges.</p><ul><li>Everything in Plus and Basic</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Exclusive Elite membership badge</li><li>Elite typography studio with custom fonts</li><li>Full access to current MoneyMap features</li></ul><span class="mm-plan-included">Includes Plus + Basic features</span><button class="mm-plan-select" type="button" data-mm-select-tier="premium">Switch to Elite</button></article>
  </div>
  <p class="mm-membership-note">Plans describe feature access in this version of MoneyMap. Upgrades, payments, and billing are not available yet.</p>
 <div class="mm-font-studio" id="mmFontStudio">
@@ -2302,7 +2325,7 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
  const getEmail=()=>String(mmCloudSession?.user?.email||'').trim().toLowerCase();
  const TIER_OVERRIDE_KEY='moneymap_selected_tier_v1';
  const getTier=()=>{let chosen='';try{chosen=localStorage.getItem(TIER_OVERRIDE_KEY)||''}catch(e){}if(['basic','plus','premium'].includes(chosen))return chosen;const email=getEmail();return PREMIUM_EMAILS.has(email)?'premium':PLUS_EMAILS.has(email)?'plus':'basic'};
- const tierNames={basic:'MoneyMap Basic',plus:'MoneyMap Plus',premium:'MoneyMap Premium'};
+ const tierNames={basic:'MoneyMap Basic',plus:'MoneyMap Premium',premium:'MoneyMap Elite'};
  function setTierBadge(tier){
   const chip=document.getElementById('mmHeroUsername');if(!chip)return;
   chip.querySelector('.mm-membership-label')?.remove();
@@ -2320,14 +2343,14 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
   const currentPill=document.getElementById('mmMembershipCurrentPill');
   const currentMark=document.getElementById('mmMembershipCurrentMark');
   if(currentName)currentName.textContent=tierNames[tier];
-  if(currentDesc)currentDesc.textContent=tier==='premium'?'You have the complete MoneyMap experience, including Plus and Basic features.':tier==='plus'?'You have full customization and Trading Simulator access, plus every Basic feature.':'Your essential tools, Money Quest, and five curated themes.';
+  if(currentDesc)currentDesc.textContent=tier==='premium'?'You have the complete Elite experience, including Premium and Basic features.':tier==='plus'?'You have Premium customization and Trading Simulator access, plus every Basic feature.':'Your essential Basic tools, Money Quest, and five curated themes.';
   if(currentPill)currentPill.textContent='Current plan · '+tierNames[tier];
   if(currentMark)currentMark.textContent=tier==='premium'?'✦':tier==='plus'?'+':'B';
   document.querySelectorAll('.mm-plan-card').forEach(card=>{
    const selected=card.dataset.mmPlanCard===tier;
    card.classList.toggle('is-current',selected);
    const button=card.querySelector('[data-mm-select-tier]');
-   if(button){button.disabled=selected;button.textContent=selected?'Current plan':'Switch to '+(card.dataset.mmPlanCard==='basic'?'Basic':card.dataset.mmPlanCard==='plus'?'Plus':'Premium');button.setAttribute('aria-pressed',String(selected));}
+   if(button){button.disabled=selected;button.textContent=selected?'Current plan':'Switch to '+(card.dataset.mmPlanCard==='basic'?'Basic':card.dataset.mmPlanCard==='plus'?'Premium':'Elite');button.setAttribute('aria-pressed',String(selected));}
   });
 
   // Money Quest is the one included game for Basic. Trading is Plus and Premium.
@@ -2349,7 +2372,7 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
     if(label.classList.contains('mm-gradient-toggle'))label.hidden=basic;
    });
    const title=dialog.querySelector('.mm-theme-head p');
-   if(title)title.textContent=basic?'Choose from five curated themes. Full color customization is available with MoneyMap Plus and Premium.':'Customize every theme, gradient, and section color.';
+   if(title)title.textContent=basic?'Choose from five curated themes. Full color customization is available with MoneyMap Plus and Premium.':'Premium and Elite members can customize every theme, gradient, and section color.';
   }
  }
  window.mmApplyTier=applyTier;
