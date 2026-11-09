@@ -1,5 +1,5 @@
-const CACHE_NAME = 'moneymap-shell-v39';
-const APP_SHELL = ['./', './profile.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE_NAME = 'moneymap-shell-v40';
+const APP_SHELL = ['./', './profile.html', './manifest.webmanifest', './manifest-basic.webmanifest', './manifest-premium.webmanifest', './manifest-elite.webmanifest', './icons/icon-basic.svg', './icons/icon-premium.svg', './icons/icon-elite.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
 });
