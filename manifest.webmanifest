@@ -11,10 +11,10 @@
   "theme_color": "#08090b",
   "icons": [
     {
-      "src": "./icons/icon-elite.svg",
+      "src": "./icons/icon-elite.svg?v=42",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
