@@ -67,7 +67,10 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
 .arcade-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--px,50%) var(--py,50%),#e7c36b18,transparent 26%);transition:background .12s}
 .arcade-player{z-index:3;color:#fff8d7;font-size:19px}
 .arcade-coin{z-index:3;font-size:18px}
-<style id="mm-tier-black-metal-v2">
+
+</style>
+<style id="mm-tier-palette-fixed">
+
 .plan.basic{background:linear-gradient(145deg,#fff 0%,#f2f3f5 52%,#e2e4e8 100%);color:#101216;border:1px solid #c9cdd3;box-shadow:0 22px 65px #0005,inset 0 1px #fff}.plan.basic :is(h2,.desc,.tag,.features li,.price){color:#24272d}.plan.basic .sigil{background:#111318;color:#fff;border:1px solid #555b65}.plan.basic .current{background:#111318;color:#fff;border-color:#111318}.plan.basic .plan-select{background:#111318;color:#fff;border-color:#111318}
 .plan.silver,.plan.pearl{color:#f7f8fa;background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%);border:1px solid #aeb5c0;box-shadow:0 22px 65px #0008,inset 0 1px #ffffff22}
 .plan.silver :is(h2,.desc,.tag,.features li,.price),.plan.pearl :is(h2,.desc,.tag,.features li,.price){color:#f1f3f6}
@@ -77,7 +80,14 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
 .plan.gold :is(h2,.desc,.tag,.features li,.price){color:#fff3d3}
 .plan.gold .sigil,.plan.gold .current{background:linear-gradient(145deg,#fff0bd,#c49a45 55%,#76531d);color:#211707;border:1px solid #f8dfa0}
 .plan.gold .features li:before{color:#f0cd7c}
-</style>
+
+/* Basic is intentionally bright, clean white rather than a dark card. */
+.plan.basic{background:linear-gradient(145deg,#ffffff 0%,#fbfcfe 48%,#eef1f5 100%)!important;color:#171a20!important;border:1px solid #d7dce4!important;box-shadow:0 18px 48px #0002,inset 0 1px 0 #fff!important}
+.plan.basic:before{background:linear-gradient(125deg,#ffffffcc,transparent 36%,#dce5f333 65%,transparent 82%)!important;opacity:.55!important}
+.plan.basic h2,.plan.basic .desc,.plan.basic .tag,.plan.basic .features li,.plan.basic .price{color:#242a33!important}
+.plan.basic .features .off{color:#7b8491!important;opacity:.65}
+.plan.basic .sigil{background:linear-gradient(145deg,#ffffff,#e8ebf0)!important;color:#171a20!important;border:1px solid #cbd1da!important}
+.plan.basic .current,.plan.basic .plan-select{background:#171a20!important;color:#fff!important;border:1px solid #171a20!important}
 </style>
 </head>
 <body><main class="wrap">
