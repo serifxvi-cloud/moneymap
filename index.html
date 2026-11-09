@@ -11,8 +11,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="MoneyMap" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="manifest" id="mmTierManifest" href="./manifest-basic.webmanifest" />
+  <link rel="icon" id="mmTierFavicon" type="image/svg+xml" href="./icons/icon-basic.svg" />
+  <link rel="apple-touch-icon" id="mmTierAppleIcon" href="./icons/icon-basic.svg" />
   <meta name="description" content="A private, interactive money manager with country and currency selection, budgeting, wage calculations, inflation estimates, and a personal finance coach." />
   <title>MoneyMap — Manage Your Money, For a Better Future</title>
   <style>
@@ -2886,5 +2887,99 @@ body.mm-tier-premium #overview .mm-elite-wordmark .mm-elite-script{
 })();
 </script>
 
+
+<style id="mm-tier-brand-icon-polish">
+/* Align the brand closer to the left edge and give it more presence. */
+.topbar-inner{width:calc(100% - 48px)!important;max-width:none!important;margin-left:24px!important;margin-right:24px!important}
+.brand{min-width:230px}
+.brand-name{font-size:19px!important;line-height:1.08}
+.brand-sub{font-size:10px;letter-spacing:1.7px}
+@media(max-width:850px){.topbar-inner{width:calc(100% - 32px)!important;margin-left:16px!important;margin-right:16px!important}.brand-name{font-size:18px!important}}
+@media(max-width:620px){.topbar-inner{width:calc(100% - 26px)!important;margin-left:13px!important;margin-right:13px!important}.brand{min-width:0}}
+/* Dark/black is reserved for surfaces; tier accents remain readable foregrounds. */
+body.mm-tier-premium .brand-name{color:#dce2e9}
+body.mm-tier-premium .brand-name .mm-brand-elite{color:#c4ccd6!important}
+body.mm-tier-premium .brand-sub{color:#8d98a6}
+body.mm-tier-premium .brand-mark{background:#111318!important;color:#e3e8ee!important}
+body.mm-tier-premium #overview .mm-elite-greeting,
+body.mm-tier-premium #overview .mm-elite-greeting-name{color:#f1f3f6}
+body.mm-tier-premium #overview .mm-elite-wordmark{color:#dce2e9}
+body.mm-tier-premium .mm-premium-wordmark,
+body.mm-tier-premium .mm-premium-caption{color:#e0e5eb!important}
+body.mm-tier-premium :is(.section-title,.panel-head h2,.brand-name,.stat-value,.metric-big){text-shadow:none}
+body.mm-tier-premium .mm-hero-user{color:#eef1f5}
+body.mm-tier-premium .mm-hero-user strong{color:inherit}
+body.mm-tier-premium .mm-hero-user .mm-membership-label{color:#dce2e9}
+body.mm-tier-premium .mm-account-status,
+body.mm-tier-premium .mm-account-footer{color:#d4dbe4}
+body.mm-tier-premium .mm-account-setup summary{color:#e3e8ee}
+body.mm-tier-premium .mm-account-setup details{background:#15191f;color:#e3e8ee}
+body.mm-tier-premium .mm-account-setup a{color:#dce2e9}
+body.mm-tier-premium .brand-name .mm-brand-elite{ text-shadow:none }
+body.mm-tier-premium .brand-name{background:none!important;-webkit-text-fill-color:#dce2e9!important}
+body.mm-tier-premium .brand-name .mm-brand-elite{-webkit-text-fill-color:#c4ccd6!important}
+body.mm-tier-premium .brand-sub{color:#aeb7c3}
+body.mm-tier-premium .brand-mark{box-shadow:none}
+body.mm-tier-premium .mm-premium-wordmark{ text-shadow:none!important }
+body.mm-tier-premium .mm-elite-wordmark{text-shadow:none!important}
+body.mm-tier-premium .mm-elite-greeting-name{color:#f1f3f6!important}
+body.mm-tier-premium #overview .mm-elite-greeting{color:#fff!important}
+body.mm-tier-premium #overview .mm-elite-wordmark{color:#dce2e9!important}
+body.mm-tier-premium .brand-name .mm-brand-elite{color:#c4ccd6!important}
+body.mm-tier-premium .brand-name{color:#dce2e9!important}
+body.mm-tier-premium .brand-sub{color:#aeb7c3!important}
+body.mm-tier-premium .brand-mark{background:#111318!important}
+body.mm-tier-premium .brand-mark *{color:#e3e8ee!important}
+body.mm-tier-premium .mm-premium-stage{color:#dce2e9}
+body.mm-tier-premium .mm-premium-stage svg{color:#dce2e9}
+body.mm-tier-premium .mm-premium-caption{color:#c4ccd6!important}
+body.mm-tier-premium .mm-premium-wordmark small{color:#dce2e9!important}
+body.mm-tier-premium .mm-membership-label{color:#dce2e9!important}
+body.mm-tier-premium .mm-tier-premium{color:#dce2e9!important}
+body.mm-tier-premium .mm-hero-user{border-color:#77818e}
+body.mm-tier-premium .mm-hero-user.is-owner{color:#e3e8ee}
+body.mm-tier-premium .mm-hero-user.is-owner strong{color:inherit}
+body.mm-tier-premium .mm-hero-user .mm-account-id{color:#aeb7c3}
+body.mm-tier-premium .mm-hero-user .mm-account-id{border-color:#77818e}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge{color:#dce2e9}
+body.mm-tier-premium .mm-premium-vip-badge{color:#dce2e9}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge svg{stroke:#dce2e9}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge svg path{stroke:#dce2e9}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge svg path[fill]{fill:#dce2e9}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge svg path[stroke]{stroke:#dce2e9}
+body.mm-tier-premium .mm-hero-user .mm-premium-vip-badge svg{filter:none}
+body.mm-tier-premium .mm-account-panel:before{background:#aeb7c3!important}
+body.mm-tier-premium .mm-account-panel{color:#e3e8ee}
+body.mm-tier-premium .mm-account-panel :is(h2,h3,strong,label){color:#e3e8ee}
+body.mm-tier-premium .mm-account-panel p,
+body.mm-tier-premium .mm-account-panel small{color:#b8c0ca}
+body.mm-tier-premium .mm-account-panel input,
+body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
+</style>
+
+<script id="mm-tier-app-icon-switcher">
+(()=> {
+ const manifest=document.getElementById('mmTierManifest');
+ const favicon=document.getElementById('mmTierFavicon');
+ const apple=document.getElementById('mmTierAppleIcon');
+ const theme=document.querySelector('meta[name="theme-color"]');
+ const apply=()=>{
+   const tier=document.body.dataset.mmTier||'basic';
+   const safe=['basic','plus','premium'].includes(tier)?tier:'basic';
+   const variant=safe==='premium'?'elite':safe==='plus'?'premium':'basic';
+   const icon='./icons/icon-'+variant+'.svg';
+   const manifestPath='./manifest-'+variant+'.webmanifest';
+   if(favicon&&favicon.getAttribute('href')!==icon)favicon.setAttribute('href',icon);
+   if(apple&&apple.getAttribute('href')!==icon)apple.setAttribute('href',icon);
+   if(manifest&&manifest.getAttribute('href')!==manifestPath)manifest.setAttribute('href',manifestPath);
+   if(theme)theme.setAttribute('content',variant==='elite'?'#08090b':variant==='premium'?'#111318':'#f5f8ff');
+ };
+ const observer=new MutationObserver(apply);
+ observer.observe(document.body,{attributes:true,attributeFilter:['data-mm-tier','class']});
+ apply();
+ window.addEventListener('storage',apply);
+ window.addEventListener('moneymap:tier-changed',apply);
+})();
+</script>
 </body>
 </html>
