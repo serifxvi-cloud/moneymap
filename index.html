@@ -2950,13 +2950,14 @@ body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
  const apple=document.getElementById('mmTierAppleIcon');
  const theme=document.querySelector('meta[name="theme-color"]');
  const apply=()=>{
-   const tier=document.body.dataset.mmTier||'basic';
-   const safe=['basic','plus','premium'].includes(tier)?tier:'basic';
-   const variant=safe==='premium'?'premium':safe==='plus'?'premium':'basic';
-   const icon='./icons/icon-'+variant+'.svg?v=42';
+   const tier=(document.body.dataset.mmTier||'basic').toLowerCase();
+   const safe=['basic','plus','premium','elite'].includes(tier)?tier:'basic';
+   const variant=safe==='elite'?'elite':(safe==='premium'||safe==='plus')?'premium':'basic';
+   const icon=variant==='elite'?'./favicon.svg?v=42':'./icons/icon-'+variant+'.svg?v=42';
+   const appleIcon='./icons/icon-'+variant+'.svg?v=42';
    if(favicon&&favicon.getAttribute('href')!==icon)favicon.setAttribute('href',icon);
-   if(apple&&apple.getAttribute('href')!==icon)apple.setAttribute('href',icon);
-   if(theme)theme.setAttribute('content',variant==='premium'?'#111318':'#f5f8ff');
+   if(apple&&apple.getAttribute('href')!==appleIcon)apple.setAttribute('href',appleIcon);
+   if(theme)theme.setAttribute('content',variant==='elite'?'#08090b':variant==='premium'?'#111318':'#f5f8ff');
  };
  const observer=new MutationObserver(apply);
  observer.observe(document.body,{attributes:true,attributeFilter:['data-mm-tier','class']});
