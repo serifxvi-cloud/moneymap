@@ -1403,15 +1403,18 @@ async function mmCloudFetch(path,options={},token=''){
   headers.set('apikey',c.key);headers.set('Accept','application/json');
   if(token)headers.set('Authorization','Bearer '+token);
   if(options.body&&!headers.has('Content-Type'))headers.set('Content-Type','application/json');
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),15000);
-  let response;
-  try{
-    response=await fetch(base+path,{...options,headers,signal:controller.signal,mode:'cors',cache:'no-store'});
-  }catch(err){
-    if(err&&err.name==='AbortError')throw new Error('The account server took too long to respond. Please try again.');
-    throw new Error('MoneyMap cannot reach its email account server. Check your internet connection or ask the site administrator to verify the Supabase project URL and network access.');
-  }finally{clearTimeout(timeout);}
+  const isRead=(options.method||'GET').toUpperCase()==='GET';
+  let response,lastError;
+  for(let attempt=0;attempt<(isRead?2:1);attempt++){
+   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),22000);
+   try{response=await fetch(base+path,{...options,headers,signal:controller.signal,mode:'cors',cache:'no-store'});break;}
+   catch(err){lastError=err;if(attempt+1<(isRead?2:1))await new Promise(resolve=>setTimeout(resolve,650));}
+   finally{clearTimeout(timeout);}
+  }
+  if(!response){
+   if(lastError&&lastError.name==='AbortError')throw new Error('Supabase did not respond within 22 seconds. Check that the MoneyMap Supabase project is active (not paused), then try again.');
+   throw new Error('MoneyMap cannot reach Supabase. Check your internet connection, project URL, and Supabase project status.');
+  }
   const raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{}}catch{data={message:raw}}
   if(!response.ok){const msg=data.msg||data.message||data.error_description||data.error||('Account server returned '+response.status);throw new Error(String(msg));}
   return data;
@@ -1522,8 +1525,7 @@ function mmShowWelcome(){
  const timer=setTimeout(cleanup,4000);
  close.addEventListener('click',()=>clearTimeout(timer),{once:true});
 }
-async function mmCloudAfterLogin(){mmCloudSetStatus('Signed in. Checking your private account…');mmCloudRenderAccount();try{const token=await mmCloudAccessToken();const remote=await mmCloudGetRemote(token);const local=mmCloudSnapshot();if(remote&&remote.data){if(mmCloudHasLocalData(local)){const takeCloud=confirm('This account has its own saved MoneyMap data.\n\nChoose OK to load that account’s data on this device.\nChoose Cancel to replace that account’s cloud data with the data currently on this device.');if(takeCloud){mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been loaded.','ok');}else{await mmCloudWriteRemote(local,token);mmCloudSetStatus('This device’s data has been saved to your account.','ok');}}else{mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been restored.','ok');}}else{const hasLocal=mmCloudHasLocalData(local);const upload=hasLocal&&confirm('This account is new and has no saved data yet.\n\nChoose OK to copy the data currently on this device into this account. Choose Cancel to start this account with a clean, private workspace.');if(upload){await mmCloudWriteRemote(local,token);mmCloudSetStatus('Your selected data has been saved to this account.','ok');}else{const empty={version:1,savedAt:new Date().toISOString(),profile:{},transactions:[],chat:[],notes:''};mmCloudApplySnapshot(empty);await mmCloudWriteRemote(empty,token);mmCloudSetStatus('Your new private MoneyMap account is ready.','ok');}}mmCloudRenderAccount();}catch(e){mmCloudSetStatus('Signed in, but private cloud sync failed: '+e.message+'. The account database may need its one-time administrator setup.','bad');}finally{mmShowWelcome();}}
-async function mmCloudSaveNow(){if(mmCloudSaveTimer){clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=null;}if(!mmCloudSession?.access_token)return false;const owner=mmCloudSession.user?.id;try{const token=await mmCloudAccessToken();await mmCloudWriteRemote(mmCloudSnapshot(),token);if(mmCloudSession?.user?.id===owner)mmCloudSetStatus('Your latest changes are saved to your private cloud.','ok');return true;}catch(e){if(mmCloudSession?.user?.id===owner)mmCloudSetStatus('Cloud save failed: '+e.message,'bad');return false;}}
+async function mmCloudAfterLogin(){let stage='refreshing your session';mmCloudSetStatus('Signed in. Checking your private account…');mmCloudRenderAccount();try{const token=await mmCloudAccessToken();stage='reading your private cloud profile';const remote=await mmCloudGetRemote(token);const local=mmCloudSnapshot();if(remote&&remote.data){if(mmCloudHasLocalData(local)){const takeCloud=confirm('This account has its own saved MoneyMap data.\\n\\nChoose OK to load that account’s data on this device. Choose Cancel to replace that account’s data with the data currently on this device.');if(takeCloud){mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been loaded.','ok');}else{stage='saving this device’s data';await mmCloudWriteRemote(local,token);mmCloudSetStatus('This device’s data has been saved to your account.','ok');}}else{mmCloudApplySnapshot(remote.data);mmCloudSetStatus('Your private account data has been restored.','ok');}}else{const hasLocal=mmCloudHasLocalData(local);const upload=hasLocal&&confirm('This account is new and has no saved data yet.\\n\\nChoose OK to copy the data currently on this device into this account. Choose Cancel to start this account with a clean, private workspace.');if(upload){stage='saving this device’s data';await mmCloudWriteRemote(local,token);mmCloudSetStatus('Your selected data has been saved to this account.','ok');}else{const empty={version:1,savedAt:new Date().toISOString(),profile:{},transactions:[],chat:[],notes:''};mmCloudApplySnapshot(empty);stage='creating your private cloud profile';await mmCloudWriteRemote(empty,token);mmCloudSetStatus('Your new private MoneyMap account is ready.','ok');}}mmCloudRenderAccount();}catch(e){const message=String(e&&e.message||'Unknown error');const setupNeeded=/moneymap_profiles|PGRST205|42P01|does not exist|schema cache|permission denied|row-level security/i.test(message);const detail=setupNeeded?'The cloud profile table or its security policies are not ready. Run MONEYMAP_CLOUD_SETUP.sql once in Supabase → SQL Editor.':message;mmCloudSetStatus('Signed in, but cloud sync failed while '+stage+': '+detail,'bad');console.error('MoneyMap cloud sync failed during '+stage,e);}finally{mmShowWelcome();}}async function mmCloudSaveNow(){if(mmCloudSaveTimer){clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=null;}if(!mmCloudSession?.access_token)return false;const owner=mmCloudSession.user?.id;try{const token=await mmCloudAccessToken();await mmCloudWriteRemote(mmCloudSnapshot(),token);if(mmCloudSession?.user?.id===owner)mmCloudSetStatus('Your latest changes are saved to your private cloud.','ok');return true;}catch(e){if(mmCloudSession?.user?.id===owner)mmCloudSetStatus('Cloud save failed: '+e.message,'bad');return false;}}
 function mmCloudScheduleSave(){if(mmCloudApplying||!mmCloudSession?.access_token)return;if(mmCloudSaveTimer)clearTimeout(mmCloudSaveTimer);mmCloudSaveTimer=setTimeout(()=>{mmCloudSaveTimer=null;mmCloudSaveNow();},1200);}
 window.mmCloudScheduleSave=mmCloudScheduleSave;
 // Any account-specific appearance/language/plan change joins the same debounced cloud save.
@@ -2967,72 +2969,43 @@ body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
 })();
 </script>
 
-<style id="mm-simple-phone-ui-v1">
-/* Phone layout: remove the narrow desktop rail and let the content use the screen. */
+<style id="mm-simple-phone-ui-v2">
 @media(max-width:700px){
-  .mm-quick-rail{display:none!important}
-  .shell,body main.shell{
-    width:calc(100% - 24px)!important;
-    max-width:none!important;
-    margin:12px auto 24px!important;
-  }
-  .topbar{height:60px}
-  .topbar-inner{width:calc(100% - 24px)!important;margin:0 auto!important;gap:8px}
-  .brand{gap:7px;min-width:0}
-  .brand-mark{width:34px;height:34px;flex-basis:34px}
-  .brand-mark svg{width:30px;height:30px}
-  .brand-name{font-size:16px!important}
-  .top-actions{gap:5px}
-  .top-actions .btn{padding:8px 10px;font-size:11px}
-  .hero{padding:20px 17px!important;border-radius:18px!important;gap:16px}
-  .hero h1{font-size:clamp(28px,8vw,36px)!important;line-height:1.08}
-  .hero-right{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .hero-mini{min-width:0;padding:11px!important;min-height:76px!important}
-  .stats-grid{gap:8px}
-  .stat-card{padding:11px!important;border-radius:13px}
-  .stat-label{font-size:10px}
-  .stat-value{font-size:18px!important}
-  .panel{padding:14px!important;border-radius:15px!important;margin-bottom:12px}
-  .section-head,.panel-head{gap:9px;align-items:flex-start}
-  .section-title,.panel-head h2{font-size:18px}
-  .mm-mobile-hub{
-    width:100%!important;margin:12px 0 16px!important;padding:13px 12px 9px!important;
-    border-radius:16px!important;background:#f7f9fc!important;
-    border:1px solid #e5eaf1!important;box-shadow:none!important;
-    backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-  }
-  .mm-mobile-hub:before,.mm-mobile-hub:after{display:none!important}
-  .mm-hub-heading{margin-bottom:8px!important;align-items:center}
-  .mm-hub-heading h2{font-size:15px!important;margin-top:2px}
-  .mm-hub-kicker{font-size:8px;letter-spacing:1.1px}
-  .mm-hub-hint{font-size:9px}
-  .mm-favorites-row{gap:11px!important;padding:3px 1px 9px!important}
-  .mm-favorite-link,.mm-favorite-empty{flex-basis:54px!important;gap:5px!important}
-  .mm-favorite-icon,.mm-favorite-empty span{width:40px!important;height:40px!important;font-size:17px!important;box-shadow:none!important}
-  .mm-favorite-link small,.mm-favorite-empty small{font-size:9px!important}
-  .mm-hub-all-heading{margin-top:2px!important}
-  .mm-section-scroller{gap:7px!important;padding:2px 1px 8px!important}
-  .mm-section-card{flex:0 0 88px!important;min-height:70px!important;padding:9px!important;border-radius:12px!important;gap:7px!important;box-shadow:none!important}
-  .mm-section-card span{font-size:17px!important}
-  .mm-section-card strong{font-size:10px!important}
-  .content-grid,.coach-layout,.two-col{grid-template-columns:1fr!important}
-  .field-grid{grid-template-columns:1fr!important}
-  .btn{min-height:36px}
-  input,select,textarea{max-width:100%;min-width:0}
-  body{overflow-x:hidden}
+ html{scroll-padding-top:66px} body{overflow-x:hidden;padding-bottom:82px!important}
+ header.topbar{height:auto;min-height:58px;position:sticky;top:0;z-index:900}
+ .topbar-inner{width:calc(100% - 24px)!important;max-width:none!important;margin:0 auto!important;min-height:58px;display:flex;flex-wrap:wrap;gap:7px;padding:8px 0}
+ .brand{min-width:0!important;gap:7px}.brand-mark{width:32px!important;height:32px!important;flex:0 0 32px}.brand-mark svg{width:28px;height:28px}.brand-name{font-size:16px!important}.brand-sub{display:none!important}
+ .top-actions{margin-left:auto;display:flex;align-items:center;gap:5px;max-width:100%;flex-wrap:nowrap}
+ .top-actions .api-pill,.top-actions #exportBtn,.top-actions .mm-lang-wrap{display:none!important}
+ .top-actions .mm-customize-btn{font-size:10px;padding:7px 8px}.top-actions .mm-account-toplink{font-size:10px;padding:8px 9px}
+ main.shell{display:block!important;width:calc(100% - 22px)!important;max-width:none!important;margin:12px auto 24px!important;padding:0!important}
+ .shell>section{width:100%;min-width:0}
+ .hero{display:block!important;padding:17px 15px!important;border-radius:17px!important;margin-bottom:12px!important}
+ .hero h1{font-size:clamp(27px,8vw,35px)!important;line-height:1.08!important}.hero>div:first-child>p{font-size:13px;line-height:1.5}
+ .hero-right{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin-top:12px}.mm-premium-stage{display:none!important}
+ .hero-mini{min-width:0!important;min-height:70px;padding:10px!important;border-radius:12px!important}.hero-mini span{font-size:8px!important}.hero-mini strong{font-size:17px!important}.hero-mini small{font-size:9px!important}
+ .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:13px}.hero-actions .btn{min-width:0!important;width:100%;font-size:10px!important;padding:9px 7px!important;white-space:normal}
+ .stats-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin:10px 0!important}
+ .stat-card{min-width:0;padding:11px!important;border-radius:13px!important}.stat-label{font-size:9px!important}.stat-value{font-size:17px!important;overflow-wrap:anywhere}.stat-note{font-size:9px!important}
+ .mm-mobile-hub{width:100%!important;margin:12px 0!important;padding:12px!important;border-radius:14px!important;background:#f7f9fc!important;border:1px solid #e4e9f0!important;box-shadow:none!important;backdrop-filter:none!important}
+ .mm-mobile-hub:before,.mm-mobile-hub:after{display:none!important}.mm-hub-heading{margin-bottom:7px!important}.mm-hub-heading h2{font-size:15px!important}.mm-hub-kicker,.mm-hub-hint{font-size:8px!important}
+ .mm-favorites-row{display:flex!important;gap:10px!important;overflow-x:auto!important;padding:3px 0 8px!important}
+ .mm-favorite-link,.mm-favorite-empty{flex:0 0 52px!important;gap:4px!important}.mm-favorite-icon,.mm-favorite-empty span{width:38px!important;height:38px!important;font-size:15px!important;box-shadow:none!important}.mm-favorite-link small,.mm-favorite-empty small{font-size:8px!important}
+ .mm-section-scroller{display:flex!important;gap:7px!important;overflow-x:auto!important;padding:3px 0 8px!important}.mm-section-card{flex:0 0 82px!important;min-height:66px!important;padding:8px!important;border-radius:10px!important;box-shadow:none!important}.mm-section-card span{font-size:16px!important}.mm-section-card strong{font-size:9px!important}
+ .content-grid,.two-col,.coach-layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+ .panel{min-width:0!important;padding:13px!important;margin-bottom:10px!important;border-radius:14px!important}
+ .section-head,.panel-head{display:flex;flex-wrap:wrap;gap:8px!important;align-items:flex-start}.section-title,.panel-head h2{font-size:17px!important}.section-head p,.panel-head p{font-size:11px!important}
+ .field-grid{grid-template-columns:minmax(0,1fr)!important}.budget-header{display:none!important}.budget-row{grid-template-columns:minmax(0,1fr)!important}
+ input,select,textarea{min-width:0!important;max-width:100%!important;font-size:16px!important}
+ .mm-orbit-nav{position:fixed!important;left:8px!important;right:8px!important;bottom:8px!important;top:auto!important;transform:none!important;width:auto!important;height:62px!important;z-index:1200!important;pointer-events:auto!important;border:1px solid #e1e6ee!important;border-radius:16px!important;background:rgba(255,255,255,.97)!important;box-shadow:0 5px 22px rgba(20,35,60,.12)!important;backdrop-filter:blur(14px)!important}
+ .mm-orbit-toggle{display:none!important}
+ .mm-orbit-menu,.mm-orbit-nav.is-open .mm-orbit-menu{position:static!important;inset:auto!important;display:flex!important;align-items:center!important;gap:4px!important;width:100%!important;height:100%!important;padding:5px!important;overflow-x:auto!important;overflow-y:hidden!important;opacity:1!important;pointer-events:auto!important;transform:none!important;transition:none!important;scrollbar-width:none!important}
+ .mm-orbit-menu::-webkit-scrollbar{display:none}.mm-orbit-slice{position:relative!important;left:auto!important;top:auto!important;flex:0 0 58px!important;width:58px!important;height:50px!important;overflow:visible!important}
+ .mm-orbit-slice button{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:56px!important;height:48px!important;border:0!important;border-radius:10px!important;background:transparent!important;color:#56647a!important;box-shadow:none!important;display:flex!important;gap:2px!important}
+ .mm-orbit-slice button[aria-current="page"]{background:#edf2fa!important;color:#1d4d91!important;box-shadow:none!important}.mm-orbit-icon{font-size:16px!important}.mm-orbit-name{font-size:8px!important;max-width:54px!important}
 }
-@media(max-width:390px){
-  .topbar-inner{width:calc(100% - 18px)!important}
-  .brand-sub{display:none!important}
-  .top-actions .btn{padding:7px 8px;font-size:10px}
-  .hero{padding:17px 14px!important}
-  .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-  .hero-actions .btn{width:100%;padding:9px 7px!important}
-  .stats-grid{grid-template-columns:1fr 1fr!important}
-}
-@media(prefers-reduced-motion:reduce){
-  .mm-mobile-hub *,.hero *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
-}
+@media(max-width:390px){.topbar-inner{width:calc(100% - 18px)!important}.top-actions .mm-customize-btn{display:none!important}.hero-actions{grid-template-columns:1fr!important}.stats-grid{grid-template-columns:1fr 1fr!important}.mm-orbit-slice{flex-basis:54px!important;width:54px!important}.mm-orbit-slice button{width:52px!important}}
+@media(prefers-reduced-motion:reduce){.mm-orbit-menu,.mm-orbit-slice button{transition:none!important}}
 </style>
 
 </body>
