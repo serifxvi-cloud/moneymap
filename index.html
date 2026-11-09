@@ -525,7 +525,7 @@ body.mm-tier-premium #overview .mm-premium-stage[hidden]{display:none!important}
     <linearGradient id="mmLogoGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7ca"/><stop offset=".42" stop-color="#f0c45b"/><stop offset="1" stop-color="#b9781c"/></linearGradient>
     <filter id="mmLogoGloss" x="-25%" y="-25%" width="150%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation=".45" result="blur"/><feOffset in="blur" dy=".55" result="shadow"/><feComponentTransfer in="shadow" result="shadowAlpha"><feFuncA type="linear" slope=".28"/></feComponentTransfer><feMerge><feMergeNode in="shadowAlpha"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-</svg></div>></div><div><div class="brand-name">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
+</svg></div>></div><div><div class="brand-name" id="mmBrandName">MoneyMap</div><div class="brand-sub">Personal finance studio</div></div></a>
     <nav class="nav"><a href="#overview">Overview</a><a href="#budget">Budget</a><a href="#smart-insights">Insights</a><a href="#money-calendar">Calendar</a><a href="#achievements">Achievements</a><a href="#weekly">Weekly log</a><a href="#wage">Wage scale</a><a href="#coach">AI coach</a><a href="#profile">Your profile</a><a href="blog.html" target="_blank" rel="noopener">Community blog ↗</a></nav>
     <div class="top-actions"><label class="mm-lang-wrap" title="Change language">🌐 <select id="mmLanguage" aria-label="Language"><option value="en">English</option><option value="id">Bahasa Indonesia</option><option value="zh-CN">中文（简体）</option><option value="de">Deutsch</option><option value="es">Español</option><option value="pt">Português</option></select></label><div class="api-pill"><span class="dot" id="apiDot"></span><span id="apiStatus">Data not checked</span></div><button class="btn mm-customize-btn" id="mmOpenTheme" type="button" aria-label="Customize appearance">✦ Customize</button><a class="btn btn-primary mm-account-toplink" href="account.html" target="_blank" rel="noopener">Continue To Account ↗</a><button class="btn btn-soft" id="exportBtn">Export data</button></div>
   </div>
@@ -2798,67 +2798,45 @@ body[data-theme="dark"] .mm-section-card strong{color:inherit!important}
 </style>
 
 
-<style id="mm-elite-overview-solitaire-v1">
-/* MoneyMap Elite overview: pearl-white surface and Solitaire-style script wordmark. */
-body.mm-tier-premium #overview.hero{
-  color:#25231f!important;
-  background:
-    radial-gradient(ellipse at 84% 8%,rgba(224,207,166,.22),transparent 34%),
-    radial-gradient(ellipse at 4% 100%,rgba(240,235,222,.72),transparent 42%),
-    linear-gradient(135deg,#fff 0%,#fbfaf7 56%,#f2eee5 100%)!important;
-  border:1px solid rgba(211,195,158,.5)!important;
-  box-shadow:0 20px 55px rgba(69,57,34,.09),inset 0 1px 0 #fff!important;
-}
-body.mm-tier-premium #overview .eyebrow{color:#9b7b43!important;letter-spacing:2.4px}
-body.mm-tier-premium #overview .hero p{color:#6d685e!important}
-body.mm-tier-premium #overview .hero .btn-primary{
-  background:linear-gradient(135deg,#3a3328,#171614)!important;color:#fff!important;
-  border:1px solid #5b503c!important;box-shadow:0 5px 14px rgba(50,42,28,.14)!important
-}
-body.mm-tier-premium #overview .hero .btn-quiet,
-body.mm-tier-premium #overview .hero .btn-soft{
-  background:rgba(255,255,255,.84)!important;color:#514735!important;
-  border:1px solid #e4dccb!important
-}
-body.mm-tier-premium #overview .hero-right .hero-mini{
-  background:rgba(255,255,255,.76)!important;border:1px solid #e7dfcf!important;
-  box-shadow:0 8px 24px rgba(83,67,38,.055),inset 0 1px 0 #fff!important
-}
-body.mm-tier-premium #overview .hero-right .hero-mini span{color:#8c806b!important}
-body.mm-tier-premium #overview .hero-right .hero-mini strong{color:#302a20!important}
-body.mm-tier-premium #overview .hero-right .hero-mini small{color:#8a806f!important}
-body.mm-tier-premium #overview #mmHeroUsername{
-  background:rgba(255,255,255,.78)!important;color:#6d542b!important;
-  border:1px solid #e5d7b8!important;box-shadow:0 5px 16px rgba(96,72,31,.07),inset 0 1px 0 #fff!important
+<style id="mm-elite-brand-and-greeting-v2">
+/* Keep the original Overview hero design. Only add Elite branding and the Elite greeting. */
+body.mm-tier-premium .brand-name .mm-brand-elite{
+  display:inline-block;margin-left:5px;
+  font-family:"BCA Solitaire","Solitaire","Parisienne","Brush Script MT",cursive!important;
+  font-size:1.32em;font-weight:400;font-style:normal;letter-spacing:0;
+  line-height:1;color:#a77d3d;vertical-align:-.06em;
 }
 body.mm-tier-premium #overview .mm-elite-greeting{
-  display:block;font-family:inherit;font-size:clamp(27px,3.5vw,42px);
-  font-weight:650;letter-spacing:-1.35px;line-height:1.13;color:#28251f
+  display:block;color:#fff;font-family:inherit;
+  font-size:clamp(27px,3.5vw,42px);font-weight:650;
+  letter-spacing:-1.35px;line-height:1.13;
 }
-body.mm-tier-premium #overview .mm-elite-greeting-name{color:#8b6a34}
+body.mm-tier-premium #overview .mm-elite-greeting-name{color:#f3d69b}
 body.mm-tier-premium #overview .mm-elite-wordmark{
-  display:inline-block;margin-top:3px;font-family:"Solitaire","Parisienne","Brush Script MT",cursive!important;
-  font-size:clamp(51px,6vw,76px);font-weight:400;font-style:normal;letter-spacing:.1px;
-  line-height:1.08;color:#9a773e;text-shadow:0 1px 0 #fff,0 7px 22px rgba(133,101,48,.12)
+  display:inline-block;margin-top:2px;
+  font-family:"BCA Solitaire","Solitaire","Parisienne","Brush Script MT",cursive!important;
+  font-size:clamp(43px,5.3vw,66px);font-weight:400;font-style:normal;
+  letter-spacing:.1px;line-height:1.08;color:#f4d89f;
+  text-shadow:0 2px 12px rgba(0,0,0,.18);
 }
 body.mm-tier-premium #overview .mm-elite-wordmark .mm-elite-prefix{
-  font-family:"Bodoni Moda",Georgia,serif;font-size:.44em;font-weight:600;
-  letter-spacing:-.5px;vertical-align:middle;color:#3b352b;margin-right:7px
+  font-family:inherit;font-size:1em;font-weight:400;letter-spacing:0;
+  color:inherit;margin-right:0;
 }
-body.mm-tier-premium #overview .mm-elite-wordmark .mm-elite-script{font-family:"Solitaire","Parisienne","Brush Script MT",cursive}
-body.mm-tier-premium #overview .mm-elite-greeting[hidden]{display:none!important}
-body.mm-tier-premium #overview .mm-type-caret{display:none!important}
+body.mm-tier-premium #overview .mm-elite-wordmark .mm-elite-script{
+  font-family:"BCA Solitaire","Solitaire","Parisienne","Brush Script MT",cursive!important;
+}
 @media(max-width:620px){
  body.mm-tier-premium #overview .mm-elite-greeting{font-size:clamp(25px,7vw,34px)}
- body.mm-tier-premium #overview .mm-elite-wordmark{font-size:clamp(47px,12vw,61px)}
+ body.mm-tier-premium #overview .mm-elite-wordmark{font-size:clamp(43px,11vw,56px)}
 }
-@media(prefers-reduced-motion:reduce){body.mm-tier-premium #overview .mm-elite-wordmark{scroll-behavior:auto}}
 </style>
 <script id="mm-elite-overview-solitaire-engine">
 (()=> {
  const overview=document.getElementById('overview');
  const heading=overview?.querySelector('.mm-typewriter-title');
  const chip=document.getElementById('mmHeroUsername');
+ const brand=document.getElementById('mmBrandName');
  if(!overview||!heading||!chip)return;
  const original=heading.innerHTML;
  const originalLabel=heading.getAttribute('aria-label')||'Manage Your Money, For a Better Future';
@@ -2867,6 +2845,13 @@ body.mm-tier-premium #overview .mm-type-caret{display:none!important}
    const elite=document.body.dataset.mmTier==='premium';
    const signed=chip.classList.contains('is-signed-in');
    const mode=elite?(signed?'elite-signed':'elite-guest'):'standard';
+   if(brand){
+     if(elite){
+       const base=document.createElement('span');base.textContent='MoneyMap';
+       const suffix=document.createElement('span');suffix.className='mm-brand-elite';suffix.textContent='Elite';
+       brand.replaceChildren(base,suffix);
+     }else brand.textContent='MoneyMap';
+   }
    if(mode===lastMode)return;
    lastMode=mode;
    if(!elite){
@@ -2881,23 +2866,17 @@ body.mm-tier-premium #overview .mm-type-caret{display:none!important}
    heading.classList.add('mm-elite-greeting');
    heading.setAttribute('data-elite-rendered','true');
    if(signed){
-     const first=document.createElement('span');
-     first.textContent='Welcome Back, ';
-     const who=document.createElement('span');
-     who.className='mm-elite-greeting-name';
-     who.textContent=name;
-     const second=document.createElement('span');
-     second.textContent='to MoneyMap';
-     const brand=document.createElement('span');
-     brand.className='mm-elite-wordmark';
-     brand.innerHTML='<span class="mm-elite-prefix">MoneyMap</span><span class="mm-elite-script">Elite</span>';
-     heading.replaceChildren(first,who,document.createElement('br'),second,document.createElement('br'),brand);
+     const first=document.createElement('span');first.textContent='Welcome Back, ';
+     const who=document.createElement('span');who.className='mm-elite-greeting-name';who.textContent=name;
+     const second=document.createElement('span');second.textContent='to MoneyMap ';
+     const brandLine=document.createElement('span');brandLine.className='mm-elite-wordmark';
+     brandLine.innerHTML='<span class="mm-elite-prefix">Elite</span>';
+     heading.replaceChildren(first,who,document.createElement('br'),second,document.createElement('br'),brandLine);
      heading.setAttribute('aria-label','Welcome Back, '+name+' to MoneyMap Elite');
    }else{
-     const brand=document.createElement('span');
-     brand.className='mm-elite-wordmark';
-     brand.innerHTML='<span class="mm-elite-prefix">MoneyMap</span><span class="mm-elite-script">Elite</span>';
-     heading.replaceChildren(brand);
+     const brandLine=document.createElement('span');brandLine.className='mm-elite-wordmark';
+     brandLine.innerHTML='<span class="mm-elite-prefix">MoneyMap Elite</span>';
+     heading.replaceChildren(brandLine);
      heading.setAttribute('aria-label','MoneyMap Elite');
    }
  };
