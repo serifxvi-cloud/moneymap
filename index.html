@@ -2064,6 +2064,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </script>
 <style id="mm-feature-navigation-fix">#smart-insights,#money-calendar,#achievements{scroll-margin-top:100px}</style>
 <style id="mm-orbit-navigation-v2">
+/* Keep Quick Access visible: it is a persistent navigation hub inside the dashboard shell. */
+.shell>section.mm-mobile-hub{display:block!important}
+
 .topbar .nav,.mm-quick-rail{display:none!important}
 .shell>section{display:none!important}
 .shell>section.mm-page-visible{display:block!important}
