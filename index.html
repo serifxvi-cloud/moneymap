@@ -494,6 +494,19 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
 .mm-current-plan h3,.mm-current-plan p,.mm-current-plan .mm-plan-eyebrow{color:#fff!important}
 .mm-current-plan-mark{background:linear-gradient(145deg,#fff0bd,#c49a45)!important;color:#15110a!important;border:1px solid #f4d995!important}
 </style>
+
+<style id="mm-elite-script-font-v1">
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+body.mm-tier-premium #overview .mm-premium-wordmark{font-family:'Parisienne','Brush Script MT',cursive!important;font-size:clamp(27px,3vw,35px)!important;font-weight:400!important;font-style:normal!important;letter-spacing:.2px!important;line-height:1!important;color:#fff7dc!important;text-shadow:0 2px 5px #4b300f,0 0 16px #f0ca72aa!important}
+body.mm-tier-premium #overview .mm-premium-wordmark small{display:block;margin-top:0!important;font-family:'Parisienne','Brush Script MT',cursive!important;font-size:.72em!important;font-style:normal!important;font-weight:400!important;letter-spacing:1.2px!important;color:#ffe7a5!important;text-shadow:0 1px 5px #57390f!important}
+body.mm-tier-premium #overview .mm-premium-stage[hidden]{display:none!important}
+#mmWelcomeParty.mm-elite-welcome{background:radial-gradient(ellipse at 100% 0%,#fff0c777,transparent 48%),linear-gradient(135deg,#fffdf7 0%,#f5edda 52%,#e6dfd1 100%)!important;color:#38280f!important;border:1px solid #d4b66d!important;box-shadow:0 20px 58px #4a351c30,0 0 0 1px #fff8df inset!important}
+#mmWelcomeParty.mm-elite-welcome .mm-welcome-title{font-family:'Parisienne','Brush Script MT',cursive!important;font-size:31px!important;font-weight:400!important;letter-spacing:.2px!important;color:#684713!important;text-shadow:0 1px 0 #fff!important}
+#mmWelcomeParty.mm-elite-welcome .mm-welcome-sub{color:#79623d!important}
+#mmWelcomeParty.mm-elite-welcome .mm-welcome-close{background:#e8d9b7!important;color:#614516!important}
+#mmWelcomeParty.mm-elite-welcome .mm-welcome-close:hover{background:#dbc28d!important}
+.mm-party-piece.mm-elite-confetti{background:linear-gradient(135deg,#fff0b8,#c99a3d,#f8e6aa)!important;box-shadow:0 2px 6px #86601c33!important}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -555,7 +568,7 @@ body.mm-premium-font-active,body.mm-premium-font-active button,body.mm-premium-f
           <path d="m80 17 5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1Z" fill="#fffdf0" opacity=".92"/>
         </svg>
       </div>
-      <div class="mm-premium-wordmark">MONEYMAP<small>PREMIUM</small></div>
+      <div class="mm-premium-wordmark">MoneyMap <small>Elite</small></div>
       <span class="mm-premium-caption">EXCLUSIVE · GOLD STANDARD</span>
     </div>
       <div class="hero-mini"><span>MONTHLY TAKE-HOME ESTIMATE</span><strong id="heroIncome">—</strong><small id="heroCountry">Choose your country</small></div>
@@ -1500,15 +1513,16 @@ function mmShowWelcome(){
  const name=String(raw).trim().split(/\\s+/).map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(' ');
  document.getElementById('mmWelcomeParty')?.remove();
  document.querySelectorAll('.mm-party-piece').forEach(x=>x.remove());
- const toast=document.createElement('div');toast.id='mmWelcomeParty';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');
- const title=document.createElement('div');title.className='mm-welcome-title';title.textContent='Hello, '+name+'! 🎉';
- const sub=document.createElement('div');sub.className='mm-welcome-sub';sub.textContent='Welcome back to your MoneyMap.';
+ const eliteWelcome=window.mmGetMembershipTier?.()==='premium';
+ const toast=document.createElement('div');toast.id='mmWelcomeParty';toast.classList.toggle('mm-elite-welcome',eliteWelcome);toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');
+ const title=document.createElement('div');title.className='mm-welcome-title';title.textContent='Hello, '+name+(eliteWelcome?' ✦':' 🎉');
+ const sub=document.createElement('div');sub.className='mm-welcome-sub';sub.textContent=eliteWelcome?'Welcome to your MoneyMap Elite experience.':'Welcome back to your MoneyMap.';
  const close=document.createElement('button');close.className='mm-welcome-close';close.type='button';close.setAttribute('aria-label','Close welcome message');close.textContent='×';
  toast.append(title,sub,close);document.body.append(toast);
  let closed=false;const pieces=[];
- const colors=['#69a9ff','#ffd166','#ff7aa8','#72d6b0','#a78bfa','#ff9f68','#53c9d8'];
+ const colors=eliteWelcome?['#fff0b8','#d3ad62','#a77a31','#f8e8bf','#e3d2a6']:['#69a9ff','#ffd166','#ff7aa8','#72d6b0','#a78bfa','#ff9f68','#53c9d8'];
  for(let i=0;i<64;i++){
-  const p=document.createElement('i');p.className='mm-party-piece';
+  const p=document.createElement('i');p.className='mm-party-piece'+(eliteWelcome?' mm-elite-confetti':'');
   p.style.setProperty('--x',Math.random()*100+'vw');p.style.setProperty('--w',(5+Math.random()*7)+'px');p.style.setProperty('--h',(8+Math.random()*10)+'px');
   p.style.setProperty('--r',Math.random()>.5?'2px':'50%');p.style.setProperty('--c',colors[i%colors.length]);
   p.style.setProperty('--d',(2.5+Math.random()*1.8)+'s');p.style.setProperty('--delay',(Math.random()*.65)+'s');
@@ -2338,6 +2352,10 @@ body.mm-gradient-outline #overview .hero-actions a{ text-decoration-color:curren
   document.body.classList.toggle('mm-tier-plus',tier==='plus');
   document.body.classList.toggle('mm-tier-premium',tier==='premium');
   setTierBadge(tier);
+  const eliteStage=document.querySelector('#overview .mm-premium-stage');
+  if(eliteStage)eliteStage.hidden=tier!=='premium';
+  const eliteWordmark=document.querySelector('#overview .mm-premium-wordmark');
+  if(eliteWordmark)eliteWordmark.innerHTML='MoneyMap <small>Elite</small>';
   const currentName=document.getElementById('mmMembershipCurrentName');
   const currentDesc=document.getElementById('mmMembershipCurrentDesc');
   const currentPill=document.getElementById('mmMembershipCurrentPill');
