@@ -68,6 +68,7 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
 .arcade-player{z-index:3;color:#fff8d7;font-size:19px}
 .arcade-coin{z-index:3;font-size:18px}
 <style id="mm-tier-black-metal-v1">
+.plan.basic{background:linear-gradient(145deg,#fff 0%,#f2f3f5 52%,#e2e4e8 100%);color:#101216;border:1px solid #c9cdd3;box-shadow:0 22px 65px #0005,inset 0 1px #fff}.plan.basic :is(h2,.desc,.tag,.features li,.price){color:#24272d}.plan.basic .sigil{background:#111318;color:#fff;border:1px solid #555b65}.plan.basic .current{background:#111318;color:#fff;border-color:#111318}.plan.basic .plan-select{background:#111318;color:#fff;border-color:#111318}
 .plan.silver,.plan.pearl{color:#f7f8fa;background:linear-gradient(145deg,#17191d 0%,#30343b 48%,#101216 100%);border:1px solid #aeb5c0;box-shadow:0 22px 65px #0008,inset 0 1px #ffffff22}
 .plan.silver :is(h2,.desc,.tag,.features li,.price),.plan.pearl :is(h2,.desc,.tag,.features li,.price){color:#f1f3f6}
 .plan.silver .sigil,.plan.pearl .sigil{background:linear-gradient(145deg,#f5f6f8,#9ba3af 55%,#e4e7eb);color:#171a20;border:1px solid #fff}
@@ -98,7 +99,7 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
  <div class="arcade-hud"><span>COINS: <strong id="asciiScore">00</strong> · BEST: <strong id="asciiBest">00</strong></span><button class="arcade-start" id="asciiReset" type="button">↻ Reset</button><span class="arcade-help" id="asciiHint">Guide @ to collect $ · click anywhere for a sparkle burst.</span></div>
 </section>
 <section class="plans" aria-label="Subscription plans">
-<article class="plan silver"><div class="plan-head"><span class="tag">Essential access</span><span class="sigil">B</span></div><h2>MoneyMap Basic</h2><p class="desc">The essentials for building confident everyday money habits.</p><div class="price">CORE EXPERIENCE</div><ul class="features"><li>Budgeting and finance dashboard</li><li>Money Quest game access</li><li>Five curated theme presets</li><li>Fun Blue default appearance</li><li class="off">Custom colors and gradients</li><li class="off">Trading Simulator</li></ul><button class="plan-select" type="button" data-select-tier="basic">Select Basic</button><div class="current">BASIC · BLACK & WHITE</div></article>
+<article class="plan basic"><div class="plan-head"><span class="tag">Essential access</span><span class="sigil">B</span></div><h2>MoneyMap Basic</h2><p class="desc">The essentials for building confident everyday money habits.</p><div class="price">CORE EXPERIENCE</div><ul class="features"><li>Budgeting and finance dashboard</li><li>Money Quest game access</li><li>Five curated theme presets</li><li>Fun Blue default appearance</li><li class="off">Custom colors and gradients</li><li class="off">Trading Simulator</li></ul><button class="plan-select" type="button" data-select-tier="basic">Select Basic</button><div class="current">BASIC · BLACK & WHITE</div></article>
 <article class="plan pearl"><div class="plan-head"><span class="tag">Expanded access</span><span class="sigil">+</span></div><h2>MoneyMap Premium</h2><p class="desc">More creative control, deeper personalization, and room to practice.</p><div class="price">EVERYTHING IN BASIC, PLUS</div><ul class="features"><li>All Basic features</li><li>All theme presets</li><li>Full custom color controls</li><li>Custom gradient settings</li><li>Trading Simulator access</li></ul><button class="plan-select" type="button" data-select-tier="plus">Select Premium</button><div class="current">PREMIUM · BLACK SILVER</div></article>
 <article class="plan gold"><div class="plan-head"><span class="tag">Complete access</span><span class="sigil">✦</span></div><h2>MoneyMap Elite</h2><p class="desc">The ultimate MoneyMap experience, with every feature and exclusive member privileges.</p><div class="price">EVERYTHING IN PLUS, PLUS</div><ul class="features"><li>All Plus and Basic features</li><li>All themes and customization</li><li>Trading Simulator access</li><li>Exclusive Elite membership badge</li><li>Elite typography studio: Apple-style, Emirates-inspired, editorial serif, and more</li><li>Full access to current features</li></ul><button class="plan-select" type="button" data-select-tier="premium">Select Elite</button><div class="current">ELITE · BLACK GOLD</div></article>
 </section><footer>Choose a plan to switch the experience on this browser. This is a local preview selector; payment processing and secure subscription billing are not connected yet.</footer>
@@ -183,7 +184,7 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
   buttons.forEach(btn=>{
    const selected=btn.dataset.selectTier===current;
    btn.setAttribute('aria-pressed',String(selected));
-   btn.textContent=selected?'✓ Current selection':('Select '+btn.dataset.selectTier[0].toUpperCase()+btn.dataset.selectTier.slice(1));
+   const label=btn.dataset.selectTier==='plus'?'Premium':btn.dataset.selectTier==='premium'?'Elite':'Basic';btn.textContent=selected?'✓ Current selection':('Select '+label);
   });
  }
  buttons.forEach(btn=>btn.addEventListener('click',()=>{
@@ -192,7 +193,7 @@ footer{text-align:center;color:#9ca8b8;font-size:11px;line-height:1.7;margin:26p
   window.dispatchEvent(new Event('moneymap:tier-changed'));
   paint();
   const note=document.getElementById('tierSwitchNotice');
-  if(note)note.textContent='Your MoneyMap plan preview is now set to '+tier.toUpperCase()+'. Open or refresh MoneyMap to see the matching features.';
+  if(note)note.textContent='Your MoneyMap plan preview is now set to '+(tier==='plus'?'PREMIUM':tier==='premium'?'ELITE':'BASIC')+'. Open or refresh MoneyMap to see the matching features.';
  }));
  window.addEventListener('storage',paint);paint();
 })();
