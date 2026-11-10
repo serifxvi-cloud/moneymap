@@ -1196,7 +1196,7 @@ async function renderHeroBalance(){
       const toIDR=Number(idrRatesNow[code]),fromIDR=Number(idrRatesNow[code]);
       const value=code==='IDR'?totalIDR:totalIDR*Number(idrRatesNow[code]);
       $(valueId).textContent=Number.isFinite(value)?fmtCompact(value,code):'Unavailable';
-      $(rateId).textContent=Number.isFinite(toIDR)?'1 IDR = '+new Intl.NumberFormat(undefined,{maximumFractionDigits:6}).format(1/toIDR)+' '+code:'Rate unavailable';
+      $(rateId).textContent=Number.isFinite(toIDR)&&toIDR>0?'1 '+code+' = '+new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(1/toIDR)+' IDR':'Rate unavailable';
     });
   }catch(error){
     $('heroBalance').textContent='Rate unavailable';
@@ -1206,6 +1206,7 @@ async function renderHeroBalance(){
     ['JPY','USD','EUR'].forEach(code=>{$('heroFx'+code).textContent='Unavailable';$('heroFx'+code+'Rate').textContent='Rate unavailable';});
   }
 }
+window.addEventListener('moneymap:transactions-updated',()=>renderHeroBalance());
 function updateMetrics(){
   const t=currentTotals(),c=countryInfo($('countrySelect').value);selectedCurrency=$('currencySelect').value;
   $('statIncome').textContent=fmt(t.income);$('statSpending').textContent=fmt(t.living);$('statSavings').textContent=fmt(t.saved);$('statRemaining').textContent=fmt(t.remaining);
