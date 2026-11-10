@@ -619,7 +619,44 @@ hr{border:0;border-top:1px solid var(--mm-line)}
 @media(max-width:760px){.topbar{height:auto;min-height:62px}.topbar-inner,.shell{width:calc(100% - 28px)}.shell{margin-top:16px}.hero{grid-template-columns:1fr;padding:24px 21px;border-radius:16px;gap:20px}.hero h1{font-size:30px}.hero-right{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:16px;border-radius:13px}.stats-grid{gap:9px}.stat-card{padding:13px}.stat-value{font-size:19px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-</head>
+<style id="mm-saas-live-overview">
+.mm-overview-finance{margin:22px 0 28px;display:grid;gap:15px;color:#252d27}
+.mm-overview-heading,.mm-list-heading,.mm-card-title-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.mm-overview-kicker{font-size:10px;letter-spacing:.16em;font-weight:850;color:#899487}
+.mm-overview-heading h2{font-size:23px;letter-spacing:-.045em;margin:5px 0 3px;color:#28312a}
+.mm-overview-heading p,.mm-list-heading p{font-size:12px;color:#899188;margin:0}
+.mm-live-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:#edf4ed;color:#55765a;font-size:9px;font-weight:850;letter-spacing:.1em}
+.mm-live-pill i{width:6px;height:6px;border-radius:50%;background:#68a878;box-shadow:0 0 0 4px #68a87820}
+.mm-overview-grid{display:grid;grid-template-columns:minmax(270px,.9fr) minmax(0,1.5fr);gap:14px}
+.mm-overview-lists{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mm-overview-card{min-width:0;background:#fff;border:1px solid #e7ebe5;border-radius:16px;padding:19px;box-shadow:0 5px 20px #263a2608}
+.mm-balance-card{background:linear-gradient(145deg,#fff 0%,#f5f8f3 100%)}
+.mm-card-label{font-size:12px;font-weight:750;color:#687368;letter-spacing:.005em}
+.mm-main-balance{font-size:clamp(27px,3vw,38px);font-weight:780;letter-spacing:-.055em;color:#26342a;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.mm-card-sub{font-size:10px;color:#929b91}
+.mm-currency-balances{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid #e7ebe5}
+.mm-currency-balances div{display:grid;gap:5px;min-width:0}.mm-currency-balances small{font-size:9px;color:#929b91;font-weight:800;letter-spacing:.1em}.mm-currency-balances strong{font-size:13px;color:#3c493e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.mm-rate-note{font-size:9px;color:#9aa397;margin-top:11px}
+.mm-chart-total{font-size:25px;font-weight:780;letter-spacing:-.045em;color:#28352c;margin-top:5px;font-variant-numeric:tabular-nums}
+.mm-chart-period{font-size:9px;font-weight:850;letter-spacing:.1em;color:#8b9689;background:#f2f5f0;border-radius:7px;padding:7px 8px;white-space:nowrap}
+.mm-income-chart{height:150px;margin-top:10px;overflow:hidden}.mm-income-chart svg{width:100%;height:100%;display:block;overflow:visible}
+.mm-chart-foot{display:flex;justify-content:space-between;gap:10px;font-size:9px;color:#9aa397}.mm-chart-foot strong{color:#6f7b6e;font-weight:700}
+.mm-list-heading{margin-bottom:12px}.mm-list-heading p{margin-top:4px;font-size:10px}
+.mm-list-count{min-width:25px;height:25px;display:grid;place-items:center;background:#f1f4ef;border-radius:8px;color:#64745f;font-size:10px;font-weight:800}
+.mm-activity-list,.mm-cashflow-list{display:grid;gap:0}
+.mm-activity-row,.mm-cashflow-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f0f2ee;min-width:0}
+.mm-activity-icon{width:31px;height:31px;flex:0 0 31px;border-radius:10px;background:#f1f5ef;color:#64785f;display:grid;place-items:center;font-size:13px;font-weight:800}
+.mm-row-main{min-width:0;flex:1}.mm-row-title{font-size:11px;font-weight:750;color:#3a443b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mm-row-meta{font-size:9px;color:#9aa397;margin-top:3px}
+.mm-row-amount{font-size:11px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}.mm-row-amount.income{color:#43835b}.mm-row-amount.expense{color:#a66d68}
+.mm-overview-empty{padding:20px 8px;text-align:center;color:#9aa397;font-size:10px;background:#fafbf9;border-radius:10px}
+@media(max-width:760px){.mm-overview-grid,.mm-overview-lists{grid-template-columns:1fr}.mm-overview-card{padding:16px}.mm-overview-heading h2{font-size:20px}.mm-income-chart{height:135px}}
+body.mm-dark .mm-overview-card,body[data-theme="dark"] .mm-overview-card,body.mm-normal-charcoal .mm-overview-card{background:#202722;border-color:#39443b;color:#f1f3ee}
+body.mm-dark .mm-overview-heading h2,body.mm-normal-charcoal .mm-overview-heading h2,body[data-theme="dark"] .mm-overview-heading h2,body.mm-dark .mm-main-balance,body.mm-normal-charcoal .mm-main-balance,body[data-theme="dark"] .mm-main-balance,body.mm-dark .mm-chart-total,body.mm-normal-charcoal .mm-chart-total,body[data-theme="dark"] .mm-chart-total{color:#f0f3ed}
+body.mm-dark .mm-card-label,body.mm-normal-charcoal .mm-card-label,body[data-theme="dark"] .mm-card-label{color:#bdc8bb}
+body.mm-dark .mm-row-title,body.mm-normal-charcoal .mm-row-title,body[data-theme="dark"] .mm-row-title,body.mm-dark .mm-currency-balances strong,body.mm-normal-charcoal .mm-currency-balances strong,body[data-theme="dark"] .mm-currency-balances strong{color:#e7ece4}
+body.mm-dark .mm-activity-row,body.mm-dark .mm-cashflow-row,body.mm-normal-charcoal .mm-activity-row,body.mm-normal-charcoal .mm-cashflow-row,body[data-theme="dark"] .mm-activity-row,body[data-theme="dark"] .mm-cashflow-row{border-color:#39443b}
+body.mm-dark .mm-overview-empty,body.mm-normal-charcoal .mm-overview-empty,body[data-theme="dark"] .mm-overview-empty{background:#29332b;color:#b0bbae}
+</style></head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
@@ -689,6 +726,19 @@ hr{border:0;border-top:1px solid var(--mm-line)}
     <div class="stat-card mm-streak-overview"><div class="stat-label">Best trading profit streak</div><div class="stat-value" id="mmBestStreak">0 wins</div><div class="stat-note">Your all-time personal best · practice simulator</div></div>
   </section>
 
+<section class="mm-overview-finance" id="mmOverviewFinance" aria-label="Live account overview">
+ <div class="mm-overview-heading"><div><span class="mm-overview-kicker">YOUR FINANCIAL SNAPSHOT</span><h2>Account overview</h2><p>Live totals and activity from your recorded transactions.</p></div><span class="mm-live-pill"><i></i> LIVE DATA</span></div>
+ <div class="mm-overview-grid">
+  <article class="mm-overview-card mm-balance-card"><div class="mm-card-label">Current net cashflow balance <span>ⓘ</span></div><div class="mm-main-balance" id="mmLiveBalance">—</div><div class="mm-card-sub" id="mmBalanceCaption">All recorded income minus expenses</div><div class="mm-currency-balances">
+   <div><small>USD</small><strong id="mmBalanceUSD">—</strong></div><div><small>JPY</small><strong id="mmBalanceJPY">—</strong></div><div><small>AED</small><strong id="mmBalanceAED">—</strong></div>
+  </div><div class="mm-rate-note" id="mmBalanceRateNote">Currency conversions loading…</div></article>
+  <article class="mm-overview-card mm-income-card"><div class="mm-card-title-row"><div><div class="mm-card-label">Total income</div><div class="mm-chart-total" id="mmIncomeTotal">—</div></div><span class="mm-chart-period">LAST 6 MONTHS</span></div><div class="mm-income-chart" id="mmIncomeChart" role="img" aria-label="Income over the last six months"></div><div class="mm-chart-foot"><span>Recorded income by month</span><strong id="mmIncomeChartNote">Based on your ledger</strong></div></article>
+ </div>
+ <div class="mm-overview-lists">
+  <article class="mm-overview-card"><div class="mm-list-heading"><div><div class="mm-card-label">Recent activities</div><p>Latest notes and transactions</p></div><span class="mm-list-count" id="mmActivityCount">0</span></div><div class="mm-activity-list" id="mmRecentActivities"><div class="mm-overview-empty">Your saved activities will appear here.</div></div></article>
+  <article class="mm-overview-card"><div class="mm-list-heading"><div><div class="mm-card-label">Recent cashflow</div><p>Money in and money out</p></div><span class="mm-list-count" id="mmCashflowCount">0</span></div><div class="mm-cashflow-list" id="mmRecentCashflow"><div class="mm-overview-empty">Your recent cashflow will appear here.</div></div></article>
+ </div>
+</section>
 <section class="mm-mobile-hub" id="mmMobileHub" aria-label="Quick section navigation">
  <div class="mm-hub-heading"><div><span class="mm-hub-kicker">QUICK ACCESS</span><h2>Favorites</h2></div><span class="mm-hub-hint">Your recent sections</span></div>
  <div class="mm-favorites-row" id="mmRecentFavorites" aria-label="Recently visited sections"><a class="mm-favorite-empty" href="#overview"><span>⌂</span><small>Overview</small></a></div>
@@ -3427,5 +3477,18 @@ body.mm-dark #mmMobileHub .mm-favorite-empty,body.mm-dark #mmMobileHub .mm-favor
 body[data-theme="dark"] #mmMobileHub .mm-favorite-empty,body[data-theme="dark"] #mmMobileHub .mm-favorites-row a,body[data-theme="dark"] #mmMobileHub .mm-section-scroller a,body[data-theme="dark"] #mmMobileHub .mm-section-scroller button{background:linear-gradient(145deg,#3a4036,#30352e)!important;border-color:#505444!important;color:#f0eee5!important}
 body.mm-normal-charcoal #mmMobileHub .mm-section-scroller small,body.mm-normal-charcoal #mmMobileHub .mm-favorites-row small,body.mm-dark #mmMobileHub .mm-section-scroller small,body.mm-dark #mmMobileHub .mm-favorites-row small,body[data-theme="dark"] #mmMobileHub .mm-section-scroller small,body[data-theme="dark"] #mmMobileHub .mm-favorites-row small{color:#d2d2c7!important}
 </style>
-</body>
+<script id="mm-live-overview-engine">
+(()=>{'use strict';
+ const $=id=>document.getElementById(id), ledger=()=>Array.isArray(window.moneyMapTransactions)?window.moneyMapTransactions:[];
+ const safeDate=v=>{const d=new Date((v||'')+'T12:00:00');return Number.isNaN(d.getTime())?null:d};
+ const fmt=(n,c)=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency:c,maximumFractionDigits:c==='JPY'?0:2}).format(n)}catch{return c+' '+Number(n||0).toFixed(2)}};
+ const currency=()=>document.getElementById('currencySelect')?.value||'IDR';
+ let rates={},rateBase='',ratesAt=0;
+ async function loadRates(base){if(rateBase===base&&Date.now()-ratesAt<3600000)return;try{const r=await fetch('https://open.er-api.com/v6/latest/'+encodeURIComponent(base));if(!r.ok)throw Error('rate unavailable');const j=await r.json();if(j.result!=='success'||!j.rates)throw Error('invalid rates');rates=j.rates;rateBase=base;ratesAt=Date.now()}catch(e){rates={};rateBase='';}}
+ function drawIncome(list){const root=$('mmIncomeChart');if(!root)return;const now=new Date(),months=[];for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');months.push({key,label:d.toLocaleDateString(undefined,{month:'short'}),value:0})}list.filter(t=>t.type==='income').forEach(t=>{const m=months.find(x=>x.key===(t.date||'').slice(0,7));if(m)m.value+=Number(t.amount)||0});const max=Math.max(1,...months.map(x=>x.value)),W=520,H=150,L=12,R=12,T=14,B=26,plotH=H-T-B,plotW=W-L-R;const pts=months.map((m,i)=>({x:L+i*plotW/5,y:T+plotH-(m.value/max)*plotH}));const line=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '),area=line+' L '+pts[5].x+' '+(T+plotH)+' L '+pts[0].x+' '+(T+plotH)+' Z';root.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mmIncomeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#91ad8d" stop-opacity=".28"/><stop offset="1" stop-color="#91ad8d" stop-opacity="0"/></linearGradient></defs>'+[0,.5,1].map(v=>'<line x1="'+L+'" y1="'+(T+plotH*v)+'" x2="'+(W-R)+'" y2="'+(T+plotH*v)+'" stroke="#edf0eb" stroke-dasharray="3 5"/>').join('')+'<path d="'+area+'" fill="url(#mmIncomeFill)"/><path d="'+line+'" fill="none" stroke="#789474" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+pts.map((p,i)=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="3.5" fill="#789474" stroke="#fff" stroke-width="2"><title>'+months[i].label+': '+fmt(months[i].value,currency())+'</title></circle>').join('')+months.map((m,i)=>'<text x="'+pts[i].x+'" y="'+(H-6)+'" text-anchor="middle" fill="#929c90" font-size="10">'+m.label+'</text>').join('')+'</svg>';$('mmIncomeTotal').textContent=fmt(months.reduce((a,m)=>a+m.value,0),currency());$('mmIncomeChartNote').textContent=months.some(m=>m.value>0)?'Six-month recorded total':'No income entries yet'}
+ function render(){const list=ledger().filter(t=>t&&Number.isFinite(Number(t.amount))&&Number(t.amount)>0).slice().sort((a,b)=>(b.createdAt||safeDate(b.date)?.getTime()||0)-(a.createdAt||safeDate(a.date)?.getTime()||0));const income=list.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount),0),expense=list.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount),0),net=income-expense,base=currency();$('mmLiveBalance').textContent=fmt(net,base);$('mmBalanceCaption').textContent=fmt(income,base)+' income − '+fmt(expense,base)+' expenses · all recorded dates';$('mmActivityCount').textContent=Math.min(5,list.length);$('mmCashflowCount').textContent=Math.min(5,list.length);const activities=$('mmRecentActivities'),cash=$('mmRecentCashflow');activities.replaceChildren();cash.replaceChildren();if(!list.length){activities.innerHTML='<div class="mm-overview-empty">No saved notes or activities yet. Add a transaction in Weekly Log.</div>';cash.innerHTML='<div class="mm-overview-empty">Your recorded income and expenses will appear here.</div>'}else{list.slice(0,5).forEach(t=>{const d=safeDate(t.date),date=d?d.toLocaleDateString(undefined,{month:'short',day:'numeric'}):'Date not set',type=t.type==='income'?'income':'expense',title=t.note||t.category||'Transaction',row=document.createElement('div');row.className='mm-activity-row';row.innerHTML='<span class="mm-activity-icon">'+(type==='income'?'↙':'↗')+'</span><span class="mm-row-main"><span class="mm-row-title"></span><span class="mm-row-meta"></span></span><strong class="mm-row-amount '+type+'">'+(type==='income'?'+':'−')+fmt(Number(t.amount),base)+'</strong>';row.querySelector('.mm-row-title').textContent=title;row.querySelector('.mm-row-meta').textContent=(t.category||'Other')+' · '+date;activities.append(row)});list.filter(t=>t.type==='income'||t.type==='expense').slice(0,5).forEach(t=>{const d=safeDate(t.date),type=t.type,row=document.createElement('div');row.className='mm-cashflow-row';row.innerHTML='<span class="mm-row-main"><span class="mm-row-title"></span><span class="mm-row-meta"></span></span><strong class="mm-row-amount '+type+'">'+(type==='income'?'+':'−')+fmt(Number(t.amount),base)+'</strong>';row.querySelector('.mm-row-title').textContent=t.category|| (type==='income'?'Income':'Expense');row.querySelector('.mm-row-meta').textContent=(d?d.toLocaleDateString(undefined,{month:'short',day:'numeric'}):'')+(t.note?' · '+t.note:'');cash.append(row)})}drawIncome(list);loadRates(base).then(()=>{const rateNote=$('mmBalanceRateNote');['USD','JPY','AED'].forEach(code=>{const el=$('mmBalance'+code);if(!el)return;if(code===base)el.textContent=fmt(net,code);else if(rates[code])el.textContent=fmt(net*rates[code],code);else el.textContent='Rate unavailable'});rateNote.textContent=rateBase===base?'Converted from '+base+' · live exchange-rate feed':'Exchange rates unavailable; retry after reconnecting';});}
+ window.addEventListener('moneymap:transactions-updated',render);window.addEventListener('storage',e=>{if(e.key==='moneymap_weekly_transactions_v1')render()});window.addEventListener('pageshow',render);document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});document.addEventListener('DOMContentLoaded',render);if(document.readyState!=='loading')render();window.MoneyMapOverview={refresh:render};
+ setInterval(()=>{if(!document.hidden)render()},60000);
+})();
+</script></body>
 </html>
