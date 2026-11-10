@@ -1735,6 +1735,9 @@ async function mmCloudRegisterPasskey(){
   mmCloudSetStatus('Follow your device prompt to save a MoneyMap passkey…');
   try{
     const client=mmPasskeySupabase();
+    const token=await mmCloudAccessToken();
+    const {error:sessionError}=await client.auth.setSession({access_token:token,refresh_token:mmCloudSession.refresh_token});
+    if(sessionError)throw sessionError;
     const {data,error}=await client.auth.registerPasskey();
     if(error)throw error;
     mmCloudSetStatus('Passkey added successfully. You can now use it to sign in to MoneyMap.','ok');
