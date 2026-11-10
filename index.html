@@ -717,37 +717,7 @@ header .nav{display:none!important}
     </aside>
   </section>
 
-  <section class="two-col" id="wage" style="margin-top:0">
-    <div class="panel">
-      <div class="panel-head"><div><div class="section-kicker">04 / Earnings calculator</div><h2>Wage scale counter</h2><p>Enter what you get paid. See the same wage across time periods.</p></div><span class="tag">Editable</span></div>
-      <div class="field-grid">
-        <div class="field"><label for="payAmount">How much do you earn?</label><input id="payAmount" type="number" min="0" step="any" placeholder="e.g. 5000000" /></div>
-        <div class="field"><label for="payPeriod">How often are you paid?</label><select id="payPeriod"><option value="hourly">Per hour</option><option value="daily">Per day</option><option value="weekly">Per week</option><option value="biweekly">Every 2 weeks</option><option value="monthly" selected>Per month</option><option value="yearly">Per year</option></select></div>
-        <div class="field"><label for="hoursWeek">Hours worked per week</label><input id="hoursWeek" type="number" min="1" max="112" step="0.5" value="40" /></div>
-        <div class="field"><label for="daysMonth">Working days per month</label><input id="daysMonth" type="number" min="1" max="31" step="1" value="22" /></div>
-        <div class="field full"><label for="benchmark">Optional: local wage reference per month</label><input id="benchmark" type="number" min="0" step="any" placeholder="Enter a verified local benchmark (optional)" /><div class="hint">Use an official minimum wage or a relevant occupation benchmark. We do not guess one national “normal wage” because pay varies by role, region, and experience.</div></div>
-      </div>
-      <div class="wage-strip" id="wageStrip">
-        <div class="wage-cell"><span>Hourly</span><strong id="wageHourly">—</strong></div><div class="wage-cell"><span>Daily</span><strong id="wageDaily">—</strong></div><div class="wage-cell"><span>Weekly</span><strong id="wageWeekly">—</strong></div><div class="wage-cell"><span>Monthly</span><strong id="wageMonthly">—</strong></div><div class="wage-cell"><span>Yearly</span><strong id="wageYearly">—</strong></div>
-      </div>
-      <div class="data-line" style="margin-top:13px"><span>Compared with your entered benchmark</span><strong id="benchmarkResult">Add a benchmark to compare</strong></div>
-    </div>
-    <div class="panel">
-      <div class="panel-head"><div><div class="section-kicker">05 / Currency tools</div><h2>Currency converter</h2><p>Reference rates from a public daily data feed.</p></div><span class="tag pill-green">No API key</span></div>
-      <div class="field-grid">
-        <div class="field"><label for="fxAmount">Amount</label><input id="fxAmount" type="number" min="0" step="any" value="1" /></div>
-        <div class="field"><label for="fxFrom">From</label><select id="fxFrom"></select></div>
-        <div class="field"><label for="fxTo">To</label><select id="fxTo"></select></div>
-        <div class="field" style="justify-content:end"><button class="btn btn-primary" id="convertBtn">Convert amount</button></div>
-      </div>
-      <div class="divider"></div>
-      <div class="metric-big" id="fxResult">—</div><div class="metric-sub" id="fxMeta">Choose currencies and convert to check the latest available rate.</div>
-      <div class="small-note" id="currencyCatalogNote" style="margin-top:10px">Loading supported currency list…</div>
-      <div class="small-note" style="margin-top:13px">Reference rates are informational and may differ from bank, card, or cash-exchange rates. Data source: <a href="https://www.frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a>; fallback: <a href="https://www.exchangerate-api.com/docs/free" target="_blank" rel="noopener">Rates By Exchange Rate API</a>. Rates may not exist for every currency pair.</div>
-    </div>
-  </section>
-
-  <section class="panel" id="weekly">
+<section class="panel" id="weekly">
     <div class="section-head"><div><div class="section-kicker">06 / Real weekly activity</div><h2 class="section-title">Weekly income & spending</h2><p>Log the money that actually comes in and goes out. Pick any date to review its Monday–Sunday week.</p></div><span class="tag blue">Live weekly analysis</span></div>
     <div class="week-toolbar">
       <div class="field"><label for="weekAnchor">Choose a date in the week</label><input id="weekAnchor" type="date" /></div>
@@ -777,6 +747,37 @@ header .nav{display:none!important}
     </div>
   </section>
 
+
+
+  <section class="two-col" id="wage" style="margin-top:0">
+    <div class="panel">
+      <div class="panel-head"><div><div class="section-kicker">04 / Earnings calculator</div><h2>Wage scale counter</h2><p>Enter what you get paid. See the same wage across time periods.</p></div><span class="tag">Editable</span></div>
+      <div class="field-grid">
+        <div class="field"><label for="payAmount">How much do you earn?</label><input id="payAmount" type="number" min="0" step="any" placeholder="e.g. 5000000" /></div>
+        <div class="field"><label for="payPeriod">How often are you paid?</label><select id="payPeriod"><option value="hourly">Per hour</option><option value="daily">Per day</option><option value="weekly">Per week</option><option value="biweekly">Every 2 weeks</option><option value="monthly" selected>Per month</option><option value="yearly">Per year</option></select></div>
+        <div class="field"><label for="hoursWeek">Hours worked per week</label><input id="hoursWeek" type="number" min="1" max="112" step="0.5" value="40" /></div>
+        <div class="field"><label for="daysMonth">Working days per month</label><input id="daysMonth" type="number" min="1" max="31" step="1" value="22" /></div>
+        <div class="field full"><label for="benchmark">Optional: local wage reference per month</label><input id="benchmark" type="number" min="0" step="any" placeholder="Enter a verified local benchmark (optional)" /><div class="hint">Use an official minimum wage or a relevant occupation benchmark. We do not guess one national “normal wage” because pay varies by role, region, and experience.</div></div>
+      </div>
+      <div class="wage-strip" id="wageStrip">
+        <div class="wage-cell"><span>Hourly</span><strong id="wageHourly">—</strong></div><div class="wage-cell"><span>Daily</span><strong id="wageDaily">—</strong></div><div class="wage-cell"><span>Weekly</span><strong id="wageWeekly">—</strong></div><div class="wage-cell"><span>Monthly</span><strong id="wageMonthly">—</strong></div><div class="wage-cell"><span>Yearly</span><strong id="wageYearly">—</strong></div>
+      </div>
+      <div class="data-line" style="margin-top:13px"><span>Compared with your entered benchmark</span><strong id="benchmarkResult">Add a benchmark to compare</strong></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="section-kicker">05 / Currency tools</div><h2>Currency converter</h2><p>Reference rates from a public daily data feed.</p></div><span class="tag pill-green">No API key</span></div>
+      <div class="field-grid">
+        <div class="field"><label for="fxAmount">Amount</label><input id="fxAmount" type="number" min="0" step="any" value="1" /></div>
+        <div class="field"><label for="fxFrom">From</label><select id="fxFrom"></select></div>
+        <div class="field"><label for="fxTo">To</label><select id="fxTo"></select></div>
+        <div class="field" style="justify-content:end"><button class="btn btn-primary" id="convertBtn">Convert amount</button></div>
+      </div>
+      <div class="divider"></div>
+      <div class="metric-big" id="fxResult">—</div><div class="metric-sub" id="fxMeta">Choose currencies and convert to check the latest available rate.</div>
+      <div class="small-note" id="currencyCatalogNote" style="margin-top:10px">Loading supported currency list…</div>
+      <div class="small-note" style="margin-top:13px">Reference rates are informational and may differ from bank, card, or cash-exchange rates. Data source: <a href="https://www.frankfurter.dev/" target="_blank" rel="noopener">Frankfurter</a>; fallback: <a href="https://www.exchangerate-api.com/docs/free" target="_blank" rel="noopener">Rates By Exchange Rate API</a>. Rates may not exist for every currency pair.</div>
+    </div>
+  </section>
 
   <section class="panel mm-smart-insights" id="smart-insights">
     <div class="section-head"><div><div class="section-kicker">07 / Spending intelligence</div><h2 class="section-title">Smart Spending Insights</h2><p>Patterns from your actual transactions, refreshed as your ledger changes.</p></div><span class="tag blue" id="mmInsightPeriod">This month</span></div>
