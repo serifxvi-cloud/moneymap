@@ -3069,5 +3069,39 @@ body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
 @media(prefers-reduced-motion:reduce){#overview .hero-right{animation:none!important}}
 </style>
 
+<style id="mm-membership-badge-position-v2">
+/* Keep the account identity and current plan together in the top Overview capsule. */
+#overview #mmHeroUsername{
+ display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;
+ flex-wrap:wrap!important;gap:8px!important;width:max-content!important;max-width:100%!important;
+ padding:7px 13px!important;border-radius:999px!important;vertical-align:middle!important;
+}
+#overview #mmHeroUsername>strong{order:1!important;white-space:nowrap!important}
+#overview #mmHeroUsername>.mm-account-id{order:2!important;white-space:nowrap!important}
+#overview #mmHeroUsername>.mm-premium-vip-badge,
+#overview #mmHeroUsername>.mm-mermaid-badge{order:3!important}
+#overview #mmHeroUsername>.mm-membership-label{
+ order:4!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:27px!important;padding:5px 12px!important;margin:0!important;border-radius:999px!important;
+ font-size:10px!important;font-weight:800!important;letter-spacing:.15px!important;line-height:1!important;
+ white-space:nowrap!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
+#overview #mmHeroUsername>.mm-membership-label.mm-tier-premium{
+ background:linear-gradient(115deg,#fff0bd,#d2a347)!important;color:#4a330d!important;border:1px solid #e7c56e!important;
+}
+#overview #mmHeroUsername>.mm-membership-label.mm-tier-plus{
+ background:linear-gradient(115deg,#f5f6f8,#b9c1cc)!important;color:#222a35!important;border:1px solid #aeb7c3!important;
+}
+#overview #mmHeroUsername>.mm-membership-label.mm-tier-basic{
+ background:#fff!important;color:#303b4d!important;border:1px solid #d8dee8!important;
+}
+@media(max-width:620px){
+ #overview #mmHeroUsername{gap:6px!important;padding:6px 9px!important}
+ #overview #mmHeroUsername>.mm-account-id{font-size:8px!important}
+ #overview #mmHeroUsername>.mm-premium-vip-badge{width:27px!important;height:27px!important;flex-basis:27px!important}
+ #overview #mmHeroUsername>.mm-membership-label{min-height:24px!important;padding:4px 9px!important;font-size:9px!important}
+}
+</style>
+
 </body>
 </html>
