@@ -709,6 +709,7 @@ body.mm-dark .mm-overview-empty,body.mm-normal-charcoal .mm-overview-empty,body[
       <div class="hero-mini"><span>TRACKED THIS MONTH</span><strong id="heroSpent">—</strong><small>Expenses + savings entered</small></div>
       <div class="hero-mini"><span>LEFT AFTER TRACKED ITEMS</span><strong id="heroLeft">—</strong><small>Based on the numbers you enter</small></div>
       <div class="hero-mini"><span>YOUR SAVINGS RATE</span><strong id="heroSaveRate">—</strong><small>Tracked savings ÷ monthly income</small></div>
+      <div class="hero-mini"><span>CURRENT BALANCE</span><strong id="heroBalance">—</strong><small id="heroBalanceCurrency">Available after tracked items · IDR</small></div>
     </div>
   </section>
 
@@ -1136,6 +1137,7 @@ function updateMetrics(){
   const t=currentTotals(),c=countryInfo($('countrySelect').value);selectedCurrency=$('currencySelect').value;
   $('statIncome').textContent=fmt(t.income);$('statSpending').textContent=fmt(t.living);$('statSavings').textContent=fmt(t.saved);$('statRemaining').textContent=fmt(t.remaining);
   $('heroIncome').textContent=fmtCompact(t.income);$('heroSpent').textContent=fmtCompact(t.all);$('heroLeft').textContent=fmtCompact(t.remaining);$('heroSaveRate').textContent=t.income>0?`${t.rate.toFixed(1)}%`:'—';
+  $('heroBalance').textContent=fmtCompact(t.remaining);$('heroBalanceCurrency').textContent=`Available after tracked items · ${selectedCurrency||'Choose currency'}`;
   $('heroCountry').textContent=c?`${c.name} · ${selectedCurrency||'Choose currency'}`:'Choose your country';
   $('statRemaining').style.color=t.remaining<0?'#c34b4b':'';$('heroLeft').style.color=t.remaining<0?'#ffc0c0':'';
   updateBudgetRows();
