@@ -3223,9 +3223,17 @@ body.mm-tier-premium .mm-account-panel select{color:#e3e8ee}
   ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();const d=Math.abs(r.top-120);if(r.top<=innerHeight*.55&&d<best){best=d;current=id}});
   links.forEach(a=>{const id=a.getAttribute('href')?.slice(1);if(id&&ids.includes(id))a.setAttribute('aria-current',id===current?'page':'false')});
  };
- links.forEach(a=>{if(a.getAttribute('href')?.startsWith('#')&&!['#customize'].includes(a.getAttribute('href'))){a.addEventListener('click',e=>{const target=document.querySelector(a.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'',a.getAttribute('href'))}})}});
+ links.forEach(a=>{if(a.getAttribute('href')?.startsWith('#')&&!['#customize'].includes(a.getAttribute('href'))){a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);const existing=document.querySelector('#mmOrbitMenu button[data-target="'+id+'"]');if(existing){e.preventDefault();existing.click();}else{const target=document.getElementById(id);if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'','#'+id)}}})}});
  let ticking=false;window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{update();ticking=false})}},{passive:true});update();
 })();
 </script>
+
+<style id="mm-force-sidebar-navigation-v2">
+/* Final override: the older orbit CSS is loaded later and was re-showing the circular dropdown. */
+#mmOrbitNav,.mm-orbit-nav,#mmOrbitMenu,.mm-orbit-menu,.mm-orbit-toggle{display:none!important;visibility:hidden!important;pointer-events:none!important}
+#mmIconSidebar{display:flex!important}
+body:not(.mm-account-mode){padding-left:66px!important}
+@media(max-width:700px){body:not(.mm-account-mode){padding-left:52px!important}}
+</style>
 </body>
 </html>
