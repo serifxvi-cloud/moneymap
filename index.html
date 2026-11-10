@@ -1736,15 +1736,33 @@ function mmPasskeySupabase(){
 async function mmCloudSignInPasskey(){
   if(mmCloudBusy)return;
   const button=document.getElementById('mmPasskeySignIn');mmCloudBusy=true;if(button){button.disabled=true;button.textContent='Waiting for passkey…';}
-  mmCloudSetStatus('Complete the passkey prompt from your device or password manager…');
+  mmCloudSetStatus('Preparing your passkey challenge…');
   try{
     const client=mmPasskeySupabase();
-    // Use Supabase's complete WebAuthn ceremony so it correctly decodes challenge buffers,
-    // serializes the credential response, and verifies the result.
-    const {data,error}=await client.auth.signInWithPasskey();
-    if(error)throw error;
-    if(!data?.session||!data?.user)throw new Error('Passkey sign-in did not return a valid account session.');
-    mmCloudStoreSession({access_token:data.session.access_token,refresh_token:data.session.refresh_token,expires_in:data.session.expires_in,user:data.user});
+    const {data:challenge,error:challengeError}=await client.auth.passkey.startAuthentication();
+    if(challengeError)throw challengeError;
+    const raw=challenge?.options?.publicKey||challenge?.options;
+    if(!raw||!raw.challenge)throw new Error('Supabase returned an invalid passkey challenge. Please refresh and try again.');
+    // The Supabase start endpoint returns WebAuthn JSON (base64url strings).
+    // Always decode challenge and credential IDs into real ArrayBuffers before calling the browser.
+    const decode=value=>{
+      if(value instanceof ArrayBuffer||ArrayBuffer.isView(value))return value;
+      if(typeof value!=='string')throw new Error('The passkey challenge is not valid base64url data.');
+      const normalized=value.replace(/-/g,'+').replace(/_/g,'/');
+      const binary=atob(normalized+'='.repeat((4-normalized.length%4)%4));
+      const bytes=new Uint8Array(binary.length);
+      for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+      return bytes.buffer;
+    };
+    const publicKey={...raw,challenge:decode(raw.challenge),userVerification:'required',hints:['client-device']};
+    if(Array.isArray(raw.allowCredentials))publicKey.allowCredentials=raw.allowCredentials.map(item=>({...item,id:decode(item.id)}));
+    const credential=await navigator.credentials.get({publicKey});
+    if(!credential)throw new Error('No passkey was selected.');
+    const {data:verified,error:verifyError}=await client.auth.passkey.verifyAuthentication({challengeId:challenge.challenge_id,credential});
+    if(verifyError)throw verifyError;
+    const session=verified?.session,user=verified?.user;
+    if(!session||!user)throw new Error('Passkey verification did not return a valid account session.');
+    mmCloudStoreSession({access_token:session.access_token,refresh_token:session.refresh_token,expires_in:session.expires_in,user});
     mmCloudSetStatus('Passkey sign-in successful. Loading your private MoneyMap data…','ok');
     await mmCloudAfterLogin();
   }catch(e){mmCloudSetStatus('Passkey sign-in failed: '+(e?.message||'Please try again.'),'bad');}
