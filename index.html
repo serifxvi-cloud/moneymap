@@ -1192,7 +1192,13 @@ async function renderHeroBalance(){
     const normalized=rows.map(t=>({date:String(t.date),delta:(t.type==='income'?1:-1)*Number(t.amount)*idrRates[String(t.currency||selected).toUpperCase()]}));
     const totalIDR=normalized.reduce((sum,t)=>sum+t.delta,0);
     let selectedPerIDR=1;
-    if(selected!=='IDR'){const rates=await getHeroRates('IDR');selectedPerIDR=Number(rates[selected]);if(!Number.isFinite(selectedPerIDR)||selectedPerIDR<=0)throw new Error('Missing selected currency rate');}
+    if(selected!=='IDR'){
+      // Use the selected currency's own quote against IDR, then invert it to get selected units per 1 IDR.
+      const selectedRates=await getHeroRates(selected);
+      const idrPerSelected=Number(selectedRates.IDR);
+      if(!Number.isFinite(idrPerSelected)||idrPerSelected<=0)throw new Error('Missing '+selected+'/IDR exchange quote');
+      selectedPerIDR=1/idrPerSelected;
+    }
     const displayTotal=selected==='IDR'?totalIDR:totalIDR*selectedPerIDR;
     $('heroBalance').textContent=fmtCompact(displayTotal,selected);
     $('heroBalanceCurrency').textContent=selected+' · Converted ledger balance';
