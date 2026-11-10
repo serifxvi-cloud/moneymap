@@ -3340,5 +3340,23 @@ body.mm-dark .hero,body.mm-normal-charcoal .hero,body[data-theme="dark"] .hero{b
  .stat-card{padding:14px!important}
 }
 </style>
+
+<style id="mm-fix-budget-heading-contrast-v1">
+/* Keep the budget section headings legible on charcoal panels. */
+body.mm-normal-charcoal #budget .section-head .section-title,
+body.mm-normal-charcoal #budget aside .panel-head h2,
+body.mm-normal-charcoal #budget .panel-head h2{
+ color:#f7f4e9!important;
+ -webkit-text-fill-color:#f7f4e9!important;
+ text-shadow:0 1px 2px rgba(0,0,0,.22)!important;
+}
+body.mm-normal-charcoal #budget .section-head p,
+body.mm-normal-charcoal #budget aside .panel-head p{
+ color:#c7cbd0!important;
+}
+body.mm-normal-charcoal #budget .section-kicker{
+ color:#c4c8bf!important;
+}
+</style>
 </body>
 </html>
