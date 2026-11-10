@@ -1201,12 +1201,13 @@ async function renderHeroBalance(){
       const change=values[values.length-1],changeDisplay=selected==='IDR'?change:change*selectedPerIDR;
       $('heroBalanceTrend').textContent=(changeDisplay>=0?'↑ ':'↓ ')+fmtCompact(Math.abs(changeDisplay),selected)+' over 30 days';
     }
-    const idrRatesNow=await getHeroRates('IDR');
+    await Promise.all(['JPY','USD','EUR'].map(code=>getHeroRates(code)));
     [['JPY','heroFxJPY','heroFxJPYRate'],['USD','heroFxUSD','heroFxUSDRate'],['EUR','heroFxEUR','heroFxEURRate']].forEach(([code,valueId,rateId])=>{
-      const toIDR=Number(idrRatesNow[code]),fromIDR=Number(idrRatesNow[code]);
-      const value=code==='IDR'?totalIDR:totalIDR*Number(idrRatesNow[code]);
+      // Fetch each quote as foreign-currency base: rates.IDR is exactly IDR per 1 unit of that currency.
+      const quote=heroFxRates[code],idrPerUnit=Number(quote&&quote.IDR);
+      const value=idrPerUnit>0?totalIDR/idrPerUnit:NaN;
       $(valueId).textContent=Number.isFinite(value)?fmtCompact(value,code):'Unavailable';
-      $(rateId).textContent=Number.isFinite(toIDR)&&toIDR>0?'1 '+code+' = '+new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(1/toIDR)+' IDR':'Rate unavailable';
+      $(rateId).textContent=Number.isFinite(idrPerUnit)&&idrPerUnit>0?'1 '+code+' = '+new Intl.NumberFormat('id-ID',{maximumFractionDigits:2}).format(idrPerUnit)+' IDR':'Rate unavailable';
     });
   }catch(error){
     $('heroBalance').textContent='Rate unavailable';
