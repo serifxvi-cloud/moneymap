@@ -1004,6 +1004,8 @@ function restoreState(){
   if(!d)return;
   const map={country:'countrySelect',currency:'currencySelect',payAmount:'payAmount',payPeriod:'payPeriod',hoursWeek:'hoursWeek',daysMonth:'daysMonth',benchmark:'benchmark',occupation:'occupation',household:'household',debtRate:'debtRate',emergencyFund:'emergencyFund',availableHours:'availableHours',risk:'riskTolerance',routine:'routine',skills:'skills',goals:'goals'};
   for(const [key,id] of Object.entries(map)){if(d[key]!==undefined && $(id))$(id).value=d[key];}
+  // Indonesia is MoneyMap's default locale: don't let an old AED profile override its default currency.
+  if((d.country||$('countrySelect').value)==='ID' && CURRENCIES.some(c=>c.code==='IDR'))$('currencySelect').value='IDR';
   if(Array.isArray(d.categories)&&d.categories.length){categories=d.categories.map((c,i)=>({id:c.id||`restored-${i}`,name:String(c.name||'New sector'),target:num(c.target),kind:['living','saving','debt'].includes(c.kind)?c.kind:'living',actual:num(c.actual)}));}
 }
 function populateSelects(){
@@ -1443,7 +1445,7 @@ function initWeekly(){
 
 function init(){
   populateSelects();restoreState();
-  if($('countrySelect').value){selectedCountry=$('countrySelect').value;const c=countryInfo(selectedCountry);if(c&&c.currencies?.length&&!$('currencySelect').value)$('currencySelect').value=c.currencies[0].code;}
+  if($('countrySelect').value){selectedCountry=$('countrySelect').value;const c=countryInfo(selectedCountry);if(selectedCountry==='ID'&&CURRENCIES.some(x=>x.code==='IDR'))$('currencySelect').value='IDR';else if(c&&c.currencies?.length&&!$('currencySelect').value)$('currencySelect').value=c.currencies[0].code;}
   selectedCurrency=$('currencySelect').value||'IDR';if(!CURRENCIES.some(c=>c.code===selectedCurrency))selectedCurrency='IDR';$('currencySelect').value=selectedCurrency;
   renderBudget();bindEvents();updateAll();saveState(false);refreshInflation(false);convertFx();showApiStatus('Connecting to public data',false);
 }
