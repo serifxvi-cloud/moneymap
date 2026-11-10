@@ -1012,7 +1012,7 @@ function populateSelects(){
   const currency=$('currencySelect'),from=$('fxFrom'),to=$('fxTo');
   CURRENCIES.forEach(c=>{const label=`${c.code} — ${c.name}`;for(const sel of [currency,from,to]){const o=document.createElement('option');o.value=c.code;o.textContent=label;sel.appendChild(o)}});
   if(!country.value)country.value='ID';
-  applyCountryCurrency(false);
+  applyCountryCurrency(true);
   if(!from.value)from.value=$('currencySelect').value||'IDR';
   if(!to.value)to.value='USD';
   if(from.value===to.value)to.value='USD';
@@ -1444,7 +1444,7 @@ function initWeekly(){
 function init(){
   populateSelects();restoreState();
   if($('countrySelect').value){selectedCountry=$('countrySelect').value;const c=countryInfo(selectedCountry);if(c&&c.currencies?.length&&!$('currencySelect').value)$('currencySelect').value=c.currencies[0].code;}
-  selectedCurrency=$('currencySelect').value||'USD';if(!CURRENCIES.some(c=>c.code===selectedCurrency))selectedCurrency='USD';$('currencySelect').value=selectedCurrency;
+  selectedCurrency=$('currencySelect').value||'IDR';if(!CURRENCIES.some(c=>c.code===selectedCurrency))selectedCurrency='IDR';$('currencySelect').value=selectedCurrency;
   renderBudget();bindEvents();updateAll();saveState(false);refreshInflation(false);convertFx();showApiStatus('Connecting to public data',false);
 }
 // The dedicated account portal must not initialize dashboard widgets that are not rendered in this view.
