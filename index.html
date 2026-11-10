@@ -1150,15 +1150,31 @@ function updateBudgetRows(){
   const totals=currentTotals();$('actualTotal').textContent=fmt(totals.all);
   $('budgetWarning').textContent=pct>100.1?'Your targets add up to more than 100% of income. Reduce or reallocate them.':pct<99.9?'Some income is not allocated yet. Consider assigning the remaining percentage to savings, goals, or a buffer.':'';
 }
-let heroFxRates={IDR:{IDR:1},updatedAt:0};
+let heroFxRates={IDR:{IDR:1}},heroFxRateTimes={};
 async function getHeroRates(base){
-  const code=String(base||'IDR').toUpperCase();
-  if(heroFxRates[code]&&Date.now()-heroFxRates.updatedAt<15*60*1000)return heroFxRates[code];
-  const response=await fetch('https://open.er-api.com/v6/latest/'+encodeURIComponent(code));
-  if(!response.ok)throw new Error('Exchange rates unavailable');
-  const data=await response.json();
-  if(data.result!=='success'||!data.rates)throw new Error('Exchange rates unavailable');
-  heroFxRates[code]=data.rates;heroFxRates.updatedAt=Date.now();return data.rates;
+  const code=String(base||'IDR').trim().toUpperCase();
+  if(!/^[A-Z]{3}$/.test(code))throw new Error('Invalid currency code: '+code);
+  if(heroFxRates[code]&&Date.now()-(heroFxRateTimes[code]||0)<30*60*1000)return heroFxRates[code];
+  let rates=null,lastError=null;
+  // Primary provider: Frankfurter. Its v1 endpoint returns rates relative to the requested base.
+  try{
+    const response=await fetch('https://api.frankfurter.dev/v1/latest?base='+encodeURIComponent(code)+'&symbols=IDR,JPY,USD,EUR');
+    if(!response.ok)throw new Error('Frankfurter HTTP '+response.status);
+    const data=await response.json();
+    if(data&&data.rates&&typeof data.rates==='object')rates=data.rates;
+    else throw new Error('Frankfurter returned no rates');
+  }catch(error){lastError=error;}
+  // Fallback provider for currencies not covered by Frankfurter or temporary outages.
+  if(!rates){
+    try{
+      const response=await fetch('https://open.er-api.com/v6/latest/'+encodeURIComponent(code));
+      if(!response.ok)throw new Error('Exchange-rate fallback HTTP '+response.status);
+      const data=await response.json();
+      if(data.result!=='success'||!data.rates)throw new Error(data['error-type']||'Fallback provider returned no rates');
+      rates=data.rates;
+    }catch(error){throw new Error('Could not load '+code+' exchange rates ('+(error.message||lastError?.message||'provider error')+')');}
+  }
+  heroFxRates[code]=rates;heroFxRateTimes[code]=Date.now();return rates;
 }
 async function renderHeroBalance(){
   const root=$('heroBalanceChart');if(!root)return;
@@ -1210,10 +1226,11 @@ async function renderHeroBalance(){
       $(rateId).textContent=Number.isFinite(idrPerUnit)&&idrPerUnit>0?'1 '+code+' = '+new Intl.NumberFormat('id-ID',{maximumFractionDigits:2}).format(idrPerUnit)+' IDR':'Rate unavailable';
     });
   }catch(error){
-    $('heroBalance').textContent='Rate unavailable';
-    $('heroBalanceCurrency').textContent='Could not normalize transactions across currencies';
-    root.innerHTML='<div class="hero-chart-empty">Could not load exchange rates. Check your connection and try again.</div>';
-    $('heroBalanceTrend').textContent='Exchange rates unavailable';
+    console.error('MoneyMap balance conversion:',error);
+    $('heroBalance').textContent='Conversion error';
+    $('heroBalanceCurrency').textContent=String(error&&error.message||'Exchange-rate provider error').slice(0,120);
+    root.innerHTML='<div class="hero-chart-empty">Currency conversion could not be completed. Your saved transactions have not been changed.</div>';
+    $('heroBalanceTrend').textContent='Rate provider error';
     ['JPY','USD','EUR'].forEach(code=>{$('heroFx'+code).textContent='Unavailable';$('heroFx'+code+'Rate').textContent='Rate unavailable';});
   }
 }
