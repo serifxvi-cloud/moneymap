@@ -1739,21 +1739,12 @@ async function mmCloudSignInPasskey(){
   mmCloudSetStatus('Complete the passkey prompt from your device or password manager…');
   try{
     const client=mmPasskeySupabase();
-    // Supabase's high-level helper currently defaults to cross-platform security keys.
-    // Use the low-level WebAuthn flow and explicitly prefer this device's platform authenticator.
-    const {data:authOptions,error:optionsError}=await client.auth.passkey.startAuthentication();
-    if(optionsError)throw optionsError;
-    if(!window.PublicKeyCredential||!navigator.credentials?.get)throw new Error('This browser does not support WebAuthn passkeys.');
-    const publicKey=mmPasskeyRequestOptionsFromJSON(authOptions.options);
-    publicKey.userVerification='required';
-    publicKey.hints=['client-device'];
-    const credential=await navigator.credentials.get({publicKey});
-    if(!credential)throw new Error('No passkey was selected.');
-    const {data:verified,error:verifyError}=await client.auth.passkey.verifyAuthentication({challengeId:authOptions.challenge_id,credential});
-    if(verifyError)throw verifyError;
-    const session=verified?.session,user=verified?.user;
-    if(!session||!user)throw new Error('Passkey verification did not return a valid account session.');
-    mmCloudStoreSession({access_token:session.access_token,refresh_token:session.refresh_token,expires_in:session.expires_in,user});
+    // Use Supabase's complete WebAuthn ceremony so it correctly decodes challenge buffers,
+    // serializes the credential response, and verifies the result.
+    const {data,error}=await client.auth.signInWithPasskey();
+    if(error)throw error;
+    if(!data?.session||!data?.user)throw new Error('Passkey sign-in did not return a valid account session.');
+    mmCloudStoreSession({access_token:data.session.access_token,refresh_token:data.session.refresh_token,expires_in:data.session.expires_in,user:data.user});
     mmCloudSetStatus('Passkey sign-in successful. Loading your private MoneyMap data…','ok');
     await mmCloudAfterLogin();
   }catch(e){mmCloudSetStatus('Passkey sign-in failed: '+(e?.message||'Please try again.'),'bad');}
@@ -1769,22 +1760,11 @@ async function mmCloudRegisterPasskey(){
     const token=await mmCloudAccessToken();
     const {error:sessionError}=await client.auth.setSession({access_token:token,refresh_token:mmCloudSession.refresh_token});
     if(sessionError)throw sessionError;
-    // Force a discoverable, user-verified platform credential (Windows Hello / Touch ID).
-    // Supabase's convenience helper currently hints "security-key" and selects cross-platform.
-    const {data:registration,error:registrationError}=await client.auth.passkey.startRegistration();
-    if(registrationError)throw registrationError;
-    if(!window.PublicKeyCredential||!navigator.credentials?.create)throw new Error('This browser does not support WebAuthn passkeys.');
-    const platformAvailable=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?.();
-    if(platformAvailable===false)throw new Error('Windows Hello is not available to this browser profile. Check Windows Hello and browser passkey settings.');
-    const publicKey=mmPasskeyCreationOptionsFromJSON(registration.options);
-    publicKey.authenticatorSelection={...(publicKey.authenticatorSelection||{}),authenticatorAttachment:'platform',residentKey:'required',requireResidentKey:true,userVerification:'required'};
-    publicKey.hints=['client-device'];
-    const credential=await navigator.credentials.create({publicKey});
-    if(!credential)throw new Error('Passkey creation was cancelled.');
-    const {data,error}=await client.auth.passkey.verifyRegistration({challengeId:registration.challenge_id,credential});
+    // Let Supabase run the complete registration ceremony and serialize the WebAuthn response.
+    const {data,error}=await client.auth.registerPasskey();
     if(error)throw error;
-    mmCloudSetStatus('Windows Hello passkey added. You can use your Windows PIN or biometrics to sign in.','ok');
-    if(data?.id)console.info('MoneyMap platform passkey registered:',data.id);
+    mmCloudSetStatus('Passkey added successfully. You can now use it to sign in to MoneyMap.','ok');
+    if(data?.id)console.info('MoneyMap passkey registered:',data.id);
   }catch(e){mmCloudSetStatus('Could not add passkey: '+(e?.message||'Please try again.'),'bad');}
   finally{mmCloudBusy=false;if(button){button.disabled=false;button.textContent='＋ Set up a passkey';}}
 }
