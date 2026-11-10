@@ -2157,22 +2157,29 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
  const byMonth=key=>ledger().filter(t=>(t.date||'').slice(0,7)===key);
  const node=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=txt;return e};
  function renderSmart(){
-  const now=new Date(),key=iso(now.getFullYear(),now.getMonth(),1).slice(0,7),prev=iso(now.getFullYear(),now.getMonth()-1,1).slice(0,7),cur=byMonth(key),old=byMonth(prev),expenses=cur.filter(t=>t.type==='expense'),income=cur.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0),spent=expenses.reduce((a,t)=>a+Number(t.amount||0),0),oldSpent=old.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0),map={};
+  // Always derive the reporting window from the device's current local date.
+  const now=new Date(),todayKey=today(),key=todayKey.slice(0,7),prevDate=new Date(now.getFullYear(),now.getMonth()-1,Math.min(now.getDate(),new Date(now.getFullYear(),now.getMonth(),0).getDate())),prevKey=iso(prevDate.getFullYear(),prevDate.getMonth(),1).slice(0,7),cur=byMonth(key),old=byMonth(prevKey);
+  const expenses=cur.filter(t=>t.type==='expense'),incomeEntries=cur.filter(t=>t.type==='income'),income=incomeEntries.reduce((a,t)=>a+Number(t.amount||0),0),spent=expenses.reduce((a,t)=>a+Number(t.amount||0),0),map={};
   expenses.forEach(t=>map[t.category||'Other']=(map[t.category||'Other']||0)+Number(t.amount||0));
   const cats=Object.entries(map).sort((a,b)=>b[1]-a[1]),elapsed=now.getDate(),days=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),avg=spent/Math.max(1,elapsed);
   const summary=$('mmSmartSummary'),categoryRoot=$('mmSmartCategories'),tips=$('mmSmartTips');if(!summary||!categoryRoot||!tips)return;
-  $('mmInsightPeriod').textContent=now.toLocaleDateString(undefined,{month:'long',year:'numeric'});summary.replaceChildren();
+  const priorComparable=old.filter(t=>(t.date||'')<=iso(prevDate.getFullYear(),prevDate.getMonth(),prevDate.getDate()));
+  const oldSpent=priorComparable.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0);
+  $('mmInsightPeriod').textContent=now.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+' · live';
   const change=oldSpent>0?(spent-oldSpent)/oldSpent*100:null;
-  [['Spent this month',money(spent),expenses.length+' expense entries'],['Daily average',money(avg),'Based on '+elapsed+' of '+days+' days'],['vs. last month',change===null?'No baseline':(change>0?'+':'')+change.toFixed(1)+'%',change===null?'Add history to compare':change>0?'Spending is higher':change<0?'Spending is lower':'Same spending']].forEach(a=>{const c=node('div','mm-smart-stat','');c.append(node('span','',a[0]),node('strong','',a[1]),node('small','',a[2]));summary.append(c)});
+  summary.replaceChildren();
+  [['Spent this month',money(spent),expenses.length+' expense entries · '+elapsed+' days elapsed'],['Daily average',money(avg),'Month-to-date average through today'],['vs. same days last month',change===null?'No baseline':(change>0?'+':'')+change.toFixed(1)+'%',change===null?'No comparable prior-month entries':change>0?'Higher than the same period last month':change<0?'Lower than the same period last month':'Same spending']];
+  const stats=[['Spent this month',money(spent),expenses.length+' expense entries · '+elapsed+' days elapsed'],['Daily average',money(avg),'Month-to-date average through today'],['vs. same days last month',change===null?'No baseline':(change>0?'+':'')+change.toFixed(1)+'%',change===null?'No comparable prior-month entries':change>0?'Higher than the same period last month':change<0?'Lower than the same period last month':'Same spending']];
+  stats.forEach(a=>{const c=node('div','mm-smart-stat','');c.append(node('span','',a[0]),node('strong','',a[1]),node('small','',a[2]));summary.append(c)});
   categoryRoot.replaceChildren();if(!cats.length)categoryRoot.append(node('div','mm-smart-empty','No expense entries recorded this month yet. Add transactions to see your spending mix.'));
-  else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/cats[0][1]*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
+  else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/(cats[0][1]||1)*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
   tips.replaceChildren();const tip=(icon,title,body)=>{const row=node('div','mm-smart-tip',''),copy=document.createElement('div');row.append(node('i','',icon));copy.append(node('strong','',title),node('p','',body));row.append(copy);tips.append(row)};
-  if(!cur.length)tip('🧾','Start with a few entries','Record income and everyday expenses. Insights improve as your ledger fills in.');
+  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+' yet. Add today's income and expenses to start a fresh month-to-date picture.');
   else{
    if(cats[0])tip('🔎','Your biggest spending category',cats[0][0]+' is '+(spent?cats[0][1]/spent*100:0).toFixed(1)+'% of recorded expenses ('+money(cats[0][1])+'). Check whether any part can be planned or reduced.');
-   if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' recorded spending than last month. Check whether this is a one-off or recurring pattern.');
-   if(income>0){const rate=spent/income*100;tip(rate>80?'⚠️':'💡','Spending vs. recorded income',rate.toFixed(1)+'% of recorded income has gone to expenses. '+(rate>80?'Review flexible costs and upcoming bills.':'Keep a buffer for bills and unexpected costs.'))}
-   else tip('💰','Record your income too','Add income entries so MoneyMap can compare spending with money received this month.');
+   if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' spending than the same number of days last month. This is a like-for-like month-to-date comparison.');
+   if(income>0){const rate=spent/income*100;tip(rate>80?'⚠️':'💡','Spending vs. recorded income',rate.toFixed(1)+'% of recorded income has gone to expenses so far this month. '+(rate>80?'Review flexible costs and upcoming bills.':'Keep a buffer for bills and unexpected costs.'))}
+   else tip('💰','Record your income too','Add income entries so MoneyMap can compare this month’s spending with money received.');
   }
  }
  let year=new Date().getFullYear(),month=new Date().getMonth(),selected=today();
@@ -2209,7 +2216,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   $('mmCalPrev')?.addEventListener('click',()=>{month--;if(month<0){month=11;year--}renderCalendar()});
   $('mmCalNext')?.addEventListener('click',()=>{month++;if(month>11){month=0;year++}renderCalendar()});
   $('mmCalToday')?.addEventListener('click',()=>{const d=new Date();year=d.getFullYear();month=d.getMonth();selected=today();renderCalendar()});
-  window.addEventListener('moneymap:transactions-updated',renderAll);window.addEventListener('moneymap:quest-updated',renderAchievements);$('currencySelect')?.addEventListener('change',renderAll);renderAll();
+  window.addEventListener('moneymap:transactions-updated',renderAll);window.addEventListener('moneymap:quest-updated',renderAchievements);$('currencySelect')?.addEventListener('change',renderAll);window.addEventListener('focus',renderAll);window.addEventListener('pageshow',renderAll);document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderAll()});setInterval(()=>{if(!document.hidden)renderAll()},60000);renderAll();
  });
  if(document.readyState!=='loading')renderAll();
  window.MoneyMapInsights={refresh:renderAll,renderCalendar,renderAchievements};
