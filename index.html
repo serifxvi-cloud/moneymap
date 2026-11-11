@@ -2363,7 +2363,7 @@ mmCloudInit();
   const key=target+'|'+source;if(cache[key])return cache[key];
   const url=new URL('https://translate.googleapis.com/translate_a/single');
   url.searchParams.set('client','gtx');url.searchParams.set('sl','en');url.searchParams.set('tl',target);url.searchParams.set('dt','t');url.searchParams.set('q',source);
-  const response=await fetch(url.toString(),{signal:AbortSignal.timeout(9000),mode:'cors'});
+  const response=await fetch(url.toString(),{signal:AbortSignal.timeout(6000),mode:'cors'});
   if(!response.ok)throw Error('Translation service returned '+response.status);
   const data=await response.json(),translated=Array.isArray(data?.[0])?data[0].map(part=>part?.[0]||'').join(''):'';
   if(!translated)throw Error('Empty translation');cache[key]=translated;return translated;
@@ -2373,7 +2373,7 @@ mmCloudInit();
   items.forEach((item,i)=>{const k=target+'|'+item.source;if(cache[k])output[i]=cache[k];else{if(!unique.has(item.source))unique.set(item.source,[]);unique.get(item.source).push(i)}});
   const queue=[...unique.entries()];let cursor=0;
   async function worker(){while(cursor<queue.length){const [source,indices]=queue[cursor++];if(job!==run)return;try{const value=await translateOne(source,target);indices.forEach(i=>output[i]=value)}catch(e){indices.forEach(i=>output[i]=items[i].source);failed+=indices.length}}}
-  await Promise.all(Array.from({length:12},()=>worker()));
+  await Promise.all(Array.from({length:28},()=>worker()));
   return {output,failed};
  }
  let run=0,observer,timer;
