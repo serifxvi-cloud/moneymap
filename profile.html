@@ -12,7 +12,7 @@ const $=id=>document.getElementById(id);let session=null,own=false,profile=null;
 try{session=JSON.parse(localStorage.getItem(SESSION)||'null')}catch{}
 const token=async()=>{if(!session?.access_token)throw Error('Sign in to edit your profile.');if(session.expires_at&&session.expires_at<Date.now()/1000+60&&session.refresh_token){const r=await fetch(S.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:S.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});const d=await r.json();if(!r.ok)throw Error(d.msg||'Session expired. Sign in again.');session={...session,...d,expires_at:Math.floor(Date.now()/1000)+(d.expires_in||3600)};localStorage.setItem(SESSION,JSON.stringify(session));}return session.access_token};
 async function req(path,opts={},jwt){const h={apikey:S.key,Accept:'application/json',...(opts.headers||{})};if(jwt)h.Authorization='Bearer '+jwt;if(opts.body)h['Content-Type']='application/json';const r=await fetch(S.url+path,{...opts,headers:h});const raw=await r.text();let d;try{d=raw?JSON.parse(raw):null}catch{d=raw}if(!r.ok)throw Error(d?.message||d?.msg||String(d||'Request failed'));return d}
-function tier(){try{const x=localStorage.getItem(TIER);return ['basic','plus','premium'].includes(x)?x:'basic'}catch{return 'basic'}}
+function tier(email=session?.user?.email){const normalized=String(email||'').trim().toLowerCase();return ['serifxvi@gmail.com','theodoredavidsontonara@gmail.com'].includes(normalized)?'premium':'basic'}
 function paintBadge(t,admin){const b=document.createElement('span');b.className='badge '+(admin?'admin':t==='premium'?'premium':t==='plus'?'plus':'basic');b.textContent=admin?'✦ FOUNDER · ADMIN':t==='premium'?'✦ PREMIUM':t==='plus'?'◇ PLUS · SILVER CRYSTAL':'◇ BASIC MEMBER';$('badges').append(b)}
 function avatar(url,email){$('initial').textContent=(email||'M').slice(0,1).toUpperCase();if(url){$('avatar').src=url;$('avatar').hidden=false;$('initial').hidden=true}else{$('avatar').hidden=true;$('initial').hidden=false}}
 function showGame(g){g=g||{};$('current').textContent=Number(g.streak)||0;$('best').textContent=Number(g.best)||0;$('wins').textContent=Number(g.wins)||0;$('questStreak').textContent=Number(g.questStreak)||0}
@@ -31,7 +31,7 @@ async function load(){
   $('email').textContent=profile.email||'Email not available';
   $('about').textContent=profile.about||'This member hasn’t written an introduction yet.';
   avatar(profile.avatar_url,profile.email);showGame(profile.game_stats);
-  paintBadge(profile.plan_tier||'basic',false);
+  paintBadge(tier(profile.email),false);
   (Array.isArray(profile.badges)?profile.badges:[]).forEach(b=>{const el=document.createElement('span');el.className='badge basic';el.textContent=b; $('badges').append(el)});
   if(own){const g=localGame();showGame(g);$('aboutInput').value=profile.about||'';await syncStats(g);}
  }catch(e){$('status').textContent=e.message;$('email').textContent=own?(session?.user?.email||'Your account'):'MoneyMap member'}
