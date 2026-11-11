@@ -197,26 +197,25 @@ button,.button,.cta{border-radius:9px!important}
 </script>
 <script>
 (()=>{
- const KEY='moneymap_selected_tier_v1',tiers=['basic','plus','premium'];
+ const ELITE_EMAILS=new Set(['serifxvi@gmail.com','theodoredavidsontonara@gmail.com']);
+ const SESSION='moneymap_supabase_session_v1';
  const buttons=[...document.querySelectorAll('[data-select-tier]')];
- const read=()=>{try{return localStorage.getItem(KEY)||''}catch(e){return ''}};
+ function assignedTier(){
+  try{const session=JSON.parse(localStorage.getItem(SESSION)||'null');const email=String(session?.user?.email||'').trim().toLowerCase();return ELITE_EMAILS.has(email)?'premium':'basic'}catch{return 'basic'}
+ }
  function paint(){
-  const current=read();
+  const current=assignedTier();
   buttons.forEach(btn=>{
    const selected=btn.dataset.selectTier===current;
    btn.setAttribute('aria-pressed',String(selected));
-   const label=btn.dataset.selectTier==='plus'?'Premium':btn.dataset.selectTier==='premium'?'Elite':'Basic';btn.textContent=selected?'✓ Current selection':('Select '+label);
+   btn.disabled=selected;
+   btn.textContent=selected?'✓ Your assigned plan':'Unavailable';
   });
- }
- buttons.forEach(btn=>btn.addEventListener('click',()=>{
-  const tier=btn.dataset.selectTier;if(!tiers.includes(tier))return;
-  try{localStorage.setItem(KEY,tier)}catch(e){}
-  window.dispatchEvent(new Event('moneymap:tier-changed'));
-  paint();
   const note=document.getElementById('tierSwitchNotice');
-  if(note)note.textContent='Your MoneyMap plan preview is now set to '+(tier==='plus'?'PREMIUM':tier==='premium'?'ELITE':'BASIC')+'. Open or refresh MoneyMap to see the matching features.';
- }));
- window.addEventListener('storage',paint);paint();
+  if(note)note.textContent=current==='premium'?'This account has complimentary MoneyMap Elite access.':'Plan changes are currently unavailable. This account is on MoneyMap Basic.';
+ }
+ buttons.forEach(btn=>btn.addEventListener('click',event=>{event.preventDefault();paint()}));
+ window.addEventListener('storage',paint);window.addEventListener('moneymap:tier-changed',paint);paint();
 })();
 </script>
 </body></html>
