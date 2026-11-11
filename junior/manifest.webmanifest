@@ -1,0 +1,18 @@
+{
+  "name": "MoneyMap Junior",
+  "short_name": "MM Junior",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f7ff",
+  "theme_color": "#8b71ee",
+  "description": "A playful place to learn about money, save and grow.",
+  "icons": [
+    {
+      "src": "../favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
