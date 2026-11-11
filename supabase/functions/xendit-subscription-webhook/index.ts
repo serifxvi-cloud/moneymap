@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
     const allowed = ["recurring.plan.activated","recurring.plan.inactivated","recurring.cycle.succeeded","recurring.cycle.failed","recurring.cycle.retrying"];
     if (!allowed.includes(type)) return new Response("Ignored", { status: 200 });
     const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
-    const key = String(data?.id ?? data?.plan_id ?? (ref + ":" + type + ":" + (event?.created ?? "")));
+    const key = type + ":" + String(data?.id ?? data?.plan_id ?? (ref + ":" + (event?.created ?? "")));
     const { error } = await db.rpc("mm_apply_xendit_subscription_event", { p_event_key: key, p_event_type: type, p_reference_id: ref, p_plan_id: data?.plan_id ?? data?.id ?? null, p_cycle_id: data?.id ?? null, p_event_created: event?.created ?? new Date().toISOString() });
     if (error) throw error;
     return new Response("OK", { status: 200 });
