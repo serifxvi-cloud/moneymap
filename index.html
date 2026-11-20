@@ -701,7 +701,76 @@ body.mm-dark .panel,body.mm-normal-charcoal .panel,body[data-theme="dark"] .pane
 body.mm-dark .section-title,body.mm-normal-charcoal .section-title,body[data-theme="dark"] .section-title,body.mm-dark .panel-head h2,body.mm-normal-charcoal .panel-head h2,body[data-theme="dark"] .panel-head h2{color:#edf2fa}
 body.mm-dark input:not([type=checkbox]):not([type=radio]),body.mm-dark select,body.mm-dark textarea,body.mm-normal-charcoal input:not([type=checkbox]):not([type=radio]),body.mm-normal-charcoal select,body.mm-normal-charcoal textarea,body[data-theme="dark"] input:not([type=checkbox]):not([type=radio]),body[data-theme="dark"] select,body[data-theme="dark"] textarea{background:#202a39;border-color:#3b485c;color:#e7edf7}
 
-</style></head>
+</style>
+<style id="mm-elegant-christmas-theme">
+:root{
+ --ink:#20332d;--muted:#718078;--line:#e7e2d7;--paper:#f7f5ef;--card:#fffdf8;
+ --navy:#15372f;--navy2:#23483c;--blue:#27634f;--blue-soft:#e8f0e9;
+ --mint:#e2eee5;--green:#286849;--amber:#a47a37;--red:#a43e49;
+ --radius:20px;--shadow:0 12px 34px rgba(39,55,43,.075);
+}
+body{background:radial-gradient(ellipse at 8% 0%,rgba(196,161,91,.09),transparent 28%),var(--paper);color:var(--ink)}
+.topbar{background:rgba(253,251,245,.92);border-bottom-color:#e8e1d3}
+.brand-mark{background:linear-gradient(145deg,#1b493b,#102e27);box-shadow:inset 0 1px 0 #ffffff35,0 4px 12px #15372f20}
+.brand-sub,.nav a{color:#718078}
+.nav a:hover{color:#a13d48}
+.btn-primary{background:linear-gradient(135deg,#28664f,#174534);box-shadow:0 5px 14px #1b493b22}
+.btn-primary:hover{background:#174534}
+.btn-soft{background:#e9eee7;color:#315343}
+.btn-dark{background:#15372f}
+.btn-quiet{border-color:#ddd7c9;color:#59675e}
+.hero{position:relative;background:radial-gradient(circle at 86% 8%,rgba(214,183,119,.2),transparent 32%),radial-gradient(circle at 4% 100%,rgba(72,122,91,.22),transparent 35%),linear-gradient(115deg,#102f28,#174438 67%,#285744);box-shadow:0 20px 48px rgba(20,55,43,.18)}
+.hero:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;background-image:radial-gradient(circle at 12% 24%,#fff 0 1px,transparent 1.8px),radial-gradient(circle at 76% 17%,#e8d5a5 0 1px,transparent 2px),radial-gradient(circle at 91% 72%,#fff 0 1px,transparent 2px),radial-gradient(circle at 55% 84%,#fff 0 1px,transparent 2px);background-size:173px 137px,211px 181px,193px 157px,239px 199px}
+.hero>*{position:relative;z-index:1}
+.eyebrow,.hero-balance-period,.hero-fx-item span{color:#e8d5a5}
+.hero .btn-primary{background:#f6f0df;color:#17392f;box-shadow:0 5px 15px #071c1640}
+.hero .btn-primary:hover{background:#fffaf0}
+.hero-mini,.hero-balance-panel{border-color:rgba(236,221,183,.2);background:rgba(255,250,235,.075)}
+.hero-balance-period{border-color:#d8bd7c66}
+.stat-card,.panel{background:var(--card);border-color:#e9e3d7;box-shadow:var(--shadow)}
+.section-kicker{color:#9a8050}
+.section-title,.panel-head h2{color:#203b31}
+.tag{background:#f1eee5;color:#68766c}
+.tag.blue{background:#e7efe7;color:#315c48}
+.field input,.field select,.field textarea,.chat-input{border-color:#e2ddcf;background:#fffefa}
+.field input:focus,.field select:focus,.field textarea:focus,.chat-input:focus{border-color:#779a7d;box-shadow:0 0 0 3px rgba(39,99,79,.1)}
+.budget-row{background:#fbfaf5;border-color:#eee9de}
+.budget-row input,.budget-row select{border-color:#e8e2d6;background:#fffefa}
+.insight-icon{background:#edf1e9}
+.insight.warn{background:#fbf5e8;border-color:#eee0bd}
+.insight.good{background:#eef5ed;border-color:#dce9d9}
+.chat-shell{border-color:#e7e1d5;background:#fbfaf6}
+.chat-top{background:#f0f1e9;border-color:#e5e0d4}
+.coach-avatar{background:#1b493b}
+.bubble.user{background:#e7efe7;color:#285541}
+.callout,.investment-option{background:#fbfaf5;border-color:#e9e3d7}
+.wage-cell,.note-box{background:#f0f1e9}
+.footer{border-color:#e5dfd2}
+.footer a{color:#376b55}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #c5a15c;outline-offset:2px}
+body.mm-dark,body.mm-normal-charcoal,body[data-theme="dark"]{
+ --ink:#f1f2e9;--muted:#b9c3b8;--line:#39483d;--paper:#111d18;--card:#1b2a22;
+ --navy:#0e261f;--navy2:#17372c;--blue:#79a98a;--blue-soft:#263d30;
+ --mint:#294333;--green:#8fbe9a;--amber:#d5b875;--red:#e28c91;
+ --shadow:0 14px 36px rgba(0,0,0,.2);
+}
+body.mm-dark,body.mm-normal-charcoal,body[data-theme="dark"]{background:radial-gradient(ellipse at 8% 0%,rgba(174,139,76,.08),transparent 28%),var(--paper);color:var(--ink)}
+body.mm-dark .topbar,body.mm-normal-charcoal .topbar,body[data-theme="dark"] .topbar{background:rgba(20,34,27,.94);border-color:#35463a}
+body.mm-dark .nav a,body.mm-normal-charcoal .nav a,body[data-theme="dark"] .nav a{color:#c0cabe}
+body.mm-dark .hero,body.mm-normal-charcoal .hero,body[data-theme="dark"] .hero{background:radial-gradient(circle at 86% 8%,rgba(214,183,119,.16),transparent 32%),linear-gradient(115deg,#0b211a,#14382b 68%,#1c4937)}
+body.mm-dark .stat-card,body.mm-dark .panel,body.mm-normal-charcoal .stat-card,body.mm-normal-charcoal .panel,body[data-theme="dark"] .stat-card,body[data-theme="dark"] .panel{background:#1b2a22;border-color:#39483d;color:#edf1e9}
+body.mm-dark .section-title,body.mm-dark .panel-head h2,body.mm-normal-charcoal .section-title,body.mm-normal-charcoal .panel-head h2,body[data-theme="dark"] .section-title,body[data-theme="dark"] .panel-head h2{color:#edf1e9}
+body.mm-dark .field input,body.mm-dark .field select,body.mm-dark .field textarea,body.mm-dark .chat-input,body.mm-normal-charcoal .field input,body.mm-normal-charcoal .field select,body.mm-normal-charcoal .field textarea,body.mm-normal-charcoal .chat-input,body[data-theme="dark"] .field input,body[data-theme="dark"] .field select,body[data-theme="dark"] .field textarea,body[data-theme="dark"] .chat-input{background:#17251e;border-color:#405044;color:#f1f2e9}
+body.mm-dark .budget-row,body.mm-dark .callout,body.mm-dark .investment-option,body.mm-dark .chat-shell,body.mm-normal-charcoal .budget-row,body.mm-normal-charcoal .callout,body.mm-normal-charcoal .investment-option,body.mm-normal-charcoal .chat-shell,body[data-theme="dark"] .budget-row,body[data-theme="dark"] .callout,body[data-theme="dark"] .investment-option,body[data-theme="dark"] .chat-shell{background:#202f26;border-color:#39483d;color:#edf1e9}
+body.mm-dark .chat-top,body.mm-dark .wage-cell,body.mm-dark .note-box,body.mm-normal-charcoal .chat-top,body.mm-normal-charcoal .wage-cell,body.mm-normal-charcoal .note-box,body[data-theme="dark"] .chat-top,body[data-theme="dark"] .wage-cell,body[data-theme="dark"] .note-box{background:#26372c;border-color:#39483d;color:#e6ece2}
+body.mm-dark .bubble.coach,body.mm-normal-charcoal .bubble.coach,body[data-theme="dark"] .bubble.coach{background:#26372c;border-color:#405044;color:#e8eee5}
+body.mm-dark .bubble.user,body.mm-normal-charcoal .bubble.user,body[data-theme="dark"] .bubble.user{background:#31513e;color:#f3f6ed}
+body.mm-dark .tag,body.mm-normal-charcoal .tag,body[data-theme="dark"] .tag{background:#293b30;color:#d6e0d3}
+body.mm-dark .footer,body.mm-normal-charcoal .footer,body[data-theme="dark"] .footer{border-color:#39483d}
+@media(prefers-reduced-motion:no-preference){.hero,.panel,.stat-card{transition:box-shadow .25s ease,border-color .25s ease}.panel:hover,.stat-card:hover{box-shadow:0 16px 38px rgba(39,55,43,.1)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
@@ -1548,6 +1617,34 @@ function selectedWeekTransactions(){
   const {start,end}=weekBounds($('weekAnchor').value);
   return weeklyTransactions.filter(t=>t.date>=start&&t.date<=end).sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt-b.createdAt);
 }
+const weeklyFxCache = new Map();
+async function convertWeeklyTransactions(list){
+  const target=selectedCurrency||$('currencySelect').value||'IDR';
+  const currencies=[...new Set(list.map(t=>String(t.currency||target).toUpperCase()).filter(code=>code!==target))];
+  const rates={};
+  await Promise.all(currencies.map(async from=>{
+    const key=from+'>'+target;
+    if(weeklyFxCache.has(key)){rates[from]=weeklyFxCache.get(key);return;}
+    try{
+      let rate=null;
+      try{
+        const r=await fetch(`https://api.frankfurter.dev/v2/rate/${encodeURIComponent(from.toLowerCase())}/${encodeURIComponent(target.toLowerCase())}`);
+        if(!r.ok)throw new Error('Pair unavailable');
+        const d=await r.json();rate=Number(d.rate);
+      }catch(primary){
+        const r=await fetch(`https://open.er-api.com/v6/latest/${encodeURIComponent(from)}`);
+        if(!r.ok)throw primary;
+        const d=await r.json();rate=Number(d.rates?.[target]);
+      }
+      if(!Number.isFinite(rate)||rate<=0)throw new Error('Invalid rate');
+      weeklyFxCache.set(key,rate);rates[from]=rate;
+    }catch{rates[from]=null;}
+  }));
+  return list.map(t=>{
+    const from=String(t.currency||target).toUpperCase(),rate=from===target?1:rates[from];
+    return {...t,_originalAmount:Number(t.amount)||0,_originalCurrency:from,_convertedAmount:rate===null?null:(Number(t.amount)||0)*rate,_conversionRate:rate};
+  });
+}
 function weekMath(list=selectedWeekTransactions()){
   const income=list.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0);
   const spending=list.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0);
@@ -1583,8 +1680,8 @@ async function checkAIConnection(){
     if(d.configured)setAIStatus(true,`Live AI connected · ${d.model||'ready'}`);else setAIStatus(false,'Server online · API key missing');
   }catch{setAIStatus(false,'AI server not found · setup required');}
 }
-function renderWeekly(){
-  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const list=selectedWeekTransactions();const m=weekMath(list);
+async function renderWeekly(){
+  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const rawList=selectedWeekTransactions();const list=await convertWeeklyTransactions(rawList);const convertible=list.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(convertible);m.count=rawList.length;
   $('weekRangeLabel').textContent=`${dateLabel(start)} – ${dateLabel(end)}`;$('weekEntryCount').textContent=`${m.count} ${m.count===1?'entry':'entries'}`;
   $('weekIncome').textContent=fmt(m.income);$('weekSpending').textContent=fmt(m.spending);$('weekNet').textContent=fmt(m.net);
   $('weekNet').style.color=m.net<0?'#c34b4b':m.net>0?'#167a52':'';
@@ -1592,6 +1689,7 @@ function renderWeekly(){
   $('weekSpendDaily').textContent=`Average ${fmt(m.averageDaily)} per day`;
   $('weekNetNote').textContent=m.net<0?'Spending is higher than recorded income':m.net>0?'Positive cash flow this week':'Income and spending are equal';
   if(!m.count){$('weekSummaryNote').textContent='No transactions yet for this week. Add each income payment and expense as it happens; the weekly insights update automatically.';}
+  else if(list.some(t=>t._convertedAmount===null)){$('weekSummaryNote').textContent='Some entries could not be converted to '+(selectedCurrency||'the selected currency')+'. Totals include only entries with an available exchange rate; check your connection and refresh the week.';}
   else if(m.spending>m.income){$('weekSummaryNote').textContent=`You spent ${fmt(m.spending-m.income)} more than you recorded as income this week. Your biggest expense category is ${m.breakdown[0]?.category||'not available'}. Check whether this week included a one-off payment or an unrecorded income source.`;}
   else if(m.income>0){const pct=m.spending/m.income*100; $('weekSummaryNote').textContent=`You spent ${pct.toFixed(1)}% of this week's recorded income and kept ${fmt(m.net)} before any unlogged bills or savings transfers. ${m.breakdown[0]?`${m.breakdown[0].category} is the largest expense category at ${fmt(m.breakdown[0].amount)}.`:'Add expense categories to see where money goes.'}`;}
   else {$('weekSummaryNote').textContent=`You logged ${fmt(m.spending)} in expenses but no income for this week. Add income entries or select another week if income was received earlier.`;}
@@ -1600,7 +1698,7 @@ function renderWeekly(){
   else{const max=m.breakdown[0].amount||1;m.breakdown.slice(0,8).forEach(x=>{const line=document.createElement('div');line.className='breakdown-line';const name=document.createElement('span');name.textContent=x.category;const track=document.createElement('div');track.className='breakdown-track';const bar=document.createElement('span');bar.style.width=`${Math.max(2,x.amount/max*100)}%`;track.appendChild(bar);const amount=document.createElement('strong');amount.textContent=fmt(x.amount);line.append(name,track,amount);breakdown.appendChild(line);});}
   const root=$('transactionList');root.innerHTML='';
   if(!list.length){const empty=document.createElement('div');empty.className='tx-empty';empty.textContent='No transactions logged for this week yet.';root.appendChild(empty);}
-  else{[...list].reverse().forEach(t=>{const row=document.createElement('div');row.className='tx-row';const date=document.createElement('span');date.textContent=dateLabel(t.date);const type=document.createElement('span');type.textContent=t.type==='income'?'Income':'Expense';type.className=t.type;const category=document.createElement('strong');category.className='tx-category';category.textContent=t.category;const note=document.createElement('span');note.className='tx-note';note.textContent=t.note||'—';const amount=document.createElement('span');amount.className=`tx-amount ${t.type}`;amount.textContent=`${t.type==='income'?'+':'−'}${fmt(t.amount)}`;const del=document.createElement('button');del.type='button';del.className='icon-btn';del.textContent='×';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>{weeklyTransactions=weeklyTransactions.filter(x=>x.id!==t.id);saveWeeklyTransactions();renderWeekly();});row.append(date,type,category,note,amount,del);root.appendChild(row);});}
+  else{[...list].reverse().forEach(t=>{const row=document.createElement('div');row.className='tx-row';const date=document.createElement('span');date.textContent=dateLabel(t.date);const type=document.createElement('span');type.textContent=t.type==='income'?'Income':'Expense';type.className=t.type;const category=document.createElement('strong');category.className='tx-category';category.textContent=t.category;const note=document.createElement('span');note.className='tx-note';note.textContent=t.note||'—';const amount=document.createElement('span');amount.className=`tx-amount ${t.type}`;amount.textContent=t._convertedAmount===null?`${t.type==='income'?'+':'−'}${fmt(t._originalAmount,t._originalCurrency)} · rate unavailable`:`${t.type==='income'?'+':'−'}${fmt(t._convertedAmount,selectedCurrency)}${t._originalCurrency!==selectedCurrency?' · '+t._originalCurrency:''}`;const del=document.createElement('button');del.type='button';del.className='icon-btn';del.textContent='×';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>{weeklyTransactions=weeklyTransactions.filter(x=>x.id!==t.id);saveWeeklyTransactions();renderWeekly();});row.append(date,type,category,note,amount,del);root.appendChild(row);});}
   $('transactionCountNote').textContent=`${weeklyTransactions.length} total entries stored on this device · ${m.count} in the selected week`;
   window.MoneyMapInsights?.refresh();
   $('txCurrencyLabel').textContent=selectedCurrency||'currency';
@@ -1633,7 +1731,7 @@ function buildAIContext(){
     country:countryInfo($('countrySelect').value)?.name||'Not provided',currency:selectedCurrency||'Not provided',
     pay:{enteredAmount:Number($('payAmount').value)||0,payPeriod:$('payPeriod').value,estimatedMonthlyIncome:monthlyIncome()},
     weeklyPeriod:weekBounds($('weekAnchor').value),weeklySummary:{income:m.income,spending:m.spending,net:m.net,averageDailySpending:m.averageDaily,transactionCount:m.count,spendingByCategory:m.breakdown},
-    weeklyTransactions:weekList.slice(-80).map(({date,type,category,amount,note})=>({date,type,category,amount,note})),
+    weeklyTransactions:weekList.slice(-80).map(t=>({date:t.date,type:t.type,category:t.category,amount:t._convertedAmount,currency:selectedCurrency||$('currencySelect').value,originalAmount:t._originalAmount,originalCurrency:t._originalCurrency,conversionAvailable:t._convertedAmount!==null,note:t.note})),
     monthlyBudget:categories.map(({name,target,kind,actual})=>({category:name,targetPercent:target,type:kind,enteredMonthlyAmount:actual})),
     profile:{occupation:$('occupation').value,householdSize:$('household').value,debtInterestRatePercent:$('debtRate').value,emergencySavings:$('emergencyFund').value,availableHoursPerWeek:$('availableHours').value,riskComfort:$('riskTolerance').value,dailyRoutine:$('routine').value,skillsAndInterests:$('skills').value,financialGoals:$('goals').value}
   };
@@ -1645,7 +1743,7 @@ async function sendChat(){
   const button=$('sendChatBtn');button.disabled=true;button.textContent='Thinking…';
   const typing=document.createElement('div');typing.className='bubble coach';typing.textContent='Analyzing your numbers…';typing.id='aiTyping';$('chatMessages').appendChild(typing);$('chatMessages').scrollTop=$('chatMessages').scrollHeight;
   try{
-    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message,history:aiConversation.slice(-12),context:buildAIContext()})});
+    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message,history:aiConversation.slice(-12),context:await buildAIContext()})});
     const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||`AI server returned ${response.status}`);
     const reply=String(result.reply||'The AI did not return a response. Please try again.');$('aiTyping')?.remove();addMessage(reply,'coach');aiConversation.push({role:'assistant',content:reply});aiConversation=aiConversation.slice(-12);storeChatHistory();
   }catch(err){$('aiTyping')?.remove();addMessage(`I couldn't reach the AI service: ${err.message}. Keep the MoneyMap PowerShell window open and check your internet connection and API key.`, 'coach');}
@@ -2482,7 +2580,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   categoryRoot.replaceChildren();if(!cats.length)categoryRoot.append(node('div','mm-smart-empty','No expense entries recorded this month yet. Add transactions to see your spending mix.'));
   else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/(cats[0][1]||1)*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
   tips.replaceChildren();const tip=(icon,title,body)=>{const row=node('div','mm-smart-tip',''),copy=document.createElement('div');row.append(node('i','',icon));copy.append(node('strong','',title),node('p','',body));row.append(copy);tips.append(row)};
-  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+' yet. Add today's income and expenses to start a fresh month-to-date picture.');
+  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+ ' yet. Add today\'s income and expenses to start a fresh month-to-date picture.');
   else{
    if(cats[0])tip('🔎','Your biggest spending category',cats[0][0]+' is '+(spent?cats[0][1]/spent*100:0).toFixed(1)+'% of recorded expenses ('+money(cats[0][1])+'). Check whether any part can be planned or reduced.');
    if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' spending than the same number of days last month. This is a like-for-like month-to-date comparison.');
