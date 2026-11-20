@@ -1681,7 +1681,7 @@ async function checkAIConnection(){
   }catch{setAIStatus(false,'AI server not found · setup required');}
 }
 async function renderWeekly(){
-  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const rawList=selectedWeekTransactions();const list=await convertWeeklyTransactions(rawList);const convertible=list.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(convertible);
+  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const rawList=selectedWeekTransactions();const list=await convertWeeklyTransactions(rawList);const convertible=list.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(convertible);m.count=rawList.length;
   $('weekRangeLabel').textContent=`${dateLabel(start)} – ${dateLabel(end)}`;$('weekEntryCount').textContent=`${m.count} ${m.count===1?'entry':'entries'}`;
   $('weekIncome').textContent=fmt(m.income);$('weekSpending').textContent=fmt(m.spending);$('weekNet').textContent=fmt(m.net);
   $('weekNet').style.color=m.net<0?'#c34b4b':m.net>0?'#167a52':'';
@@ -2580,7 +2580,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   categoryRoot.replaceChildren();if(!cats.length)categoryRoot.append(node('div','mm-smart-empty','No expense entries recorded this month yet. Add transactions to see your spending mix.'));
   else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/(cats[0][1]||1)*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
   tips.replaceChildren();const tip=(icon,title,body)=>{const row=node('div','mm-smart-tip',''),copy=document.createElement('div');row.append(node('i','',icon));copy.append(node('strong','',title),node('p','',body));row.append(copy);tips.append(row)};
-  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+ ' yet. Add today\\'s income and expenses to start a fresh month-to-date picture.');
+  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+ ' yet. Add today\'s income and expenses to start a fresh month-to-date picture.');
   else{
    if(cats[0])tip('🔎','Your biggest spending category',cats[0][0]+' is '+(spent?cats[0][1]/spent*100:0).toFixed(1)+'% of recorded expenses ('+money(cats[0][1])+'). Check whether any part can be planned or reduced.');
    if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' spending than the same number of days last month. This is a like-for-like month-to-date comparison.');
