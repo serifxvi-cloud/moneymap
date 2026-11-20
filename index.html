@@ -3842,5 +3842,34 @@ body.mm-normal-charcoal #mmMobileHub .mm-section-scroller small,body.mm-normal-c
  window.addEventListener('moneymap:transactions-updated',render);window.addEventListener('storage',e=>{if(e.key==='moneymap_weekly_transactions_v1')render()});window.addEventListener('pageshow',render);window.addEventListener('moneymap:currency-changed',render);document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});document.addEventListener('DOMContentLoaded',render);if(document.readyState!=='loading')render();window.MoneyMapOverview={refresh:render};
  setInterval(()=>{if(!document.hidden)render()},60000);
 })();
-</script></body>
+</script>
+<!-- MoneyMap Christmas theme cascade fix: intentionally placed after legacy and tier-specific styles. -->
+<style id="mm-christmas-cascade-fix">
+:root{--ink:#20332d;--muted:#718078;--line:#e7e2d7;--paper:#f7f5ef;--card:#fffdf8}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]){background:radial-gradient(ellipse at 8% 0%,rgba(196,161,91,.09),transparent 28%),#f7f5ef!important;color:#20332d}
+.topbar{background:rgba(253,251,245,.96)!important;border-bottom-color:#e8e1d3!important}
+.mm-quick-rail{background:linear-gradient(180deg,#173b30,#102b23)!important;border-color:#3e5a49!important}
+.mm-quick-rail a{color:#e8eee5!important}
+.mm-quick-rail a.active,.mm-quick-rail a:hover{background:#d8e6d9!important;color:#1b493b!important}
+#overview.hero{background:radial-gradient(circle at 86% 8%,rgba(214,183,119,.2),transparent 32%),radial-gradient(circle at 4% 100%,rgba(72,122,91,.22),transparent 35%),linear-gradient(115deg,#102f28,#174438 67%,#285744)!important;color:#fff!important;border:1px solid rgba(214,183,119,.3)!important;box-shadow:0 20px 48px rgba(20,55,43,.18)!important}
+#overview.hero:after{opacity:.28!important}
+#overview.hero .eyebrow,#overview.hero .hero-balance-kicker,#overview.hero .hero-balance-period,#overview.hero .hero-fx-item span{color:#e8d5a5!important}
+#overview.hero h1,#overview.hero .mm-creator-credit{color:#fff!important;-webkit-text-fill-color:#fff!important}
+#overview.hero p{color:#e4ebe4!important}
+#overview.hero .hero-mini,#overview.hero .hero-balance-panel{background:rgba(255,250,235,.075)!important;border-color:rgba(236,221,183,.24)!important}
+#overview.hero .hero-actions .btn-primary{background:#f6f0df!important;color:#17392f!important;-webkit-text-fill-color:#17392f!important}
+#overview.hero .hero-actions .btn-quiet,#overview.hero .hero-actions .btn-soft{background:rgba(255,250,235,.12)!important;border:1px solid rgba(236,221,183,.35)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.stat-card,.panel{background:#fffdf8!important;border-color:#e9e3d7!important}
+.section-kicker{color:#9a8050!important}.section-title,.panel-head h2{color:#203b31!important}
+.tag{background:#f1eee5!important;color:#68766c!important}
+body.mm-dark,body.mm-normal-charcoal,body[data-theme="dark"]{--ink:#f1f2e9;--muted:#b9c3b8;--line:#39483d;--paper:#111d18;--card:#1b2a22;background:radial-gradient(ellipse at 8% 0%,rgba(174,139,76,.08),transparent 28%),#111d18!important;color:#f1f2e9!important}
+body.mm-dark .topbar,body.mm-normal-charcoal .topbar,body[data-theme="dark"] .topbar{background:rgba(20,34,27,.96)!important;border-color:#35463a!important}
+body.mm-dark .mm-quick-rail,body.mm-normal-charcoal .mm-quick-rail,body[data-theme="dark"] .mm-quick-rail{background:linear-gradient(180deg,#102a21,#0b1d17)!important;border-color:#354b3c!important}
+body.mm-dark #overview.hero,body.mm-normal-charcoal #overview.hero,body[data-theme="dark"] #overview.hero{background:radial-gradient(circle at 86% 8%,rgba(214,183,119,.16),transparent 32%),linear-gradient(115deg,#0b211a,#14382b 68%,#1c4937)!important;color:#f1f2e9!important}
+body.mm-dark .stat-card,body.mm-dark .panel,body.mm-normal-charcoal .stat-card,body.mm-normal-charcoal .panel,body[data-theme="dark"] .stat-card,body[data-theme="dark"] .panel{background:#1b2a22!important;border-color:#39483d!important;color:#edf1e9!important}
+body.mm-dark .section-title,body.mm-dark .panel-head h2,body.mm-normal-charcoal .section-title,body.mm-normal-charcoal .panel-head h2,body[data-theme="dark"] .section-title,body[data-theme="dark"] .panel-head h2{color:#edf1e9!important}
+body.mm-dark .tag,body.mm-normal-charcoal .tag,body[data-theme="dark"] .tag{background:#293b30!important;color:#d6e0d3!important}
+@media(prefers-reduced-motion:reduce){#overview.hero{animation:none!important}}
+</style>
+</body>
 </html>
