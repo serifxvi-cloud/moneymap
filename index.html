@@ -1617,6 +1617,34 @@ function selectedWeekTransactions(){
   const {start,end}=weekBounds($('weekAnchor').value);
   return weeklyTransactions.filter(t=>t.date>=start&&t.date<=end).sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt-b.createdAt);
 }
+const weeklyFxCache = new Map();
+async function convertWeeklyTransactions(list){
+  const target=selectedCurrency||$('currencySelect').value||'IDR';
+  const currencies=[...new Set(list.map(t=>String(t.currency||target).toUpperCase()).filter(code=>code!==target))];
+  const rates={};
+  await Promise.all(currencies.map(async from=>{
+    const key=from+'>'+target;
+    if(weeklyFxCache.has(key)){rates[from]=weeklyFxCache.get(key);return;}
+    try{
+      let rate=null;
+      try{
+        const r=await fetch(`https://api.frankfurter.dev/v2/rate/${encodeURIComponent(from.toLowerCase())}/${encodeURIComponent(target.toLowerCase())}`);
+        if(!r.ok)throw new Error('Pair unavailable');
+        const d=await r.json();rate=Number(d.rate);
+      }catch(primary){
+        const r=await fetch(`https://open.er-api.com/v6/latest/${encodeURIComponent(from)}`);
+        if(!r.ok)throw primary;
+        const d=await r.json();rate=Number(d.rates?.[target]);
+      }
+      if(!Number.isFinite(rate)||rate<=0)throw new Error('Invalid rate');
+      weeklyFxCache.set(key,rate);rates[from]=rate;
+    }catch{rates[from]=null;}
+  }));
+  return list.map(t=>{
+    const from=String(t.currency||target).toUpperCase(),rate=from===target?1:rates[from];
+    return {...t,_originalAmount:Number(t.amount)||0,_originalCurrency:from,_convertedAmount:rate===null?null:(Number(t.amount)||0)*rate,_conversionRate:rate};
+  });
+}
 function weekMath(list=selectedWeekTransactions()){
   const income=list.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount||0),0);
   const spending=list.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount||0),0);
@@ -1652,8 +1680,8 @@ async function checkAIConnection(){
     if(d.configured)setAIStatus(true,`Live AI connected · ${d.model||'ready'}`);else setAIStatus(false,'Server online · API key missing');
   }catch{setAIStatus(false,'AI server not found · setup required');}
 }
-function renderWeekly(){
-  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const list=selectedWeekTransactions();const m=weekMath(list);
+async function renderWeekly(){
+  const anchor=$('weekAnchor').value||todayLocalISO();const {start,end}=weekBounds(anchor);const rawList=selectedWeekTransactions();const list=await convertWeeklyTransactions(rawList);const convertible=list.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(convertible);
   $('weekRangeLabel').textContent=`${dateLabel(start)} – ${dateLabel(end)}`;$('weekEntryCount').textContent=`${m.count} ${m.count===1?'entry':'entries'}`;
   $('weekIncome').textContent=fmt(m.income);$('weekSpending').textContent=fmt(m.spending);$('weekNet').textContent=fmt(m.net);
   $('weekNet').style.color=m.net<0?'#c34b4b':m.net>0?'#167a52':'';
@@ -1661,6 +1689,7 @@ function renderWeekly(){
   $('weekSpendDaily').textContent=`Average ${fmt(m.averageDaily)} per day`;
   $('weekNetNote').textContent=m.net<0?'Spending is higher than recorded income':m.net>0?'Positive cash flow this week':'Income and spending are equal';
   if(!m.count){$('weekSummaryNote').textContent='No transactions yet for this week. Add each income payment and expense as it happens; the weekly insights update automatically.';}
+  else if(list.some(t=>t._convertedAmount===null)){$('weekSummaryNote').textContent='Some entries could not be converted to '+(selectedCurrency||'the selected currency')+'. Totals include only entries with an available exchange rate; check your connection and refresh the week.';}
   else if(m.spending>m.income){$('weekSummaryNote').textContent=`You spent ${fmt(m.spending-m.income)} more than you recorded as income this week. Your biggest expense category is ${m.breakdown[0]?.category||'not available'}. Check whether this week included a one-off payment or an unrecorded income source.`;}
   else if(m.income>0){const pct=m.spending/m.income*100; $('weekSummaryNote').textContent=`You spent ${pct.toFixed(1)}% of this week's recorded income and kept ${fmt(m.net)} before any unlogged bills or savings transfers. ${m.breakdown[0]?`${m.breakdown[0].category} is the largest expense category at ${fmt(m.breakdown[0].amount)}.`:'Add expense categories to see where money goes.'}`;}
   else {$('weekSummaryNote').textContent=`You logged ${fmt(m.spending)} in expenses but no income for this week. Add income entries or select another week if income was received earlier.`;}
@@ -1669,7 +1698,7 @@ function renderWeekly(){
   else{const max=m.breakdown[0].amount||1;m.breakdown.slice(0,8).forEach(x=>{const line=document.createElement('div');line.className='breakdown-line';const name=document.createElement('span');name.textContent=x.category;const track=document.createElement('div');track.className='breakdown-track';const bar=document.createElement('span');bar.style.width=`${Math.max(2,x.amount/max*100)}%`;track.appendChild(bar);const amount=document.createElement('strong');amount.textContent=fmt(x.amount);line.append(name,track,amount);breakdown.appendChild(line);});}
   const root=$('transactionList');root.innerHTML='';
   if(!list.length){const empty=document.createElement('div');empty.className='tx-empty';empty.textContent='No transactions logged for this week yet.';root.appendChild(empty);}
-  else{[...list].reverse().forEach(t=>{const row=document.createElement('div');row.className='tx-row';const date=document.createElement('span');date.textContent=dateLabel(t.date);const type=document.createElement('span');type.textContent=t.type==='income'?'Income':'Expense';type.className=t.type;const category=document.createElement('strong');category.className='tx-category';category.textContent=t.category;const note=document.createElement('span');note.className='tx-note';note.textContent=t.note||'—';const amount=document.createElement('span');amount.className=`tx-amount ${t.type}`;amount.textContent=`${t.type==='income'?'+':'−'}${fmt(t.amount)}`;const del=document.createElement('button');del.type='button';del.className='icon-btn';del.textContent='×';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>{weeklyTransactions=weeklyTransactions.filter(x=>x.id!==t.id);saveWeeklyTransactions();renderWeekly();});row.append(date,type,category,note,amount,del);root.appendChild(row);});}
+  else{[...list].reverse().forEach(t=>{const row=document.createElement('div');row.className='tx-row';const date=document.createElement('span');date.textContent=dateLabel(t.date);const type=document.createElement('span');type.textContent=t.type==='income'?'Income':'Expense';type.className=t.type;const category=document.createElement('strong');category.className='tx-category';category.textContent=t.category;const note=document.createElement('span');note.className='tx-note';note.textContent=t.note||'—';const amount=document.createElement('span');amount.className=`tx-amount ${t.type}`;amount.textContent=t._convertedAmount===null?`${t.type==='income'?'+':'−'}${fmt(t._originalAmount,t._originalCurrency)} · rate unavailable`:`${t.type==='income'?'+':'−'}${fmt(t._convertedAmount,selectedCurrency)}${t._originalCurrency!==selectedCurrency?' · '+t._originalCurrency:''}`;const del=document.createElement('button');del.type='button';del.className='icon-btn';del.textContent='×';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>{weeklyTransactions=weeklyTransactions.filter(x=>x.id!==t.id);saveWeeklyTransactions();renderWeekly();});row.append(date,type,category,note,amount,del);root.appendChild(row);});}
   $('transactionCountNote').textContent=`${weeklyTransactions.length} total entries stored on this device · ${m.count} in the selected week`;
   window.MoneyMapInsights?.refresh();
   $('txCurrencyLabel').textContent=selectedCurrency||'currency';
@@ -1702,7 +1731,7 @@ function buildAIContext(){
     country:countryInfo($('countrySelect').value)?.name||'Not provided',currency:selectedCurrency||'Not provided',
     pay:{enteredAmount:Number($('payAmount').value)||0,payPeriod:$('payPeriod').value,estimatedMonthlyIncome:monthlyIncome()},
     weeklyPeriod:weekBounds($('weekAnchor').value),weeklySummary:{income:m.income,spending:m.spending,net:m.net,averageDailySpending:m.averageDaily,transactionCount:m.count,spendingByCategory:m.breakdown},
-    weeklyTransactions:weekList.slice(-80).map(({date,type,category,amount,note})=>({date,type,category,amount,note})),
+    weeklyTransactions:weekList.slice(-80).map(t=>({date:t.date,type:t.type,category:t.category,amount:t._convertedAmount,currency:selectedCurrency||$('currencySelect').value,originalAmount:t._originalAmount,originalCurrency:t._originalCurrency,conversionAvailable:t._convertedAmount!==null,note:t.note})),
     monthlyBudget:categories.map(({name,target,kind,actual})=>({category:name,targetPercent:target,type:kind,enteredMonthlyAmount:actual})),
     profile:{occupation:$('occupation').value,householdSize:$('household').value,debtInterestRatePercent:$('debtRate').value,emergencySavings:$('emergencyFund').value,availableHoursPerWeek:$('availableHours').value,riskComfort:$('riskTolerance').value,dailyRoutine:$('routine').value,skillsAndInterests:$('skills').value,financialGoals:$('goals').value}
   };
@@ -1714,7 +1743,7 @@ async function sendChat(){
   const button=$('sendChatBtn');button.disabled=true;button.textContent='Thinking…';
   const typing=document.createElement('div');typing.className='bubble coach';typing.textContent='Analyzing your numbers…';typing.id='aiTyping';$('chatMessages').appendChild(typing);$('chatMessages').scrollTop=$('chatMessages').scrollHeight;
   try{
-    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message,history:aiConversation.slice(-12),context:buildAIContext()})});
+    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({message,history:aiConversation.slice(-12),context:await buildAIContext()})});
     const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||`AI server returned ${response.status}`);
     const reply=String(result.reply||'The AI did not return a response. Please try again.');$('aiTyping')?.remove();addMessage(reply,'coach');aiConversation.push({role:'assistant',content:reply});aiConversation=aiConversation.slice(-12);storeChatHistory();
   }catch(err){$('aiTyping')?.remove();addMessage(`I couldn't reach the AI service: ${err.message}. Keep the MoneyMap PowerShell window open and check your internet connection and API key.`, 'coach');}
@@ -2551,7 +2580,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   categoryRoot.replaceChildren();if(!cats.length)categoryRoot.append(node('div','mm-smart-empty','No expense entries recorded this month yet. Add transactions to see your spending mix.'));
   else cats.slice(0,6).forEach(([name,amount])=>{const row=node('div','mm-smart-category',''),track=node('span','mm-smart-track',''),fill=document.createElement('i');fill.style.width=Math.max(2,amount/(cats[0][1]||1)*100)+'%';track.append(fill);row.append(node('span','mm-smart-category-name',name),track,node('b','',money(amount)));categoryRoot.append(row)});
   tips.replaceChildren();const tip=(icon,title,body)=>{const row=node('div','mm-smart-tip',''),copy=document.createElement('div');row.append(node('i','',icon));copy.append(node('strong','',title),node('p','',body));row.append(copy);tips.append(row)};
-  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+' yet. Add today's income and expenses to start a fresh month-to-date picture.');
+  if(!cur.length)tip('🧾','Start with a few entries','No transactions are recorded for '+now.toLocaleDateString(undefined,{month:'long',year:'numeric'})+ ' yet. Add today\\'s income and expenses to start a fresh month-to-date picture.');
   else{
    if(cats[0])tip('🔎','Your biggest spending category',cats[0][0]+' is '+(spent?cats[0][1]/spent*100:0).toFixed(1)+'% of recorded expenses ('+money(cats[0][1])+'). Check whether any part can be planned or reduced.');
    if(change!==null)tip(change>0?'📈':'🌿',change>0?'Spending increased':'Spending decreased',Math.abs(change).toFixed(1)+'% '+(change>0?'more':'less')+' spending than the same number of days last month. This is a like-for-like month-to-date comparison.');
