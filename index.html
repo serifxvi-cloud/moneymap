@@ -3897,5 +3897,41 @@ body.mm-dark .tag,body.mm-normal-charcoal .tag,body[data-theme="dark"] .tag{back
 @keyframes mmXmasStar{from{transform:scale(.9) rotate(-8deg)}to{transform:scale(1.12) rotate(8deg)}}
 @media(max-width:700px){.mm-xmas-tree-scene{right:5px;bottom:6px;transform:scale(.72);transform-origin:bottom right;opacity:.85}.mm-xmas-lights{height:20px;background-size:auto}}
 @media(prefers-reduced-motion:reduce){.mm-xmas-snow:before,.mm-xmas-snow:after,.mm-xmas-lights,.mm-xmas-tree-scene,.mm-xmas-tree-star{animation:none!important}}
-</style></body>
+</style>
+<!-- MoneyMap Christmas update: restore classic blue overview and add Santa + gift display. -->
+<div class="mm-xmas-santa" aria-hidden="true"><span class="mm-xmas-santa-emoji">🎅🏻</span><span class="mm-xmas-santa-caption">Merry Christmas!</span></div>
+<div class="mm-xmas-extra-gifts" aria-hidden="true"><span>🎁</span><span>🎁</span><span>🎁</span><span>🎁</span><span>🎁</span></div>
+<style id="mm-blue-overview-santa-update">
+/* Bring back MoneyMap's familiar light-blue overview, while keeping Christmas accents. */
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero{
+ background:radial-gradient(circle at 85% 12%,rgba(255,255,255,.85),transparent 30%),linear-gradient(120deg,#e8f5ff 0%,#cfe9fb 48%,#a9d5f3 100%)!important;
+ color:#173b59!important;border:1px solid rgba(91,157,205,.3)!important;box-shadow:0 18px 42px rgba(57,119,164,.14)!important
+}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .eyebrow,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-balance-kicker,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-balance-period,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-fx-item span{color:#47799d!important}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero h1,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .mm-creator-credit{color:#173b59!important;-webkit-text-fill-color:#173b59!important}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero p{color:#365f7d!important}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-mini,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-balance-panel{background:rgba(255,255,255,.58)!important;border-color:rgba(91,157,205,.24)!important}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-actions .btn-primary{background:#246da2!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-actions .btn-quiet,
+body:not(.mm-dark):not(.mm-normal-charcoal):not([data-theme="dark"]) #overview.hero .hero-actions .btn-soft{background:rgba(255,255,255,.62)!important;border:1px solid rgba(91,157,205,.32)!important;color:#245779!important;-webkit-text-fill-color:#245779!important}
+body.mm-dark #overview.hero,body.mm-normal-charcoal #overview.hero,body[data-theme="dark"] #overview.hero{background:linear-gradient(120deg,#142f48,#1c4564 58%,#245b7d)!important}
+.mm-xmas-santa{position:fixed;left:18px;bottom:12px;z-index:9995;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:2px;filter:drop-shadow(0 5px 10px #24384b35);animation:mmXmasSantaFloat 4s ease-in-out infinite}
+.mm-xmas-santa-emoji{font-size:clamp(48px,6vw,76px);line-height:1}
+.mm-xmas-santa-caption{font:700 10px/1.2 system-ui,sans-serif;letter-spacing:.08em;color:#a33c3c;background:#fffaf0;border:1px solid #e7d4b2;border-radius:99px;padding:4px 8px;box-shadow:0 2px 8px #20304018}
+.mm-xmas-extra-gifts{position:fixed;right:142px;bottom:14px;z-index:9994;pointer-events:none;display:flex;align-items:flex-end;gap:2px;filter:drop-shadow(0 5px 8px #20304030);animation:mmXmasGiftFloat 5s ease-in-out infinite}
+.mm-xmas-extra-gifts span{font-size:clamp(22px,2.6vw,34px);line-height:1}
+.mm-xmas-extra-gifts span:nth-child(2),.mm-xmas-extra-gifts span:nth-child(4){transform:translateY(-13px) rotate(-8deg)}
+.mm-xmas-extra-gifts span:nth-child(3){transform:translateY(2px) rotate(7deg)}
+@keyframes mmXmasSantaFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes mmXmasGiftFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media(max-width:700px){.mm-xmas-santa{left:5px;bottom:5px}.mm-xmas-santa-emoji{font-size:42px}.mm-xmas-santa-caption{font-size:8px}.mm-xmas-extra-gifts{right:92px;bottom:7px}.mm-xmas-extra-gifts span{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.mm-xmas-santa,.mm-xmas-extra-gifts{animation:none!important}}
+</style>
+
+</body>
 </html>
