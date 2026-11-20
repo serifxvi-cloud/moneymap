@@ -1681,7 +1681,7 @@ function applyBudgetPreset(name){
   $('budgetWarning').textContent=`Applied the ${name==='balanced'?'balanced':name==='essentials'?'essentials-first':name==='debt'?'debt-focused':name==='saving'?'savings-focused':name==='tight'?'tight-budget':'flexible-lifestyle'} starting plan. Adjust every percentage to fit your actual obligations.`;
 }
 async function buildAIContext(){
-  const weekList=await convertWeeklyTransactions(selectedWeekTransactions());const usable=weekList.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(usable);
+  const weekList=await convertWeeklyTransactions(selectedWeekTransactions());const usable=weekList.filter(t=>t._convertedAmount!==null).map(t=>({...t,amount:t._convertedAmount}));const m=weekMath(usable);m.count=weekList.length;
   return {
     country:countryInfo($('countrySelect').value)?.name||'Not provided',currency:selectedCurrency||'Not provided',
     pay:{enteredAmount:Number($('payAmount').value)||0,payPeriod:$('payPeriod').value,estimatedMonthlyIncome:monthlyIncome()},
