@@ -3933,5 +3933,56 @@ body.mm-dark #overview.hero,body.mm-normal-charcoal #overview.hero,body[data-the
 @media(prefers-reduced-motion:reduce){.mm-xmas-santa,.mm-xmas-extra-gifts{animation:none!important}}
 </style>
 
+
+<style id="mm-card-inspired-festive-polish">
+/* MoneyMap festive card-inspired decoration polish */
+/* Bring the greeting-card atmosphere into the dashboard without changing its layout. */
+.topbar{position:sticky;isolation:isolate}
+.topbar:after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:17px;pointer-events:none;z-index:3;
+ background:
+ radial-gradient(circle at 3% 8px,#f6d982 0 3px,transparent 4px),
+ radial-gradient(circle at 11% 10px,#e76b70 0 3px,transparent 4px),
+ radial-gradient(circle at 19% 8px,#9ed5ed 0 3px,transparent 4px),
+ radial-gradient(circle at 27% 10px,#f6d982 0 3px,transparent 4px),
+ radial-gradient(circle at 35% 8px,#e76b70 0 3px,transparent 4px),
+ radial-gradient(circle at 43% 10px,#9ed5ed 0 3px,transparent 4px),
+ radial-gradient(circle at 51% 8px,#f6d982 0 3px,transparent 4px),
+ radial-gradient(circle at 59% 10px,#e76b70 0 3px,transparent 4px),
+ radial-gradient(circle at 67% 8px,#9ed5ed 0 3px,transparent 4px),
+ radial-gradient(circle at 75% 10px,#f6d982 0 3px,transparent 4px),
+ radial-gradient(circle at 83% 8px,#e76b70 0 3px,transparent 4px),
+ radial-gradient(circle at 91% 10px,#9ed5ed 0 3px,transparent 4px),
+ radial-gradient(ellipse at 50% -3px,transparent 0 68%,rgba(166,133,75,.65) 69% 70%,transparent 71%);
+ filter:drop-shadow(0 1px 4px rgba(201,157,75,.28));
+ animation:mmCardLights 4.8s ease-in-out infinite alternate}
+@keyframes mmCardLights{0%{opacity:.68;filter:brightness(.92) drop-shadow(0 1px 3px #d8b76a44)}100%{opacity:1;filter:brightness(1.12) drop-shadow(0 1px 8px #d8b76a88)}}
+.hero{isolation:isolate}
+.hero:before{content:"";position:absolute;inset:0 0 auto;height:54px;z-index:0;pointer-events:none;
+ background:
+ radial-gradient(circle at 6% 21px,#ffe7a4 0 3px,transparent 4px),
+ radial-gradient(circle at 17% 26px,#ff8790 0 3px,transparent 4px),
+ radial-gradient(circle at 29% 18px,#b9e9ff 0 3px,transparent 4px),
+ radial-gradient(circle at 41% 27px,#ffe7a4 0 3px,transparent 4px),
+ radial-gradient(circle at 53% 19px,#ff8790 0 3px,transparent 4px),
+ radial-gradient(circle at 65% 27px,#b9e9ff 0 3px,transparent 4px),
+ radial-gradient(circle at 77% 19px,#ffe7a4 0 3px,transparent 4px),
+ radial-gradient(circle at 89% 26px,#ff8790 0 3px,transparent 4px),
+ linear-gradient(180deg,transparent 0 12px,rgba(235,211,157,.5) 13px 14px,transparent 15px);
+ filter:drop-shadow(0 0 7px rgba(255,220,151,.45));animation:mmHeroBulbs 3.4s ease-in-out infinite alternate}
+@keyframes mmHeroBulbs{from{opacity:.62}to{opacity:1}}
+/* More dimensional, glassy highlights like the greeting-card scene. */
+.hero .hero-mini,.hero .hero-balance-panel{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 24px rgba(5,22,17,.08)}
+.stat-card,.panel{position:relative;overflow:hidden}
+.stat-card:before,.panel:before{content:"";position:absolute;inset:0 0 auto;height:2px;pointer-events:none;opacity:.55;background:linear-gradient(90deg,transparent,#d6b66f 22%,#e8f4e9 50%,#bd6c70 78%,transparent)}
+.stat-card:hover,.panel:hover{border-color:rgba(184,151,91,.36)}
+.brand-mark{position:relative;overflow:visible}
+.brand-mark:after{content:"✦";position:absolute;right:-7px;top:-8px;color:#d7b66d;font-size:13px;text-shadow:0 0 9px #e8ca80;animation:mmBrandSparkle 2.8s ease-in-out infinite}
+@keyframes mmBrandSparkle{0%,100%{opacity:.45;transform:scale(.75) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(35deg)}}
+.mm-xmas-santa,.mm-xmas-extra-gifts,.mm-xmas-tree-scene{filter:drop-shadow(0 7px 13px rgba(24,45,35,.2))}
+.mm-xmas-tree-star{filter:drop-shadow(0 0 8px #ffe18b)!important}
+.mm-xmas-lights{filter:drop-shadow(0 2px 8px rgba(255,219,137,.26))}
+@media(max-width:700px){.topbar:after{height:12px;bottom:-5px;background-size:auto}.hero:before{height:38px}.stat-card:before,.panel:before{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.topbar:after,.hero:before,.brand-mark:after{animation:none!important}}
+</style>
 </body>
 </html>
